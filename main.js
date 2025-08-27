@@ -32,6 +32,9 @@ function init() {
   const hapticBtn = document.getElementById('hapticBtn');
   const greeting = document.getElementById('greeting');
   const envNotice = document.getElementById('envNotice');
+  const userNicknameEl = document.getElementById('userNickname');
+  const avatarImg = document.getElementById('avatarImg');
+  const avatarFallback = document.getElementById('avatarFallback');
 
   const isTelegram = Boolean(telegramWebApp);
 
@@ -45,13 +48,25 @@ function init() {
       applyThemeFromTelegram(telegramWebApp.themeParams, telegramWebApp.colorScheme);
     });
 
-    // User greeting
+    // User bar & greeting
     const user = telegramWebApp.initDataUnsafe?.user;
     if (user) {
       const name = [user.first_name, user.last_name].filter(Boolean).join(' ');
-      greeting.textContent = `Привет, ${name}!`;
+      const nickname = user.username ? `@${user.username}` : name || 'Пользователь';
+      greeting.textContent = `Привет, ${name || nickname}!`;
+      userNicknameEl.textContent = nickname;
+
+      // Avatar: Telegram WebApp не даёт прямую ссылку на аватар.
+      // Попробуем получить первую букву как fallback.
+      const initials = (name || nickname).trim()[0]?.toUpperCase() || '?';
+      avatarFallback.textContent = initials;
+      // Если у вас есть собственный API для получения фото по user.id — здесь можно подставить URL и показать <img>.
+      // avatarImg.src = `https://your.cdn/avatars/${user.id}.jpg`;
+      // avatarImg.hidden = false; avatarFallback.style.display = 'none';
     } else {
       greeting.textContent = 'Привет!';
+      userNicknameEl.textContent = '';
+      avatarFallback.textContent = 'U';
     }
 
     // Back button closes app
