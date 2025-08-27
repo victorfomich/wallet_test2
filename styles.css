@@ -24,6 +24,17 @@ body {
   max-width: 640px;
   margin: 0 auto;
   padding: 16px 16px 72px; /* место под нижнюю панель */
+  position: relative;
+}
+
+.hero {
+  position: absolute;
+  inset: 0 0 auto 0;
+  height: 32vh; /* оставляем ~30% сверху под фон */
+  background: linear-gradient(180deg, rgba(42,171,238,1) 0%, rgba(42,171,238,0.85) 60%, rgba(42,171,238,0) 100%);
+  z-index: 1;
+  border-bottom-left-radius: 24px;
+  border-bottom-right-radius: 24px;
 }
 
 .app-header h1 {
@@ -31,7 +42,7 @@ body {
   font-size: 20px;
 }
 
-.userbar { display: flex; align-items: center; gap: 10px; margin-bottom: 12px; }
+.userbar { display: flex; align-items: center; gap: 10px; margin-bottom: 12px; position: relative; z-index: 3; }
 .avatar { width: 32px; height: 32px; border-radius: 999px; overflow: hidden; background: var(--card); border: 1px solid var(--border); display: grid; place-items: center; }
 .avatar img { width: 100%; height: 100%; object-fit: cover; display: block; }
 .avatar-fallback { width: 100%; height: 100%; display: grid; place-items: center; font-weight: 600; color: var(--text); opacity: 0.9; font-size: 12px; }
@@ -39,6 +50,17 @@ body {
 
 .muted { color: var(--hint); }
 .small { font-size: 12px; }
+
+.sheet {
+  position: relative;
+  z-index: 2; /* ниже заголовка, выше фона */
+  margin-top: 22vh; /* старт ниже верха, оставляем 20-30% */
+  background: var(--bg);
+  border-top-left-radius: 20px;
+  border-top-right-radius: 20px;
+  box-shadow: 0 -2px 16px rgba(0,0,0,0.08);
+  padding-top: 12px;
+}
 
 .view { min-height: 140px; }
 .view[hidden] { display: none !important; }
