@@ -54,12 +54,14 @@ body {
 .sheet {
   position: relative;
   z-index: 2; /* ниже заголовка, выше фона */
-  margin-top: 22vh; /* старт ниже верха, оставляем 20-30% */
+  margin-top: 14vh; /* ближе под хедер */
   background: var(--bg);
   border-top-left-radius: 20px;
   border-top-right-radius: 20px;
   box-shadow: 0 -2px 16px rgba(0,0,0,0.08);
   padding-top: 12px;
+  padding-bottom: calc(96px + env(safe-area-inset-bottom)); /* запас под таббар */
+  min-height: 140vh; /* тянем модуль ниже низа, чтобы было что скроллить */
 }
 
 .view { min-height: 140px; }
