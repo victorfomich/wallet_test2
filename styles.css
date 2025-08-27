@@ -61,7 +61,7 @@ body {
   box-shadow: 0 -2px 16px rgba(0,0,0,0.08);
   padding-top: 12px;
   padding-bottom: calc(96px + env(safe-area-inset-bottom)); /* запас под таббар */
-  min-height: 140vh; /* тянем модуль ниже низа, чтобы было что скроллить */
+  min-height: calc(100vh - 18vh); /* короче: завязка на высоту экрана */
 }
 
 .view { min-height: 140px; }
