@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Wallet Mini App</title>
+  <link rel="stylesheet" href="./styles.css" />
+  <script src="https://telegram.org/js/telegram-web-app.js"></script>
+  <meta name="color-scheme" content="light dark" />
+  <meta name="theme-color" content="#2aabee" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="mobile-web-app-capable" content="yes" />
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>💳</text></svg>"> 
+</head>
+<body>
+  <div id="app">
+    <header class="app-header">
+      <h1>Wallet Mini App</h1>
+      <p id="greeting" class="muted"></p>
+    </header>
+
+    <section class="card">
+      <label class="field">
+        <span>Сумма (₽)</span>
+        <input id="amount" type="number" min="1" step="1" placeholder="Например, 199" />
+      </label>
+
+      <label class="field">
+        <span>Описание</span>
+        <input id="description" type="text" maxlength="64" placeholder="За что платим?" />
+      </label>
+
+      <div class="actions">
+        <button id="sendBtn" class="btn primary">Отправить боту</button>
+        <button id="hapticBtn" class="btn">Вибрация</button>
+      </div>
+    </section>
+
+    <section class="card" id="envNotice" hidden>
+      <p>Кажется, вы открыли приложение вне Telegram. Некоторые функции будут недоступны.</p>
+      <a id="openInTg" class="link" href="https://t.me" target="_blank" rel="noopener">Открыть в Telegram</a>
+    </section>
+
+    <footer class="muted small">Готово к работе в Telegram Mini Apps</footer>
+  </div>
+
+  <script src="./main.js"></script>
+  <noscript>Для работы приложения нужен JavaScript</noscript>
+  
+</body>
+</html>
+
+
