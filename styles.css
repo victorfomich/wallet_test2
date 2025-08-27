@@ -54,7 +54,7 @@ body {
 .sheet {
   position: relative;
   z-index: 2; /* ниже заголовка, выше фона */
-  margin-top: 24vh; /* ещё чуть больше места сверху */
+  margin-top: 35vh; /* больше места сверху */
   background: var(--bg);
   border-top-left-radius: 35px;
   border-top-right-radius: 35px;
