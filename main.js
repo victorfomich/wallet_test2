@@ -53,7 +53,7 @@ function init() {
     if (user) {
       const name = [user.first_name, user.last_name].filter(Boolean).join(' ');
       const nickname = user.username ? `@${user.username}` : name || 'Пользователь';
-      greeting.textContent = `Привет, ${name || nickname}!`;
+      if (greeting) greeting.textContent = `Привет, ${name || nickname}!`;
       userNicknameEl.textContent = nickname;
 
       // Avatar: Telegram WebApp не даёт прямую ссылку на аватар.
@@ -75,7 +75,7 @@ function init() {
         avatarImg.src = user.photo_url;
       }
     } else {
-      greeting.textContent = 'Привет!';
+      if (greeting) greeting.textContent = 'Привет!';
       userNicknameEl.textContent = '';
       avatarFallback.textContent = 'U';
     }
@@ -86,25 +86,30 @@ function init() {
       telegramWebApp.close();
     });
 
-    // Main button mirrors form state
-    const updateMainButton = () => {
-      const amount = Number(amountInput.value);
-      const ok = Number.isFinite(amount) && amount > 0;
-      setMainButtonState(ok, 'Оплатить');
-    };
-    updateMainButton();
-    amountInput.addEventListener('input', updateMainButton);
+    // Main button mirrors form state (only if form exists)
+    if (amountInput) {
+      const updateMainButton = () => {
+        const amount = Number(amountInput.value);
+        const ok = Number.isFinite(amount) && amount > 0;
+        setMainButtonState(ok, 'Оплатить');
+      };
+      updateMainButton();
+      amountInput.addEventListener('input', updateMainButton);
 
-    telegramWebApp.onEvent('mainButtonClicked', () => {
-      sendData();
-    });
+      telegramWebApp.onEvent('mainButtonClicked', () => {
+        sendData();
+      });
+    } else {
+      try { telegramWebApp.MainButton.hide(); } catch (_) {}
+    }
   } else {
     // Fallback for normal browser
-    envNotice.hidden = false;
-    greeting.textContent = 'Откройте это приложение внутри Telegram для полного функционала.';
+    if (envNotice) envNotice.hidden = false;
+    if (greeting) greeting.textContent = 'Откройте это приложение внутри Telegram для полного функционала.';
   }
 
   function sendData() {
+    if (!amountInput) return;
     const amount = Number(amountInput.value);
     const description = descriptionInput.value?.trim() || null;
     if (!Number.isFinite(amount) || amount <= 0) {
@@ -129,10 +134,14 @@ function init() {
     }
   }
 
-  sendBtn.addEventListener('click', sendData);
-  hapticBtn.addEventListener('click', () => {
-    try { telegramWebApp?.HapticFeedback?.impactOccurred('light'); } catch (_) {}
-  });
+  if (sendBtn) {
+    sendBtn.addEventListener('click', sendData);
+  }
+  if (hapticBtn) {
+    hapticBtn.addEventListener('click', () => {
+      try { telegramWebApp?.HapticFeedback?.impactOccurred('light'); } catch (_) {}
+    });
+  }
 }
 
 // iOS 100vh fix
