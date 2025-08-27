@@ -28,13 +28,13 @@ body {
 }
 
 .hero {
-  position: absolute;
-  inset: 0 0 auto 0;
-  height: 32vh; /* оставляем ~30% сверху под фон */
-  background: linear-gradient(180deg, rgba(42,171,238,1) 0%, rgba(42,171,238,0.85) 60%, rgba(42,171,238,0) 100%);
-  z-index: 1;
-  border-bottom-left-radius: 24px;
-  border-bottom-right-radius: 24px;
+  position: fixed;
+  inset: 0; /* покрываем весь вьюпорт */
+  height: 100vh;
+  width: 100vw;
+  background: linear-gradient(180deg, rgba(42,171,238,1) 0%, rgba(42,171,238,1) 70%, rgba(42,171,238,0.9) 100%);
+  z-index: 1; /* ниже контента */
+  pointer-events: none; /* не перекрываем клики */
 }
 
 .app-header h1 {
@@ -78,6 +78,7 @@ body {
   border-top: 1px solid var(--border);
   max-width: 640px;
   margin: 0 auto;
+  z-index: 4; /* выше всего */
 }
 .tabbar .tab {
   appearance: none;
