@@ -57,12 +57,23 @@ function init() {
       userNicknameEl.textContent = nickname;
 
       // Avatar: Telegram WebApp не даёт прямую ссылку на аватар.
-      // Попробуем получить первую букву как fallback.
+      // Если Telegram передал photo_url — попробуем загрузить его, иначе показываем заглушку.
       const initials = (name || nickname).trim()[0]?.toUpperCase() || '?';
       avatarFallback.textContent = initials;
-      // Если у вас есть собственный API для получения фото по user.id — здесь можно подставить URL и показать <img>.
-      // avatarImg.src = `https://your.cdn/avatars/${user.id}.jpg`;
-      // avatarImg.hidden = false; avatarFallback.style.display = 'none';
+
+      if (user.photo_url) {
+        avatarImg.hidden = true;
+        avatarFallback.style.display = 'grid';
+        avatarImg.onload = () => {
+          avatarImg.hidden = false;
+          avatarFallback.style.display = 'none';
+        };
+        avatarImg.onerror = () => {
+          avatarImg.hidden = true;
+          avatarFallback.style.display = 'grid';
+        };
+        avatarImg.src = user.photo_url;
+      }
     } else {
       greeting.textContent = 'Привет!';
       userNicknameEl.textContent = '';
