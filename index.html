@@ -32,10 +32,30 @@
       <section id="view-profile" class="view" aria-label="Профиль" hidden></section>
     </main>
     <nav class="tabbar" role="tablist" aria-label="Навигация">
-      <button class="tab active" data-view="home" role="tab" aria-selected="true">Главная</button>
-      <button class="tab" data-view="history" role="tab" aria-selected="false">История</button>
-      <button class="tab" data-view="browser" role="tab" aria-selected="false">Браузер</button>
-      <button class="tab" data-view="profile" role="tab" aria-selected="false">Профиль</button>
+      <button class="tab active" data-view="home" role="tab" aria-selected="true">
+        <span class="icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" width="22" height="22"><path d="M3 10.5 12 3l9 7.5V20a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1v-9.5Z" fill="currentColor"/></svg>
+        </span>
+        <span class="label">Главная</span>
+      </button>
+      <button class="tab" data-view="history" role="tab" aria-selected="false">
+        <span class="icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" width="22" height="22"><path d="M12 3a9 9 0 1 1-9 9H1l3-3 3 3H5a7 7 0 1 0 7-7v2H10V3h2Z" fill="currentColor"/></svg>
+        </span>
+        <span class="label">История</span>
+      </button>
+      <button class="tab" data-view="browser" role="tab" aria-selected="false">
+        <span class="icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" width="22" height="22"><path d="M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20Zm6.9 6H14c-.3-1.8-1-3.4-2-4.6 2.6.5 4.7 2.3 6 4.6ZM10 4.1C9 5.3 8.3 6.9 8 8.7H5.1A8 8 0 0 1 10 4.1ZM4.1 10H8c0 .7.1 1.4.2 2H3.5c.1-.7.3-1.4.6-2ZM5.1 14H8c.3 1.8 1 3.4 2 4.6A8 8 0 0 1 5.1 14ZM10 19.9c1-1.2 1.7-2.8 2-4.6h4.9a8 8 0 0 1-6.9 4.6ZM13.8 12c0-.7-.1-1.4-.2-2h6c.3.6.5 1.3.6 2h-6.4Zm-.4 2c-.3.8-.6 1.6-1 2.3-.2.4-.5.9-.8 1.3-.3-.4-.6-.9-.8-1.3-.4-.7-.7-1.5-1-2.3h4.6Zm-4.6-4c.3-.8.6-1.6 1-2.3.2-.4.5-.9.8-1.3.3.4.6.9.8 1.3.4.7.7 1.5 1 2.3H8.8Zm5.2 0c.1.6.2 1.3.2 2H21c-.1-.7-.3-1.4-.6-2h-6.4Z" fill="currentColor"/></svg>
+        </span>
+        <span class="label">Браузер</span>
+      </button>
+      <button class="tab" data-view="profile" role="tab" aria-selected="false">
+        <span class="icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" width="22" height="22"><path d="M12 12a5 5 0 1 0-5-5 5 5 0 0 0 5 5Zm0 2c-4.4 0-8 2.2-8 5v1h16v-1c0-2.8-3.6-5-8-5Z" fill="currentColor"/></svg>
+        </span>
+        <span class="label">Профиль</span>
+      </button>
     </nav>
   </div>
 

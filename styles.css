@@ -59,18 +59,21 @@ body {
 }
 .tabbar .tab {
   appearance: none;
-  background: var(--card);
+  background: transparent;
   color: var(--text);
-  border: 1px solid var(--border);
-  border-radius: 12px;
-  padding: 10px 8px;
-  font-size: 13px;
+  border: none;
+  border-radius: 10px;
+  padding: 8px 6px;
+  font-size: 12px;
+  display: grid;
+  justify-items: center;
+  gap: 6px;
 }
 .tabbar .tab.active {
-  background: var(--button);
-  color: var(--button-text);
-  border-color: transparent;
+  color: var(--button);
 }
+.tabbar .tab .icon { line-height: 0; }
+.tabbar .tab .label { line-height: 1; }
 
 .card {
   background: var(--card);
