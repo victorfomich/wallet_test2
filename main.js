@@ -35,6 +35,13 @@ function init() {
   const userNicknameEl = document.getElementById('userNickname');
   const avatarImg = document.getElementById('avatarImg');
   const avatarFallback = document.getElementById('avatarFallback');
+  const tabs = Array.from(document.querySelectorAll('.tabbar .tab'));
+  const views = {
+    home: document.getElementById('view-home'),
+    history: document.getElementById('view-history'),
+    browser: document.getElementById('view-browser'),
+    profile: document.getElementById('view-profile'),
+  };
 
   const isTelegram = Boolean(telegramWebApp);
 
@@ -107,6 +114,29 @@ function init() {
     if (envNotice) envNotice.hidden = false;
     if (greeting) greeting.textContent = 'Откройте это приложение внутри Telegram для полного функционала.';
   }
+
+  // Tabs
+  function switchView(name) {
+    Object.entries(views).forEach(([key, el]) => {
+      if (!el) return;
+      if (key === name) {
+        el.hidden = false;
+        el.classList.add('active');
+      } else {
+        el.hidden = true;
+        el.classList.remove('active');
+      }
+    });
+    tabs.forEach(btn => {
+      const isActive = btn.dataset.view === name;
+      btn.classList.toggle('active', isActive);
+      btn.setAttribute('aria-selected', String(isActive));
+    });
+  }
+
+  tabs.forEach(btn => {
+    btn.addEventListener('click', () => switchView(btn.dataset.view));
+  });
 
   function sendData() {
     if (!amountInput) return;

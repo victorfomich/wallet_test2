@@ -23,7 +23,7 @@ body {
 #app {
   max-width: 640px;
   margin: 0 auto;
-  padding: 16px;
+  padding: 16px 16px 72px; /* место под нижнюю панель */
 }
 
 .app-header h1 {
@@ -39,6 +39,38 @@ body {
 
 .muted { color: var(--hint); }
 .small { font-size: 12px; }
+
+.view { min-height: 140px; }
+.view[hidden] { display: none !important; }
+
+.tabbar {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 8px;
+  padding: 10px 12px calc(env(safe-area-inset-bottom) + 10px);
+  background: var(--bg);
+  border-top: 1px solid var(--border);
+  max-width: 640px;
+  margin: 0 auto;
+}
+.tabbar .tab {
+  appearance: none;
+  background: var(--card);
+  color: var(--text);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 10px 8px;
+  font-size: 13px;
+}
+.tabbar .tab.active {
+  background: var(--button);
+  color: var(--button-text);
+  border-color: transparent;
+}
 
 .card {
   background: var(--card);

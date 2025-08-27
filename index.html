@@ -25,6 +25,18 @@
         </div>
       </div>
     </header>
+    <main id="views">
+      <section id="view-home" class="view active" aria-label="Главная"></section>
+      <section id="view-history" class="view" aria-label="История" hidden></section>
+      <section id="view-browser" class="view" aria-label="Браузер" hidden></section>
+      <section id="view-profile" class="view" aria-label="Профиль" hidden></section>
+    </main>
+    <nav class="tabbar" role="tablist" aria-label="Навигация">
+      <button class="tab active" data-view="home" role="tab" aria-selected="true">Главная</button>
+      <button class="tab" data-view="history" role="tab" aria-selected="false">История</button>
+      <button class="tab" data-view="browser" role="tab" aria-selected="false">Браузер</button>
+      <button class="tab" data-view="profile" role="tab" aria-selected="false">Профиль</button>
+    </nav>
   </div>
 
   <script src="./main.js"></script>
