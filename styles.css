@@ -56,8 +56,8 @@ body {
   z-index: 2; /* ниже заголовка, выше фона */
   margin-top: 14vh; /* ближе под хедер */
   background: var(--bg);
-  border-top-left-radius: 28px;
-  border-top-right-radius: 28px;
+  border-top-left-radius: 80px;
+  border-top-right-radius: 80px;
   overflow: hidden; /* чтобы контент не выходил за скругление */
   box-shadow: 0 -2px 16px rgba(0,0,0,0.08);
   padding-top: 12px;
