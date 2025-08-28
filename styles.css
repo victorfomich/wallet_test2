@@ -7,6 +7,7 @@
   --button-text: #ffffff;
   --card: #f3f4f6;
   --border: rgba(0, 0, 0, 0.08);
+  --hero-base: min(35vh, 320px); /* ограничиваем верхний оффсет на высоких экранах */
 }
 
 * { box-sizing: border-box; }
@@ -43,9 +44,9 @@ body {
 }
 
 .userbar { display: flex; align-items: center; gap: 10px; margin-bottom: 12px; position: relative; z-index: 3; }
-.cta-title { position: absolute; z-index: 3; left: 50%; transform: translateX(-50%); top: calc(35vh - 144px); color: #ffffff; font-size: 16px; font-weight: 600; letter-spacing: 0.2px; text-shadow: 0 1px 2px rgba(0,0,0,0.25); }
-.cta-amount { position: absolute; z-index: 3; left: 50%; transform: translateX(-50%); top: calc(35vh - 120px); color: #ffffff; font-size: 36px; font-weight: 700; text-shadow: 0 2px 8px rgba(0,0,0,0.25); }
-.cta-wrap { position: absolute; z-index: 3; left: 50%; transform: translateX(-50%); top: calc(35vh - 52px); display: grid; grid-auto-flow: column; gap: 24px; }
+.cta-title { position: absolute; z-index: 3; left: 50%; transform: translateX(-50%); top: calc(var(--hero-base) - 144px); color: #ffffff; font-size: 16px; font-weight: 600; letter-spacing: 0.2px; text-shadow: 0 1px 2px rgba(0,0,0,0.25); }
+.cta-amount { position: absolute; z-index: 3; left: 50%; transform: translateX(-50%); top: calc(var(--hero-base) - 120px); color: #ffffff; font-size: 36px; font-weight: 700; text-shadow: 0 2px 8px rgba(0,0,0,0.25); }
+.cta-wrap { position: absolute; z-index: 3; left: 50%; transform: translateX(-50%); top: calc(var(--hero-base) - 52px); display: grid; grid-auto-flow: column; gap: 24px; }
 .cta-item { display: grid; justify-items: center; gap: 6px; }
 .cta-label { font-size: 12px; color: #ffffff; text-shadow: 0 1px 2px rgba(0,0,0,0.25); }
 .qr-btn {
@@ -74,7 +75,7 @@ body {
 .sheet {
   position: relative;
   z-index: 2; /* ниже заголовка, выше фона */
-  margin-top: 35vh; /* больше места сверху */
+  margin-top: var(--hero-base); /* компенсируем рост экрана по высоте */
   background: var(--bg);
   border-top-left-radius: 35px;
   border-top-right-radius: 35px;
