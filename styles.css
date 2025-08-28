@@ -77,7 +77,7 @@ body {
   position: relative;
   z-index: 2; /* ниже заголовка, выше фона */
   margin-top: var(--hero-base); /* компенсируем рост экрана по высоте */
-  background: var(--bg);
+  background: #f7f8fb; /* чуть темнее фона страницы */
   border-top-left-radius: 35px;
   border-top-right-radius: 35px;
   overflow: hidden; /* чтобы контент не выходил за скругление */
@@ -113,7 +113,8 @@ body {
   border-radius: 16px;
   padding: 14px 16px;
   margin: 0 12px 12px;
-  box-shadow: 0 1px 1px rgba(16,24,40,0.04), 0 10px 20px rgba(16,24,40,0.08);
+  box-shadow: none; /* убираем тени */
+  border: 1px solid var(--border);
 }
 .token-left { display: grid; grid-auto-flow: column; align-items: center; gap: 12px; }
 .token-icon {
