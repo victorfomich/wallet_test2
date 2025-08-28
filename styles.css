@@ -43,15 +43,15 @@ body {
 }
 
 .userbar { display: flex; align-items: center; gap: 10px; margin-bottom: 12px; position: relative; z-index: 3; }
-.cta-wrap { position: absolute; z-index: 3; left: 50%; transform: translateX(-50%); top: calc(35vh - 36px); }
+.cta-wrap { position: absolute; z-index: 3; left: 50%; transform: translateX(-50%); top: calc(35vh - 32px); }
 .qr-btn {
   appearance: none;
   border: none;
   background: #ffffff;
   color: var(--text);
   border-radius: 12px;
-  width: 68px; /* фиксированный размер кнопки как раньше */
-  height: 68px;
+  width: 64px; /* слегка меньше кнопка */
+  height: 64px;
   padding: 0;
   box-shadow: 0 6px 20px rgba(0,0,0,0.12);
   display: inline-grid;
