@@ -150,13 +150,14 @@ body {
   box-shadow: none; /* убираем тени */
   border: 1px solid var(--border);
 }
-.token-left { display: flex; align-items: center; justify-content: flex-start; gap: 6px; }
+.token-left { display: flex; align-items: center; justify-content: flex-start; gap: 10px; }
 .token-icon {
   width: 48px; height: 48px; border-radius: 999px;
   background: #1abc9c; color: #ffffff; display: grid; place-items: center;
   font-weight: 800; font-size: 22px;
 }
-.token-logo { width: 56px; height: 56px; border-radius: 999px; display: block; }
+.token-logo-wrap { width: 48px; height: 48px; flex: 0 0 48px; display: grid; place-items: center; }
+.token-logo { width: 64px; height: 64px; border-radius: 999px; display: block; }
 .token-icon.ton { background: #0ba5ff; }
 .token-icon.tron { background: #ec1c24; }
 .token-badge { background: #22c55e; color: #ffffff; font-size: 10px; font-weight: 700; padding: 4px 6px; border-radius: 10px; margin-left: 8px; vertical-align: middle; }
