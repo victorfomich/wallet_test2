@@ -118,6 +118,7 @@ body {
 
 .asset-ctas { display: grid; grid-auto-flow: column; justify-content: center; gap: 24px; padding: 8px 0 24px; }
 .asset-ctas .cta-item { display: grid; justify-items: center; gap: 6px; }
+.asset-ctas .cta-label { color: #0b1220; text-shadow: none; }
 
 /* Token card */
 .token-card {
