@@ -112,7 +112,7 @@ body {
 .asset-back { appearance: none; border: none; background: transparent; color: #0b1220; font-size: 22px; cursor: pointer; }
 .asset-title { text-align: center; font-weight: 700; color: #0b1220; }
 .asset-body { display: grid; justify-items: center; gap: 16px; padding: 24px 0; }
-.asset-icon { width: 128px; height: 128px; background: #1abc9c00; color: #ffffff; border-radius: 999px; display: grid; place-items: center; font-size: 64px; font-weight: 800; }
+.asset-icon { width: 128px; height: 128px; background: #1abc9c00; color: #ffffff; border-radius: 999px; display: grid; place-items: center; font-size: 64px; font-weight: 800; overflow: hidden; }
 .asset-icon .asset-logo { width: 130%; height: 130%; display: block; object-fit: cover; border-radius: 999px; position: relative; top: -16px; -webkit-mask-image: radial-gradient(circle, #000 98%, transparent 100%); mask-image: radial-gradient(circle, #000 98%, transparent 100%); }
 .asset-amount { font-size: 40px; font-weight: 800; color: #0b1220; }
 .asset-amount-sub { font-size: 22px; color: #9aa3ae; }
@@ -129,7 +129,7 @@ body {
   padding: 12px;
 }
 .asset-card .card-main { display: grid; grid-template-columns: auto 1fr auto; align-items: center; gap: 12px; }
-.card-icon-circle { position: relative; width: 48px; height: 48px; border-radius: 999px; background: #1abc9c; color: #fff; display: grid; place-items: center; font-weight: 800; overflow: visible; }
+.card-icon-circle { position: relative; width: 48px; height: 48px; border-radius: 999px; background: #1abc9c; color: #fff; display: grid; place-items: center; font-weight: 800; overflow: hidden; }
 .card-icon-circle .card-logo { position: absolute; width: 72px; height: 72px; top: -12px; left: -12px; border-radius: 999px; display: block; object-fit: cover; -webkit-mask-image: radial-gradient(circle, #000 98%, transparent 100%); mask-image: radial-gradient(circle, #000 98%, transparent 100%); }
 .card-chain-dot { position: absolute; right: -2px; bottom: -2px; width: 16px; height: 16px; border-radius: 999px; background: #ec1c24; color: #fff; font-size: 10px; font-weight: 800; display: grid; place-items: center; }
 .card-title { font-weight: 700; color: #0b1220; }
