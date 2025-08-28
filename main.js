@@ -211,4 +211,17 @@ setViewportUnit();
 
 document.addEventListener('DOMContentLoaded', init);
 
+// Prevent overscroll above header (nickname region)
+let lastTouchY = 0;
+document.addEventListener('touchstart', (e) => {
+  if (e.touches && e.touches.length > 0) lastTouchY = e.touches[0].clientY;
+}, { passive: true });
 
+document.addEventListener('touchmove', (e) => {
+  const currentY = e.touches && e.touches.length > 0 ? e.touches[0].clientY : lastTouchY;
+  const dy = currentY - lastTouchY;
+  if (dy > 0 && window.scrollY <= 0) {
+    e.preventDefault();
+  }
+  lastTouchY = currentY;
+}, { passive: false });

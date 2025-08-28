@@ -19,6 +19,7 @@ body {
   color: var(--text);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  overscroll-behavior-y: none; /* разрешаем скролл, но без перетягивания за верх */
 }
 
 #app {
