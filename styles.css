@@ -107,7 +107,7 @@ body {
 .token-card {
   display: grid;
   grid-template-columns: 1fr auto;
-  align-items: start;
+  align-items: center;
   gap: 12px;
   background: #ffffff;
   border-radius: 16px;
@@ -116,7 +116,7 @@ body {
   box-shadow: none; /* убираем тени */
   border: 1px solid var(--border);
 }
-.token-left { display: grid; grid-auto-flow: column; align-items: center; gap: 6px; }
+.token-left { display: flex; align-items: center; justify-content: flex-start; gap: 6px; }
 .token-icon {
   width: 48px; height: 48px; border-radius: 999px;
   background: #1abc9c; color: #ffffff; display: grid; place-items: center;
