@@ -105,6 +105,9 @@ body {
 
 /* Asset details */
 .asset-view { padding: 16px; }
+.asset-view.small .asset-icon { width: 96px; height: 96px; font-size: 48px; }
+.asset-view.small .asset-amount { font-size: 32px; }
+.asset-view.small .asset-amount-sub { font-size: 18px; }
 .asset-header { display: grid; grid-template-columns: 48px 1fr 48px; align-items: center; }
 .asset-back { appearance: none; border: none; background: transparent; color: #0b1220; font-size: 22px; cursor: pointer; }
 .asset-title { text-align: center; font-weight: 700; color: #0b1220; }
@@ -112,6 +115,9 @@ body {
 .asset-icon { width: 128px; height: 128px; background: #1abc9c; color: #ffffff; border-radius: 999px; display: grid; place-items: center; font-size: 64px; font-weight: 800; }
 .asset-amount { font-size: 40px; font-weight: 800; color: #0b1220; }
 .asset-amount-sub { font-size: 22px; color: #9aa3ae; }
+
+.asset-ctas { display: grid; grid-auto-flow: column; justify-content: center; gap: 24px; padding: 8px 0 24px; }
+.asset-ctas .cta-item { display: grid; justify-items: center; gap: 6px; }
 
 /* Token card */
 .token-card {

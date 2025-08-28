@@ -9,7 +9,7 @@
   <script src="https://telegram.org/js/telegram-web-app.js"></script>
 </head>
 <body>
-  <div class="asset-view">
+  <div class="asset-view small">
     <header class="asset-header" style="padding:16px;">
       <button id="assetBack" class="asset-back" aria-label="Назад">←</button>
       <div class="asset-title">USDT</div>
@@ -18,6 +18,32 @@
       <div class="asset-icon">₮</div>
       <div class="asset-amount">0.0 USDT</div>
       <div class="asset-amount-sub">0.0 ₽</div>
+    </div>
+    <div class="asset-ctas">
+      <div class="cta-item">
+        <button class="qr-btn" aria-label="Пополнить">
+          <img src="plus-icon.png" alt="Plus" class="qr-img" width="28" height="28" />
+        </button>
+        <div class="cta-label">Пополнить</div>
+      </div>
+      <div class="cta-item">
+        <button class="qr-btn" aria-label="Отправить">
+          <img src="arrow-icon.png" alt="Arrow" class="qr-img" width="28" height="28" />
+        </button>
+        <div class="cta-label">Отправить</div>
+      </div>
+      <div class="cta-item">
+        <button class="qr-btn" aria-label="Продать">
+          <img src="sell-icon.png" alt="Sell" class="qr-img" width="28" height="28" />
+        </button>
+        <div class="cta-label">Продать</div>
+      </div>
+      <div class="cta-item">
+        <button class="qr-btn" aria-label="Оплатить">
+          <img src="basket-icon.png" alt="Basket" class="qr-img" width="28" height="28" />
+        </button>
+        <div class="cta-label">Оплатить</div>
+      </div>
     </div>
   </div>
   <script>
@@ -28,6 +54,10 @@
         if (window.history.length > 1) window.history.back(); else window.location.href = 'index.html';
       });
       try { const wa = window.Telegram?.WebApp; wa?.BackButton?.show(); wa?.BackButton?.onClick(() => btn.click()); } catch(e) {}
+      // haptics on cta buttons
+      document.querySelectorAll('.asset-ctas .qr-btn').forEach(el => {
+        el.addEventListener('click', () => { try { window.Telegram?.WebApp?.HapticFeedback?.impactOccurred('light'); } catch(e) {} });
+      });
     })();
   </script>
 </body>
