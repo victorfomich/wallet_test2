@@ -7,7 +7,7 @@
   --button-text: #ffffff;
   --card: #f3f4f6;
   --border: rgba(0, 0, 0, 0.08);
-  --hero-base: min(35vh, 320px); /* ограничиваем верхний оффсет на высоких экранах */
+  --hero-base: 35vh; /* будет переопределено в JS фиксированным px на старте */
 }
 
 * { box-sizing: border-box; }

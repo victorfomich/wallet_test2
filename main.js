@@ -45,6 +45,10 @@ function init() {
     profile: document.getElementById('view-profile'),
   };
 
+  // Freeze hero offset based on initial viewport height (35%)
+  const heroBasePx = Math.round(window.innerHeight * 0.35);
+  document.documentElement.style.setProperty('--hero-base', `${heroBasePx}px`);
+
   const isTelegram = Boolean(telegramWebApp);
 
   if (isTelegram) {
