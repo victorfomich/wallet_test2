@@ -19,8 +19,6 @@ body {
   color: var(--text);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  overflow: hidden; /* запрещаем прокрутку страницы */
-  overscroll-behavior: none; /* блокируем bounce/перетягивание */
 }
 
 #app {
@@ -28,7 +26,6 @@ body {
   margin: 0 auto;
   padding: 16px 16px 72px; /* место под нижнюю панель */
   position: relative;
-  height: 100%;
 }
 
 .hero {
@@ -86,11 +83,8 @@ body {
   box-shadow: 0 -2px 16px rgba(0,0,0,0.08);
   padding-top: 12px;
   padding-bottom: calc(96px + env(safe-area-inset-bottom)); /* запас под таббар */
-  height: calc(var(--vh, 1vh) * 100 - var(--hero-base) - 96px - env(safe-area-inset-bottom)); /* видимая высота без таббара */
-  overflow-y: auto;
+  /* разрешаем прокрутку всей страницы, а не только внутри модуля */
   overflow-x: hidden;
-  -webkit-overflow-scrolling: touch;
-  overscroll-behavior: contain; /* не отдаём скролл наружу */
   /* full-bleed: от левого до правого края экрана */
   width: 100vw; /* без боковых отступов */
   max-width: none;
