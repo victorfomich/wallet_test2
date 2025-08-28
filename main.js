@@ -43,6 +43,7 @@ function init() {
     history: document.getElementById('view-history'),
     browser: document.getElementById('view-browser'),
     profile: document.getElementById('view-profile'),
+    usdt: document.getElementById('view-usdt'),
   };
 
   // Freeze hero offset based on initial viewport height (35%)
@@ -164,6 +165,18 @@ function init() {
     basketBtn.addEventListener('click', () => {
       try { telegramWebApp?.HapticFeedback?.impactOccurred('light'); } catch (_) {}
     });
+  }
+
+  // USDT card navigation
+  const cardUsdt = document.getElementById('card-usdt');
+  const assetBack = document.getElementById('assetBack');
+  if (cardUsdt) {
+    const openUsdt = () => switchView('usdt');
+    cardUsdt.addEventListener('click', openUsdt);
+    cardUsdt.addEventListener('keydown', (e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); openUsdt(); } });
+  }
+  if (assetBack) {
+    assetBack.addEventListener('click', () => switchView('home'));
   }
   function sendData() {
     if (!amountInput) return;
