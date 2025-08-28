@@ -103,6 +103,31 @@ body {
 .view { min-height: 140px; }
 .view[hidden] { display: none !important; }
 
+/* Token card */
+.token-card {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  align-items: center;
+  gap: 12px;
+  background: #ffffff;
+  border-radius: 16px;
+  padding: 14px 16px;
+  margin: 0 12px 12px;
+  box-shadow: 0 1px 1px rgba(16,24,40,0.04), 0 10px 20px rgba(16,24,40,0.08);
+}
+.token-left { display: grid; grid-auto-flow: column; align-items: center; gap: 12px; }
+.token-icon {
+  width: 48px; height: 48px; border-radius: 999px;
+  background: #1abc9c; color: #ffffff; display: grid; place-items: center;
+  font-weight: 800; font-size: 22px;
+}
+.token-info { display: grid; gap: 6px; }
+.token-title { font-size: 18px; font-weight: 700; color: #0b1220; }
+.token-subtitle { font-size: 14px; color: #9aa3ae; }
+.token-right { text-align: right; }
+.token-amount { font-size: 18px; font-weight: 700; color: #0b1220; }
+.token-amount-sub { font-size: 14px; color: #9aa3ae; }
+
 .tabbar {
   position: fixed;
   left: 0;
