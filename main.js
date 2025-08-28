@@ -61,7 +61,7 @@ function init() {
     const user = telegramWebApp.initDataUnsafe?.user;
     if (user) {
       const name = [user.first_name, user.last_name].filter(Boolean).join(' ');
-      const nickname = user.username ? `@${user.username}` : name || 'Пользователь';
+      const nickname = user.username ? user.username : name || 'Пользователь';
       if (greeting) greeting.textContent = `Привет, ${name || nickname}!`;
       userNicknameEl.textContent = nickname;
 
