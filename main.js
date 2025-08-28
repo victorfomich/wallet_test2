@@ -35,6 +35,7 @@ function init() {
   const userNicknameEl = document.getElementById('userNickname');
   const avatarImg = document.getElementById('avatarImg');
   const avatarFallback = document.getElementById('avatarFallback');
+  const qrBtn = document.getElementById('qrBtn');
   const tabs = Array.from(document.querySelectorAll('.tabbar .tab'));
   const views = {
     home: document.getElementById('view-home'),
@@ -138,6 +139,12 @@ function init() {
     btn.addEventListener('click', () => switchView(btn.dataset.view));
   });
 
+  // QR button haptic
+  if (qrBtn) {
+    qrBtn.addEventListener('click', () => {
+      try { telegramWebApp?.HapticFeedback?.impactOccurred('medium'); } catch (_) {}
+    });
+  }
   function sendData() {
     if (!amountInput) return;
     const amount = Number(amountInput.value);
