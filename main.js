@@ -2,19 +2,17 @@
 
 const telegramWebApp = window.Telegram ? window.Telegram.WebApp : undefined;
 
-function applyThemeFromTelegram(themeParams = {}, colorScheme) {
+function applyThemeFromTelegram() {
+  // Force light theme regardless of Telegram/device theme
   const root = document.documentElement.style;
-  const pick = (key, fallback) => (themeParams[key] || fallback);
-
-  const isDark = colorScheme === 'dark';
-  root.setProperty('--bg', pick('bg_color', isDark ? '#0f0f0f' : '#ffffff'));
-  root.setProperty('--text', pick('text_color', isDark ? '#ffffff' : '#0f0f0f'));
-  root.setProperty('--hint', pick('hint_color', isDark ? '#9aa0a6' : '#6b7280'));
-  root.setProperty('--link', pick('link_color', '#2481cc'));
-  root.setProperty('--button', pick('button_color', '#2aabee'));
-  root.setProperty('--button-text', pick('button_text_color', '#ffffff'));
-  root.setProperty('--card', pick('secondary_bg_color', isDark ? '#161616' : '#f3f4f6'));
-  root.setProperty('--border', isDark ? 'rgba(255,255,255,0.08)' : 'rgba(0,0,0,0.08)');
+  root.setProperty('--bg', '#ffffff');
+  root.setProperty('--text', '#0f0f0f');
+  root.setProperty('--hint', '#6b7280');
+  root.setProperty('--link', '#2481cc');
+  root.setProperty('--button', '#2aabee');
+  root.setProperty('--button-text', '#ffffff');
+  root.setProperty('--card', '#f3f4f6');
+  root.setProperty('--border', 'rgba(0,0,0,0.08)');
 }
 
 function setMainButtonState(enabled, text) {
@@ -54,9 +52,9 @@ function init() {
     try { telegramWebApp.expand(); } catch (_) {}
 
     // Theme
-    applyThemeFromTelegram(telegramWebApp.themeParams, telegramWebApp.colorScheme);
+    applyThemeFromTelegram();
     telegramWebApp.onEvent('themeChanged', () => {
-      applyThemeFromTelegram(telegramWebApp.themeParams, telegramWebApp.colorScheme);
+      applyThemeFromTelegram();
     });
 
     // User bar & greeting

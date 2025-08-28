@@ -64,7 +64,7 @@ body {
 .avatar { width: 32px; height: 32px; border-radius: 999px; overflow: hidden; background: var(--card); border: 1px solid var(--border); display: grid; place-items: center; }
 .avatar img { width: 100%; height: 100%; object-fit: cover; display: block; }
 .avatar-fallback { width: 100%; height: 100%; display: grid; place-items: center; font-weight: 600; color: var(--text); opacity: 0.9; font-size: 12px; }
-.userbar-name { font-size: 14px; font-weight: 600; }
+.userbar-name { font-size: 14px; font-weight: 600; color: #ffffff; }
 
 .muted { color: var(--hint); }
 .small { font-size: 12px; }
@@ -166,14 +166,6 @@ body {
 .link { color: var(--link); text-decoration: none; }
 .link:hover { text-decoration: underline; }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --bg: #0f0f0f;
-    --text: #ffffff;
-    --hint: #9aa0a6;
-    --card: #161616;
-    --border: rgba(255, 255, 255, 0.08);
-  }
-}
+/* force light theme: no dark overrides */
 
 
