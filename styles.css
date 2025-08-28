@@ -50,13 +50,15 @@ body {
   background: #ffffff;
   color: var(--text);
   border-radius: 12px;
-  padding: 14px;
+  width: 68px; /* фиксированный размер кнопки как раньше */
+  height: 68px;
+  padding: 0;
   box-shadow: 0 6px 20px rgba(0,0,0,0.12);
   display: inline-grid;
   place-items: center;
 }
 .qr-btn:active { transform: translateY(1px); }
-.qr-img { display: block; width: 40px; height: 40px; }
+.qr-img { display: block; width: 52px; height: 52px; }
 .avatar { width: 32px; height: 32px; border-radius: 999px; overflow: hidden; background: var(--card); border: 1px solid var(--border); display: grid; place-items: center; }
 .avatar img { width: 100%; height: 100%; object-fit: cover; display: block; }
 .avatar-fallback { width: 100%; height: 100%; display: grid; place-items: center; font-weight: 600; color: var(--text); opacity: 0.9; font-size: 12px; }
