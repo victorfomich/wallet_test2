@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>USDT</title>
+  <link rel="stylesheet" href="./styles.css" />
+  <meta name="color-scheme" content="light" />
+  <script src="https://telegram.org/js/telegram-web-app.js"></script>
+</head>
+<body>
+  <div class="asset-view">
+    <header class="asset-header" style="padding:16px;">
+      <button id="assetBack" class="asset-back" aria-label="Назад">←</button>
+      <div class="asset-title">USDT</div>
+    </header>
+    <div class="asset-body">
+      <div class="asset-icon">₮</div>
+      <div class="asset-amount">0.0 USDT</div>
+      <div class="asset-amount-sub">0.0 ₽</div>
+    </div>
+  </div>
+  <script>
+    // Back behavior
+    (function(){
+      const btn = document.getElementById('assetBack');
+      btn.addEventListener('click', () => {
+        if (window.history.length > 1) window.history.back(); else window.location.href = 'index.html';
+      });
+      try { const wa = window.Telegram?.WebApp; wa?.BackButton?.show(); wa?.BackButton?.onClick(() => btn.click()); } catch(e) {}
+    })();
+  </script>
+</body>
+</html>
+
+

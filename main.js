@@ -171,12 +171,18 @@ function init() {
   const cardUsdt = document.getElementById('card-usdt');
   const assetBack = document.getElementById('assetBack');
   if (cardUsdt) {
-    const openUsdt = () => switchView('usdt');
+    const openUsdt = () => { window.location.href = 'usdt.html'; };
     cardUsdt.addEventListener('click', openUsdt);
     cardUsdt.addEventListener('keydown', (e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); openUsdt(); } });
   }
   if (assetBack) {
-    assetBack.addEventListener('click', () => switchView('home'));
+    assetBack.addEventListener('click', () => {
+      const hasHome = Boolean(document.getElementById('view-home'));
+      if (hasHome) {
+        try { switchView('home'); return; } catch (_) {}
+      }
+      if (window.history.length > 1) window.history.back(); else window.location.href = 'index.html';
+    });
   }
   function sendData() {
     if (!amountInput) return;
