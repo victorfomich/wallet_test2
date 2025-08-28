@@ -105,9 +105,9 @@ body {
 
 /* Asset details */
 .asset-view { padding: 16px; }
-.asset-view.small .asset-icon { width: 96px; height: 96px; font-size: 48px; }
-.asset-view.small .asset-amount { font-size: 32px; }
-.asset-view.small .asset-amount-sub { font-size: 18px; }
+.asset-view.small .asset-icon { width: 72px; height: 72px; font-size: 36px; }
+.asset-view.small .asset-amount { font-size: 26px; }
+.asset-view.small .asset-amount-sub { font-size: 16px; }
 .asset-header { display: grid; grid-template-columns: 48px 1fr 48px; align-items: center; }
 .asset-back { appearance: none; border: none; background: transparent; color: #0b1220; font-size: 22px; cursor: pointer; }
 .asset-title { text-align: center; font-weight: 700; color: #0b1220; }
