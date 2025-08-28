@@ -122,6 +122,8 @@ body {
   background: #1abc9c; color: #ffffff; display: grid; place-items: center;
   font-weight: 800; font-size: 22px;
 }
+.token-icon.ton { background: #0ba5ff; }
+.token-badge { background: #22c55e; color: #ffffff; font-size: 10px; font-weight: 700; padding: 4px 6px; border-radius: 10px; margin-left: 8px; vertical-align: middle; }
 .token-info { display: grid; gap: 2px; text-align: left; }
 .token-title { font-size: 18px; font-weight: 700; color: #0b1220; }
 .token-subtitle { font-size: 14px; color: #9aa3ae; }
