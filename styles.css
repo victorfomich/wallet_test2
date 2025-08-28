@@ -157,7 +157,7 @@ body {
   font-weight: 800; font-size: 22px;
 }
 .token-logo-wrap { width: 48px; height: 48px; flex: 0 0 48px; position: relative; }
-.token-logo { width: 72px; height: 72px; border-radius: 999px; position: absolute; top: -6px; left: -12px; }
+.token-logo { width: 72px; height: 72px; border-radius: 999px; position: absolute; top: -10px; left: -12px; }
 .token-icon.ton { background: #0ba5ff; }
 .token-icon.tron { background: #ec1c24; }
 .token-badge { background: #22c55e; color: #ffffff; font-size: 10px; font-weight: 700; padding: 4px 6px; border-radius: 10px; margin-left: 8px; vertical-align: middle; }
