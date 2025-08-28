@@ -36,6 +36,7 @@ function init() {
   const avatarImg = document.getElementById('avatarImg');
   const avatarFallback = document.getElementById('avatarFallback');
   const qrBtn = document.getElementById('qrBtn');
+  const sellBtn = document.getElementById('sellBtn');
   const tabs = Array.from(document.querySelectorAll('.tabbar .tab'));
   const views = {
     home: document.getElementById('view-home'),
@@ -143,6 +144,11 @@ function init() {
   if (qrBtn) {
     qrBtn.addEventListener('click', () => {
       try { telegramWebApp?.HapticFeedback?.impactOccurred('medium'); } catch (_) {}
+    });
+  }
+  if (sellBtn) {
+    sellBtn.addEventListener('click', () => {
+      try { telegramWebApp?.HapticFeedback?.impactOccurred('light'); } catch (_) {}
     });
   }
   function sendData() {
