@@ -86,7 +86,7 @@ body {
   box-shadow: 0 -2px 16px rgba(0,0,0,0.08);
   padding-top: 12px;
   padding-bottom: calc(96px + env(safe-area-inset-bottom)); /* запас под таббар */
-  height: calc(100vh - var(--hero-base)); /* прокрутка только внутри модуля */
+  height: calc(var(--vh, 1vh) * 100 - var(--hero-base) - 96px - env(safe-area-inset-bottom)); /* видимая высота без таббара */
   overflow-y: auto;
   overflow-x: hidden;
   -webkit-overflow-scrolling: touch;
