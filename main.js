@@ -38,6 +38,7 @@ function init() {
   const qrBtn = document.getElementById('qrBtn');
   const sellBtn = document.getElementById('sellBtn');
   const plusBtn = document.getElementById('plusBtn');
+  const basketBtn = document.getElementById('basketBtn');
   const tabs = Array.from(document.querySelectorAll('.tabbar .tab'));
   const views = {
     home: document.getElementById('view-home'),
@@ -154,6 +155,11 @@ function init() {
   }
   if (plusBtn) {
     plusBtn.addEventListener('click', () => {
+      try { telegramWebApp?.HapticFeedback?.impactOccurred('light'); } catch (_) {}
+    });
+  }
+  if (basketBtn) {
+    basketBtn.addEventListener('click', () => {
       try { telegramWebApp?.HapticFeedback?.impactOccurred('light'); } catch (_) {}
     });
   }
