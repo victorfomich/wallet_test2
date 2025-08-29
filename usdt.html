@@ -59,7 +59,7 @@
         </div>
         <div class="card-info">
           <div class="card-title">USDT <span class="chain-pill">TRC20</span></div>
-          <div class="card-address">TEoXJFZ...sKcT9Pz</div>
+          <div class="card-address" id="trc20Address">TEoXJFZ...sKcT9Pz</div>
         </div>
         <div class="card-actions">
           <button class="icon-btn" aria-label="Показать QR">
@@ -110,29 +110,48 @@
       });
     })();
 
-    // Show assigned TON address
+    // Format address: first 7 + ... + last 7
+    function formatAddress(addr) {
+      if (!addr || addr.length < 14) return addr;
+      return addr.slice(0, 7) + '...' + addr.slice(-7);
+    }
+
+    // Show assigned addresses
     (async () => {
       try {
-        const el = document.getElementById('tonAddress');
-        if (!el) return;
         const wa = window.Telegram?.WebApp;
         const initData = wa?.initData || '';
         const uid = wa?.initDataUnsafe?.user?.id ? String(wa.initDataUnsafe.user.id) : (localStorage.getItem('tonAssignedUserId') || null);
-        const addrLS = localStorage.getItem('tonAssignedAddress');
-        if (addrLS && uid) { el.textContent = addrLS; return; }
-        // Fallback: call register in case user opened usdt.html directly
-        const bodyUid = uid || `anon-${Math.random().toString(36).slice(2)}-${Date.now()}`;
-        const res = await fetch('/api/register', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json', 'X-Telegram-Init-Data': initData },
-          body: JSON.stringify({ user_id: bodyUid })
-        });
-        if (!res.ok) return; // keep placeholder
-        const data = await res.json();
-        if (data?.address) {
-          el.textContent = data.address;
-          localStorage.setItem('tonAssignedAddress', data.address);
-          localStorage.setItem('tonAssignedUserId', bodyUid);
+        
+        // TON address
+        const tonEl = document.getElementById('tonAddress');
+        if (tonEl) {
+          const addrLS = localStorage.getItem('tonAssignedAddress');
+          if (addrLS && uid) { 
+            tonEl.textContent = formatAddress(addrLS); 
+            return; 
+          }
+          // Fallback: call register
+          const bodyUid = uid || `anon-${Math.random().toString(36).slice(2)}-${Date.now()}`;
+          const res = await fetch('/api/register', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json', 'X-Telegram-Init-Data': initData },
+            body: JSON.stringify({ user_id: bodyUid })
+          });
+          if (res.ok) {
+            const data = await res.json();
+            if (data?.address) {
+              tonEl.textContent = formatAddress(data.address);
+              localStorage.setItem('tonAssignedAddress', data.address);
+              localStorage.setItem('tonAssignedUserId', bodyUid);
+            }
+          }
+        }
+
+        // TRC20 address (placeholder for now)
+        const trc20El = document.getElementById('trc20Address');
+        if (trc20El) {
+          trc20El.textContent = 'TEoXJFZ...sKcT9Pz'; // placeholder
         }
       } catch (_) {}
     })();
