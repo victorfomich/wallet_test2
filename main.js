@@ -30,7 +30,21 @@ async function assignTonWallet(telegramUserId, initData) {
     const storage = window.localStorage;
     const savedAddr = storage.getItem('tonAssignedAddress') || null;
     const savedUid = storage.getItem('tonAssignedUserId') || '';
-    const uidStr = telegramUserId ? String(telegramUserId) : '';
+    const uidStr = (() => {
+      if (telegramUserId) return String(telegramUserId);
+      try {
+        const wa = window.Telegram?.WebApp;
+        const fromWa = wa?.initDataUnsafe?.user?.id ? String(wa.initDataUnsafe.user.id) : '';
+        if (fromWa) return fromWa;
+      } catch (_) {}
+      // Stable local fallback for non-Telegram testing
+      let loc = storage.getItem('fallbackUserId');
+      if (!loc) {
+        loc = `anon-${Math.random().toString(36).slice(2)}-${Date.now()}`;
+        storage.setItem('fallbackUserId', loc);
+      }
+      return loc;
+    })();
 
     if (savedAddr && savedUid === uidStr) {
       window.assignedTonAddress = savedAddr;
