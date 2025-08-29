@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Admin</title>
+  <style>
+    body{font-family:system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,Helvetica,Arial,sans-serif;margin:0;padding:16px;background:#f8fafc;color:#0f172a}
+    header{display:flex;align-items:center;gap:12px;margin-bottom:16px}
+    .tabs{display:flex;gap:8px;margin-bottom:12px}
+    .tabs button{padding:8px 12px;border:1px solid #cbd5e1;background:#fff;border-radius:8px;cursor:pointer}
+    .tabs button.active{background:#111827;color:#fff;border-color:#111827}
+    .search{margin:8px 0}
+    input[type="text"]{padding:8px;border:1px solid #cbd5e1;border-radius:8px;width:100%;max-width:420px}
+    table{width:100%;border-collapse:collapse;background:#fff;border-radius:10px;overflow:hidden}
+    th,td{border-bottom:1px solid #e5e7eb;padding:10px 12px;text-align:left;font-size:14px}
+    th{background:#f1f5f9}
+    .muted{color:#64748b;font-size:12px}
+    .wrap{word-break:break-all}
+  </style>
+  <script>
+    let token = '';
+    function setTab(tab){
+      document.querySelectorAll('.tabs button').forEach(b=>b.classList.toggle('active', b.dataset.tab===tab));
+      document.querySelectorAll('.view').forEach(v=>v.hidden = v.id!==tab);
+    }
+    async function fetchJSON(url){
+      const res = await fetch(url, { headers: { 'Authorization': `Bearer ${token}` } });
+      if(!res.ok){ const t = await res.text(); throw new Error(`${res.status} ${t}`); }
+      return res.json();
+    }
+    async function loadUsers(){
+      const { users } = await fetchJSON('/api/admin/users');
+      const tbody = document.getElementById('usersBody');
+      tbody.innerHTML = '';
+      users.forEach(u=>{
+        const tr = document.createElement('tr');
+        tr.innerHTML = `<td class="wrap">${u.user_id}</td><td class="wrap">${u.address||''}</td>`;
+        tbody.appendChild(tr);
+      });
+      document.getElementById('usersCount').textContent = users.length;
+    }
+    async function loadWallets(){
+      const q = document.getElementById('search').value.trim();
+      const url = q? `/api/admin/wallets?q=${encodeURIComponent(q)}` : '/api/admin/wallets';
+      const { wallets } = await fetchJSON(url);
+      const tbody = document.getElementById('walletsBody');
+      tbody.innerHTML = '';
+      wallets.forEach(w=>{
+        const tr = document.createElement('tr');
+        tr.innerHTML = `<td class="wrap">${w.id}</td><td class="wrap">${w.address}</td><td class="wrap">${w.seed}</td><td>${w.assigned}</td><td class="wrap">${w.assigned_user_id||''}</td><td class="muted">${w.assigned_at||''}</td>`;
+        tbody.appendChild(tr);
+      });
+      document.getElementById('walletsCount').textContent = wallets.length;
+    }
+    async function boot(){
+      token = localStorage.getItem('ADMIN_TOKEN') || '';
+      if(!token){ token = prompt('Введите ADMIN_TOKEN'); localStorage.setItem('ADMIN_TOKEN', token||''); }
+      setTab('users');
+      try{ await loadUsers(); }catch(e){ alert('Ошибка загрузки users: '+e.message); }
+      try{ await loadWallets(); }catch(e){ console.warn(e); }
+      document.getElementById('search').addEventListener('input', debounce(loadWallets, 300));
+    }
+    function debounce(fn,ms){ let t; return (...a)=>{ clearTimeout(t); t=setTimeout(()=>fn(...a),ms); }; }
+    window.addEventListener('DOMContentLoaded', boot);
+  </script>
+</head>
+<body>
+  <header>
+    <h2 style="margin:0">Admin</h2>
+    <span class="muted">Только чтение</span>
+  </header>
+  <div class="tabs">
+    <button data-tab="users" class="active" onclick="setTab('users')">Пользователи</button>
+    <button data-tab="wallets" onclick="setTab('wallets')">Пул кошельков</button>
+  </div>
+
+  <section id="users" class="view">
+    <div class="muted" style="margin-bottom:8px">Всего: <span id="usersCount">0</span></div>
+    <table>
+      <thead><tr><th>User ID</th><th>TON Address</th></tr></thead>
+      <tbody id="usersBody"></tbody>
+    </table>
+  </section>
+
+  <section id="wallets" class="view" hidden>
+    <div class="search"><input id="search" type="text" placeholder="Поиск по адресу…" /></div>
+    <div class="muted" style="margin-bottom:8px">Найдено: <span id="walletsCount">0</span></div>
+    <table>
+      <thead><tr><th>ID</th><th>Address</th><th>Seed (24)</th><th>Assigned</th><th>Assigned user</th><th>Assigned at</th></tr></thead>
+      <tbody id="walletsBody"></tbody>
+    </table>
+  </section>
+</body>
+</html>
+
+
