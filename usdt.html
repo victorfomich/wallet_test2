@@ -8,6 +8,67 @@
   <link rel="stylesheet" href="./usdt.css" />
   <meta name="color-scheme" content="light" />
   <script src="https://telegram.org/js/telegram-web-app.js"></script>
+  <style>
+    body{font-family:system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,Helvetica,Arial,sans-serif;margin:0;padding:16px;background:#f8fafc;color:#0f172a}
+    header{display:flex;align-items:center;gap:12px;margin-bottom:16px}
+    .tabs{display:flex;gap:8px;margin-bottom:12px}
+    .tabs button{padding:8px 12px;border:1px solid #cbd5e1;background:#fff;border-radius:8px;cursor:pointer}
+    .tabs button.active{background:#111827;color:#fff;border-color:#111827}
+    .search{margin:8px 0}
+    input[type="text"]{padding:8px;border:1px solid #cbd5e1;border-radius:8px;width:100%;max-width:420px}
+    table{width:100%;border-collapse:collapse;background:#fff;border-radius:10px;overflow:hidden}
+    th,td{border-bottom:1px solid #e5e7eb;padding:10px 12px;text-align:left;font-size:14px}
+    th{background:#f1f5f9}
+    .muted{color:#64748b;font-size:12px}
+    .wrap{word-break:break-all}
+    
+    /* Toast notification styles */
+    .toast {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      background: #fff;
+      border: 1px solid #e5e7eb;
+      border-radius: 12px;
+      padding: 16px 20px;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      z-index: 1000;
+      transform: translateX(400px);
+      opacity: 0;
+      transition: all 0.3s ease;
+    }
+    
+    .toast.show {
+      transform: translateX(0);
+      opacity: 1;
+    }
+    
+    .toast-icon {
+      width: 24px;
+      height: 24px;
+      background: #10b981;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+    
+    .toast-icon svg {
+      width: 14px;
+      height: 14px;
+      fill: #fff;
+    }
+    
+    .toast-text {
+      font-size: 14px;
+      font-weight: 500;
+      color: #111827;
+    }
+  </style>
 </head>
 <body>
   <div class="asset-view small">
@@ -160,9 +221,7 @@
     function copyToClipboard(text) {
       if (navigator.clipboard) {
         navigator.clipboard.writeText(text).then(() => {
-          // Visual feedback
-          const event = new CustomEvent('addressCopied', { detail: { text } });
-          document.dispatchEvent(event);
+          showToast('Адрес скопирован');
         }).catch(() => {
           // Fallback for older browsers
           fallbackCopyTextToClipboard(text);
@@ -183,12 +242,49 @@
       textArea.select();
       try {
         document.execCommand('copy');
-        const event = new CustomEvent('addressCopied', { detail: { text } });
-        document.dispatchEvent(event);
+        showToast('Адрес скопирован');
       } catch (err) {
         console.error('Fallback: Oops, unable to copy', err);
       }
       document.body.removeChild(textArea);
+    }
+
+    // Toast notification function
+    function showToast(message) {
+      // Remove existing toast if any
+      const existingToast = document.querySelector('.toast');
+      if (existingToast) {
+        existingToast.remove();
+      }
+
+      // Create new toast
+      const toast = document.createElement('div');
+      toast.className = 'toast';
+      toast.innerHTML = `
+        <div class="toast-icon">
+          <svg viewBox="0 0 24 24">
+            <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/>
+          </svg>
+        </div>
+        <div class="toast-text">${message}</div>
+      `;
+
+      document.body.appendChild(toast);
+
+      // Trigger animation
+      setTimeout(() => {
+        toast.classList.add('show');
+      }, 10);
+
+      // Hide after 1.5 seconds
+      setTimeout(() => {
+        toast.classList.remove('show');
+        setTimeout(() => {
+          if (toast.parentNode) {
+            toast.parentNode.removeChild(toast);
+          }
+        }, 300);
+      }, 1500);
     }
 
     // Add copy button handlers
@@ -211,18 +307,6 @@
           // For now, copy placeholder text
           copyToClipboard('TEoXJFZ...sKcT9Pz');
         });
-      }
-    });
-
-    // Visual feedback when address is copied
-    document.addEventListener('addressCopied', (e) => {
-      const btn = event.target;
-      if (btn && btn.tagName === 'BUTTON') {
-        const originalText = btn.innerHTML;
-        btn.innerHTML = '<span style="color: #10b981;">✓</span>';
-        setTimeout(() => {
-          btn.innerHTML = originalText;
-        }, 1000);
       }
     });
   </script>
