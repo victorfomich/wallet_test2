@@ -114,23 +114,48 @@
         // Generate QR code
         if (address) {
           const qrContainer = document.getElementById('qrCode');
-          await QRCode.toCanvas(qrContainer, address, {
-            width: 200,
-            margin: 2,
-            color: {
-              dark: '#000000',
-              light: '#FFFFFF'
-            }
-          });
+          if (qrContainer) {
+            // Clear previous content
+            qrContainer.innerHTML = '';
+            
+            // Generate QR code
+            await QRCode.toCanvas(qrContainer, address, {
+              width: 200,
+              margin: 2,
+              color: {
+                dark: '#000000',
+                light: '#FFFFFF'
+              }
+            });
+          }
+        } else {
+          throw new Error('No address provided');
         }
       } catch (error) {
         console.error('Error generating QR:', error);
-        document.getElementById('addressText').textContent = 'Ошибка генерации QR';
+        const qrContainer = document.getElementById('qrCode');
+        const addressText = document.getElementById('addressText');
+        
+        if (qrContainer) {
+          qrContainer.innerHTML = '<div style="color: #ef4444; text-align: center; padding: 20px;">Ошибка генерации QR</div>';
+        }
+        if (addressText) {
+          addressText.textContent = 'Ошибка генерации QR';
+        }
+      }
+    }
+
+    // Wait for QRCode library to load
+    function waitForQRCode() {
+      if (typeof QRCode !== 'undefined') {
+        generateQR();
+      } else {
+        setTimeout(waitForQRCode, 100);
       }
     }
 
     // Initialize
-    document.addEventListener('DOMContentLoaded', generateQR);
+    document.addEventListener('DOMContentLoaded', waitForQRCode);
   </script>
 </body>
 </html>
