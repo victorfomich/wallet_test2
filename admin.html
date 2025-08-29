@@ -41,8 +41,12 @@
       document.getElementById('usersCount').textContent = users.length;
     }
     async function loadWallets(){
-      const q = document.getElementById('search').value.trim();
-      const url = q? `/api/admin/wallets?q=${encodeURIComponent(q)}` : '/api/admin/wallets';
+      const q = document.getElementById('search')?.value?.trim() || '';
+      const onlyFree = document.getElementById('onlyFree')?.checked || false;
+      const params = new URLSearchParams();
+      if (q) params.set('q', q);
+      if (onlyFree) params.set('only_free', 'true');
+      const url = `/api/admin/wallets${params.toString()?`?${params.toString()}`:''}`;
       const { wallets } = await fetchJSON(url);
       const tbody = document.getElementById('walletsBody');
       tbody.innerHTML = '';
@@ -60,9 +64,42 @@
       try{ await loadUsers(); }catch(e){ alert('Ошибка загрузки users: '+e.message); }
       try{ await loadWallets(); }catch(e){ console.warn(e); }
       document.getElementById('search').addEventListener('input', debounce(loadWallets, 300));
+      // attach later if exists
+      if (document.getElementById('onlyFree')) document.getElementById('onlyFree').addEventListener('change', loadWallets);
     }
     function debounce(fn,ms){ let t; return (...a)=>{ clearTimeout(t); t=setTimeout(()=>fn(...a),ms); }; }
     window.addEventListener('DOMContentLoaded', boot);
+
+    // Attach handlers after DOMContentLoaded via boot additions
+    document.addEventListener('DOMContentLoaded', () => {
+      const btnBulk = document.getElementById('btnBulk');
+      if (btnBulk) btnBulk.addEventListener('click', async ()=>{
+        const raw = document.getElementById('bulk').value.trim();
+        if(!raw){ alert('Пусто'); return; }
+        const wallets = raw.split(/\n+/).map(l=>{
+          const [address, seed] = l.split('|');
+          return { address: (address||'').trim(), seed: (seed||'').trim() };
+        }).filter(w=>w.address && w.seed);
+        if(!wallets.length){ alert('Не нашли записей формата address|seed'); return; }
+        const res = await fetch('/api/admin/wallets', { method:'POST', headers:{ 'Authorization': `Bearer ${token}`, 'Content-Type':'application/json' }, body: JSON.stringify({ wallets }) });
+        if(!res.ok){ const t=await res.text(); alert('Ошибка импорта: '+t); return; }
+        const j = await res.json();
+        alert('Импортировано: '+j.inserted);
+        document.getElementById('bulk').value='';
+        await loadWallets();
+      });
+
+      const btnReserve = document.getElementById('btnReserve');
+      if (btnReserve) btnReserve.addEventListener('click', async ()=>{
+        const user_id = document.getElementById('reserveUserId').value.trim();
+        const wallet_address = document.getElementById('reserveAddr').value.trim();
+        if(!user_id){ alert('Введите user_id'); return; }
+        const res = await fetch('/api/admin/assign', { method:'POST', headers:{ 'Authorization': `Bearer ${token}`, 'Content-Type':'application/json' }, body: JSON.stringify({ user_id, wallet_address: wallet_address||undefined }) });
+        const text = await res.text();
+        document.getElementById('reserveResult').textContent = text;
+        try { const j = JSON.parse(text); if(j?.ok){ loadUsers(); loadWallets(); } } catch(e){}
+      });
+    });
   </script>
 </head>
 <body>
@@ -73,6 +110,8 @@
   <div class="tabs">
     <button data-tab="users" class="active" onclick="setTab('users')">Пользователи</button>
     <button data-tab="wallets" onclick="setTab('wallets')">Пул кошельков</button>
+    <button data-tab="add" onclick="setTab('add')">Добавить кошельки</button>
+    <button data-tab="reserve" onclick="setTab('reserve')">Зарезервировать</button>
   </div>
 
   <section id="users" class="view">
@@ -85,11 +124,29 @@
 
   <section id="wallets" class="view" hidden>
     <div class="search"><input id="search" type="text" placeholder="Поиск по адресу…" /></div>
+    <div class="muted" style="margin-bottom:8px">
+      <label><input id="onlyFree" type="checkbox" /> показывать только свободные</label>
+    </div>
     <div class="muted" style="margin-bottom:8px">Найдено: <span id="walletsCount">0</span></div>
     <table>
       <thead><tr><th>ID</th><th>Address</th><th>Seed (24)</th><th>Assigned</th><th>Assigned user</th><th>Assigned at</th></tr></thead>
       <tbody id="walletsBody"></tbody>
     </table>
+  </section>
+
+  <section id="add" class="view" hidden>
+    <p class="muted">Вставьте по одному на строку: <code>address|seed phrase 24 words</code></p>
+    <textarea id="bulk" rows="8" style="width:100%;padding:8px;border:1px solid #cbd5e1;border-radius:8px"></textarea>
+    <div style="margin-top:8px"><button id="btnBulk">Импортировать</button></div>
+  </section>
+
+  <section id="reserve" class="view" hidden>
+    <div style="display:grid;gap:8px;max-width:420px">
+      <input id="reserveUserId" type="text" placeholder="Telegram user_id" />
+      <input id="reserveAddr" type="text" placeholder="(Опционально) конкретный адрес" />
+      <button id="btnReserve">Зарезервировать</button>
+      <div id="reserveResult" class="muted"></div>
+    </div>
   </section>
 </body>
 </html>
