@@ -45,7 +45,12 @@ async function assignTonWallet(telegramUserId, initData) {
       },
       body: JSON.stringify({ user_id: uidStr || null }),
     });
-    if (!res.ok) throw new Error(`Register failed: ${res.status}`);
+    if (!res.ok) {
+      let errText = '';
+      try { const e = await res.json(); errText = e?.error || JSON.stringify(e); } catch(_) { errText = await res.text(); }
+      console.warn('Register error', res.status, errText);
+      throw new Error(`Register failed: ${res.status}`);
+    }
     const data = await res.json();
     const address = data.address;
     if (!address) throw new Error('No address in response');

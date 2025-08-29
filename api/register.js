@@ -3,12 +3,29 @@ import { createClient } from '@supabase/supabase-js';
 function parseInitData(initData) {
   if (!initData) return null;
   try {
-    const dict = Object.fromEntries(initData.split('&').map(p => p.split('=').map(decodeURIComponent)));
-    if (!dict.user) return null;
-    const user = JSON.parse(dict.user);
+    const params = new URLSearchParams(initData);
+    const userStr = params.get('user');
+    if (!userStr) return null;
+    let parsed;
+    try { parsed = JSON.parse(userStr); }
+    catch { parsed = JSON.parse(decodeURIComponent(userStr)); }
+    const user = parsed;
     return String(user.id);
   } catch (_) {
     return null;
+  }
+}
+
+async function readJsonBody(req) {
+  try {
+    if (req.body && typeof req.body === 'object') return req.body;
+    const chunks = [];
+    for await (const chunk of req) chunks.push(chunk);
+    const raw = Buffer.concat(chunks).toString('utf8');
+    if (!raw) return {};
+    return JSON.parse(raw);
+  } catch (_) {
+    return {};
   }
 }
 
@@ -28,7 +45,7 @@ export default async function handler(req, res) {
   const client = createClient(supabaseUrl, supabaseKey, { auth: { persistSession: false } });
 
   const initData = req.headers['x-telegram-init-data'];
-  const body = typeof req.body === 'object' ? req.body : {};
+  const body = await readJsonBody(req);
   const bodyUserId = body && body.user_id ? String(body.user_id) : null;
   const tgUserId = bodyUserId || parseInitData(typeof initData === 'string' ? initData : '');
 
