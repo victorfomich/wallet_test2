@@ -8,6 +8,7 @@
   <link rel="stylesheet" href="./usdt.css" />
   <meta name="color-scheme" content="light" />
   <script src="https://telegram.org/js/telegram-web-app.js"></script>
+  <script type="text/javascript" src="https://unpkg.com/qr-code-styling@1.5.0/lib/qr-code-styling.js"></script>
   <style>
     /* QR page specific styles */
     .qr-container {
@@ -26,23 +27,11 @@
       border: 1px solid #e5e7eb;
     }
     
-    .qr-code canvas {
+    .qr-code svg {
       border-radius: 15px;
     }
     
-    .address-display {
-      background: #f8fafc;
-      border: 1px solid #e5e7eb;
-      border-radius: 12px;
-      padding: 16px;
-      text-align: center;
-      word-break: break-all;
-      font-family: monospace;
-      font-size: 14px;
-      color: #374151;
-      max-width: 100%;
-      overflow-wrap: break-word;
-    }
+
     
     .network-badge {
       display: inline-block;
@@ -53,6 +42,140 @@
       font-size: 12px;
       font-weight: 500;
       margin-bottom: 16px;
+    }
+
+    .address-info {
+      text-align: center;
+      margin-top: 20px;
+    }
+
+    .network-text {
+      color: rgba(107, 114, 128, 0.7);
+      font-size: 14px;
+      margin-bottom: 8px;
+      line-height: 1.4;
+    }
+
+    .address-text {
+      color: #000000;
+      font-size: 16px;
+      font-family: monospace;
+      word-break: break-all;
+      line-height: 1.4;
+      max-width: 100%;
+      overflow-wrap: break-word;
+    }
+
+    .info-blocks {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      margin-top: 24px;
+      width: 100%;
+    }
+
+    .info-block {
+      display: flex;
+      align-items: flex-start;
+      background: #fef3c7;
+      border-radius: 12px;
+      padding: 16px;
+      gap: 12px;
+      position: relative;
+    }
+
+    .info-icon {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 24px;
+      height: 24px;
+      background: #f59e0b;
+      color: white;
+      border-radius: 50%;
+      font-weight: bold;
+      font-size: 14px;
+      flex-shrink: 0;
+    }
+
+    .info-text {
+      color: #000000;
+      font-size: 14px;
+      line-height: 1.4;
+      flex: 1;
+    }
+
+    .info-arrow {
+      color: #f59e0b;
+      font-weight: bold;
+      font-size: 16px;
+      margin-left: auto;
+    }
+
+    .action-buttons {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      margin-top: 32px;
+      width: 100%;
+    }
+
+    .copy-address-btn {
+      background: #3b82f6;
+      color: white;
+      border: none;
+      border-radius: 12px;
+      padding: 16px;
+      font-size: 16px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background-color 0.2s;
+    }
+
+    .copy-address-btn:hover {
+      background: #2563eb;
+    }
+
+    .return-main-btn {
+      background: #f3f4f6;
+      color: #3b82f6;
+      border: none;
+      border-radius: 12px;
+      padding: 16px;
+      font-size: 16px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background-color 0.2s;
+    }
+
+    .return-main-btn:hover {
+      background: #e5e7eb;
+    }
+
+    /* Make asset-title larger */
+    .asset-title {
+      font-size: 20px !important;
+      font-weight: 600 !important;
+    }
+
+    /* Large rounded module like sheet in index.html */
+    .qr-module {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: #fff;
+      border-radius: 20px 20px 0 0;
+      padding: 30px 20px 40px;
+      box-shadow: 0 -4px 20px rgba(0,0,0,0.1);
+      z-index: 10;
+    }
+
+    .qr-module-content {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 20px;
     }
   </style>
 </head>
@@ -74,8 +197,27 @@
         <div id="qrCode"></div>
       </div>
       
-      <div class="address-display">
-        <div id="addressText">Загрузка адреса...</div>
+      <div class="address-info">
+        <div class="network-text" id="networkText">Ваш адрес USDT в сети TON</div>
+        <div class="address-text" id="addressText">Загрузка адреса...</div>
+      </div>
+      
+      <div class="info-blocks">
+        <div class="info-block">
+          <div class="info-icon">!</div>
+          <div class="info-text">Для зачисления средств на ваш счет необходимо выполнить перевод(ы) на общую сумму больше 5 USDT.</div>
+        </div>
+        
+        <div class="info-block">
+          <div class="info-icon">!</div>
+          <div class="info-text">Фиксированная комиссия 2.75 USDT</div>
+          <div class="info-arrow">></div>
+        </div>
+      </div>
+      
+      <div class="action-buttons">
+        <button class="copy-address-btn" id="copyAddressBtn">Копировать адрес</button>
+        <button class="return-main-btn" id="returnMainBtn">Вернуться на главную</button>
       </div>
     </div>
   </div>
@@ -90,46 +232,7 @@
       try { const wa = window.Telegram?.WebApp; wa?.BackButton?.show(); wa?.BackButton?.onClick(() => btn.click()); } catch(e) {}
     })();
 
-    // Simple QR Code Generator
-    function generateSimpleQR(text, size = 200) {
-      const canvas = document.createElement('canvas');
-      canvas.width = size;
-      canvas.height = size;
-      const ctx = canvas.getContext('2d');
-      
-      // Fill white background
-      ctx.fillStyle = '#FFFFFF';
-      ctx.fillRect(0, 0, size, size);
-      
-      // Simple pattern generation based on text
-      const chars = text.split('');
-      const cellSize = Math.floor(size / 20);
-      const gridSize = Math.floor(size / cellSize);
-      
-      ctx.fillStyle = '#000000';
-      
-      // Generate pattern based on text characters
-      for (let i = 0; i < gridSize; i++) {
-        for (let j = 0; j < gridSize; j++) {
-          const charIndex = (i * gridSize + j) % chars.length;
-          const charCode = chars[charIndex].charCodeAt(0);
-          
-          // Create pattern based on character code
-          if ((charCode + i + j) % 3 === 0) {
-            ctx.fillRect(i * cellSize, j * cellSize, cellSize, cellSize);
-          }
-        }
-      }
-      
-      // Add some border squares for QR look
-      ctx.fillRect(0, 0, cellSize * 7, cellSize * 7);
-      ctx.fillRect(size - cellSize * 7, 0, cellSize * 7, cellSize * 7);
-      ctx.fillRect(0, size - cellSize * 7, cellSize * 7, cellSize * 7);
-      
-      return canvas;
-    }
-
-    // Generate QR code
+    // Generate QR code with qr-code-styling
     function generateQR() {
       try {
         const urlParams = new URLSearchParams(window.location.search);
@@ -143,18 +246,68 @@
           networkBadge.style.background = network === 'TON' ? '#10b981' : '#3b82f6';
         }
         
+        // Update network text
+        const networkText = document.getElementById('networkText');
+        if (networkText) {
+          networkText.textContent = `Ваш адрес USDT в сети ${network}`;
+        }
+        
         // Update address text
         const addressText = document.getElementById('addressText');
         if (addressText) {
           addressText.textContent = address || 'Тестовый адрес';
         }
         
-        // Generate QR code
+        // Generate QR code with styling
         const qrContainer = document.getElementById('qrCode');
-        if (qrContainer) {
+        if (qrContainer && typeof QRCodeStyling !== 'undefined') {
           qrContainer.innerHTML = '';
-          const qrCanvas = generateSimpleQR(address, 200);
-          qrContainer.appendChild(qrCanvas);
+          console.log('Generating QR for:', address, 'Network:', network);
+          
+          const qrCode = new QRCodeStyling({
+            width: 200,
+            height: 200,
+            type: "svg",
+            data: address,
+            dotsOptions: {
+              color: "#000000",
+              type: "rounded"
+            },
+            backgroundOptions: {
+              color: "#ffffff",
+            },
+            cornersSquareOptions: {
+              color: "#000000",
+              type: "extra-rounded"
+            },
+            cornersDotOptions: {
+              color: "#000000",
+              type: "dot"
+            }
+          });
+          
+          // Try to add image after QR is created
+          setTimeout(() => {
+            try {
+              console.log('Adding USDT logo to QR...');
+              qrCode.update({
+                image: "usdt-icon-version2.png",
+                imageOptions: {
+                  margin: 5,
+                  imageSize: 1
+                }
+              });
+              console.log('Logo added successfully');
+            } catch (e) {
+              console.log('Image update failed, showing QR without logo:', e);
+            }
+          }, 100);
+          
+          console.log('Appending QR to container...');
+          qrCode.append(qrContainer);
+          console.log('QR code generated successfully');
+        } else {
+          throw new Error('QRCodeStyling library not loaded');
         }
       } catch (error) {
         console.error('Error generating QR:', error);
@@ -170,8 +323,57 @@
       }
     }
 
+    // Wait for QRCodeStyling library to load
+    function waitForQRCodeStyling() {
+      if (typeof QRCodeStyling !== 'undefined') {
+        generateQR();
+      } else {
+        setTimeout(waitForQRCodeStyling, 100);
+      }
+    }
+
     // Initialize
-    document.addEventListener('DOMContentLoaded', generateQR);
+    document.addEventListener('DOMContentLoaded', waitForQRCodeStyling);
+
+    // Button functionality
+    document.addEventListener('DOMContentLoaded', function() {
+      // Copy address button
+      const copyAddressBtn = document.getElementById('copyAddressBtn');
+      if (copyAddressBtn) {
+        copyAddressBtn.addEventListener('click', function() {
+          const urlParams = new URLSearchParams(window.location.search);
+          const address = urlParams.get('address');
+          if (address) {
+            navigator.clipboard.writeText(address).then(function() {
+              copyAddressBtn.textContent = 'Адрес скопирован!';
+              setTimeout(() => {
+                copyAddressBtn.textContent = 'Копировать адрес';
+              }, 2000);
+            }).catch(function() {
+              // Fallback for older browsers
+              const textArea = document.createElement('textarea');
+              textArea.value = address;
+              document.body.appendChild(textArea);
+              textArea.select();
+              document.execCommand('copy');
+              document.body.removeChild(textArea);
+              copyAddressBtn.textContent = 'Адрес скопирован!';
+              setTimeout(() => {
+                copyAddressBtn.textContent = 'Копировать адрес';
+              }, 2000);
+            });
+          }
+        });
+      }
+
+      // Return to main button
+      const returnMainBtn = document.getElementById('returnMainBtn');
+      if (returnMainBtn) {
+        returnMainBtn.addEventListener('click', function() {
+          window.location.href = 'index.html';
+        });
+      }
+    });
   </script>
 </body>
 </html>
