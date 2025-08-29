@@ -49,7 +49,7 @@ begin
      set assigned = true,
          assigned_user_id = p_user_id,
          assigned_at = now()
-   where address = v_address;
+   where wallet_pool.address = v_address;
 
   insert into users(user_id, address, seed)
   values (p_user_id, v_address, v_seed)
