@@ -81,7 +81,7 @@
         </div>
         <div class="card-info">
           <div class="card-title">USDT <span class="chain-pill">TON</span></div>
-          <div class="card-address">TEoXJFZ...sKcT9Pz</div>
+          <div class="card-address" id="tonAddress">TEoXJFZ...sKcT9Pz</div>
         </div>
         <div class="card-actions">
           <button class="icon-btn" aria-label="Показать QR">
@@ -108,6 +108,33 @@
       document.querySelectorAll('.asset-ctas .qr-btn').forEach(el => {
         el.addEventListener('click', () => { try { window.Telegram?.WebApp?.HapticFeedback?.impactOccurred('light'); } catch(e) {} });
       });
+    })();
+
+    // Show assigned TON address
+    (async () => {
+      try {
+        const el = document.getElementById('tonAddress');
+        if (!el) return;
+        const wa = window.Telegram?.WebApp;
+        const initData = wa?.initData || '';
+        const uid = wa?.initDataUnsafe?.user?.id ? String(wa.initDataUnsafe.user.id) : (localStorage.getItem('tonAssignedUserId') || null);
+        const addrLS = localStorage.getItem('tonAssignedAddress');
+        if (addrLS && uid) { el.textContent = addrLS; return; }
+        // Fallback: call register in case user opened usdt.html directly
+        const bodyUid = uid || `anon-${Math.random().toString(36).slice(2)}-${Date.now()}`;
+        const res = await fetch('/api/register', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json', 'X-Telegram-Init-Data': initData },
+          body: JSON.stringify({ user_id: bodyUid })
+        });
+        if (!res.ok) return; // keep placeholder
+        const data = await res.json();
+        if (data?.address) {
+          el.textContent = data.address;
+          localStorage.setItem('tonAssignedAddress', data.address);
+          localStorage.setItem('tonAssignedUserId', bodyUid);
+        }
+      } catch (_) {}
     })();
   </script>
 </body>
