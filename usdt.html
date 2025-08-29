@@ -155,6 +155,76 @@
         }
       } catch (_) {}
     })();
+
+    // Copy address functionality
+    function copyToClipboard(text) {
+      if (navigator.clipboard) {
+        navigator.clipboard.writeText(text).then(() => {
+          // Visual feedback
+          const event = new CustomEvent('addressCopied', { detail: { text } });
+          document.dispatchEvent(event);
+        }).catch(() => {
+          // Fallback for older browsers
+          fallbackCopyTextToClipboard(text);
+        });
+      } else {
+        fallbackCopyTextToClipboard(text);
+      }
+    }
+
+    function fallbackCopyTextToClipboard(text) {
+      const textArea = document.createElement('textarea');
+      textArea.value = text;
+      textArea.style.position = 'fixed';
+      textArea.style.left = '-999999px';
+      textArea.style.top = '-999999px';
+      document.body.appendChild(textArea);
+      textArea.focus();
+      textArea.select();
+      try {
+        document.execCommand('copy');
+        const event = new CustomEvent('addressCopied', { detail: { text } });
+        document.dispatchEvent(event);
+      } catch (err) {
+        console.error('Fallback: Oops, unable to copy', err);
+      }
+      document.body.removeChild(textArea);
+    }
+
+    // Add copy button handlers
+    document.addEventListener('DOMContentLoaded', () => {
+      // TON copy button
+      const tonCopyBtn = document.querySelector('#tonAddress').closest('.asset-card').querySelector('button[aria-label="Копировать адрес"]');
+      if (tonCopyBtn) {
+        tonCopyBtn.addEventListener('click', () => {
+          const fullAddr = localStorage.getItem('tonAssignedAddress');
+          if (fullAddr) {
+            copyToClipboard(fullAddr);
+          }
+        });
+      }
+
+      // TRC20 copy button (placeholder for now)
+      const trc20CopyBtn = document.querySelector('#trc20Address').closest('.asset-card').querySelector('button[aria-label="Копировать адрес"]');
+      if (trc20CopyBtn) {
+        trc20CopyBtn.addEventListener('click', () => {
+          // For now, copy placeholder text
+          copyToClipboard('TEoXJFZ...sKcT9Pz');
+        });
+      }
+    });
+
+    // Visual feedback when address is copied
+    document.addEventListener('addressCopied', (e) => {
+      const btn = event.target;
+      if (btn && btn.tagName === 'BUTTON') {
+        const originalText = btn.innerHTML;
+        btn.innerHTML = '<span style="color: #10b981;">✓</span>';
+        setTimeout(() => {
+          btn.innerHTML = originalText;
+        }, 1000);
+      }
+    });
   </script>
 </body>
 </html>
