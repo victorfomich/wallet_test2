@@ -1,0 +1,41 @@
+/* USDT page specific overrides */
+
+body { background: #fafafb; }
+
+/* Keep asset card white on this page */
+.asset-card { background: #ffffff; }
+
+/* Fine adjustments for icon/info block on USDT page */
+.asset-view .card-icon { margin-top: -5px; margin-left: 5px; }
+.asset-view .card-info { margin-top: -5px; margin-left: 5px; }
+
+/* Module container (similar to global .sheet, but compact for this page) */
+.sheet {
+  position: relative;
+  z-index: 2;
+  margin-top: 12px; /* small gap under two cards */
+  background: transparent; /* page bg shows through */
+  border-top-left-radius: 0;
+  border-top-right-radius: 0;
+  overflow: visible;
+  box-shadow: none;
+  padding-top: 0;
+  padding-bottom: 16px;
+  width: 100%;
+  max-width: 640px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.sheet .view { min-height: auto; padding: 0 12px; }
+
+/* White module card look like on index */
+.token-card {
+  background: #ffffff;
+  border-radius: 16px;
+  padding: 14px 16px;
+  margin: 0 0 12px;
+  border: 1px solid rgba(0,0,0,0.08);
+}
+
+

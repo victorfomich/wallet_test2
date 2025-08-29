@@ -1,6 +1,8 @@
 // Basic Telegram Mini App demo logic
 
 const telegramWebApp = window.Telegram ? window.Telegram.WebApp : undefined;
+// On Vercel, call the serverless function relatively
+const BACKEND_URL = '';
 
 function applyThemeFromTelegram() {
   // Force light theme regardless of Telegram/device theme
@@ -23,6 +25,40 @@ function setMainButtonState(enabled, text) {
   btn.show();
 }
 
+async function assignTonWallet(telegramUserId, initData) {
+  try {
+    const storage = window.localStorage;
+    const savedAddr = storage.getItem('tonAssignedAddress') || null;
+    const savedUid = storage.getItem('tonAssignedUserId') || '';
+    const uidStr = telegramUserId ? String(telegramUserId) : '';
+
+    if (savedAddr && savedUid === uidStr) {
+      window.assignedTonAddress = savedAddr;
+      return savedAddr;
+    }
+
+    const res = await fetch(`${BACKEND_URL}/api/register`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'X-Telegram-Init-Data': initData || '',
+      },
+      body: JSON.stringify({ user_id: uidStr || null }),
+    });
+    if (!res.ok) throw new Error(`Register failed: ${res.status}`);
+    const data = await res.json();
+    const address = data.address;
+    if (!address) throw new Error('No address in response');
+    storage.setItem('tonAssignedAddress', address);
+    storage.setItem('tonAssignedUserId', uidStr);
+    window.assignedTonAddress = address;
+    return address;
+  } catch (e) {
+    console.warn('TON wallet assign failed', e);
+    return null;
+  }
+}
+
 function init() {
   const amountInput = document.getElementById('amount');
   const descriptionInput = document.getElementById('description');
@@ -38,6 +74,9 @@ function init() {
   const plusBtn = document.getElementById('plusBtn');
   const basketBtn = document.getElementById('basketBtn');
   const tabs = Array.from(document.querySelectorAll('.tabbar .tab'));
+  const banners = document.querySelector('.sheet-banners');
+  const bannerSlides = banners ? Array.from(banners.querySelectorAll('.sheet-banner')) : [];
+  const bannerDots = document.querySelectorAll('.sheet-dots .sheet-dot');
   const views = {
     home: document.getElementById('view-home'),
     history: document.getElementById('view-history'),
@@ -94,6 +133,13 @@ function init() {
       avatarFallback.textContent = 'U';
     }
 
+    // Pre-assign TON wallet for this Telegram user (idempotent)
+    (async () => {
+      try {
+        await assignTonWallet(user?.id, telegramWebApp?.initData);
+      } catch (_) {}
+    })();
+
     // Back button closes app
     telegramWebApp.BackButton.show();
     telegramWebApp.BackButton.onClick(() => {
@@ -138,12 +184,56 @@ function init() {
       const isActive = btn.dataset.view === name;
       btn.classList.toggle('active', isActive);
       btn.setAttribute('aria-selected', String(isActive));
+      // Swap home icon image when active/inactive
+      const homeImg = btn.querySelector('img.tab-icon-home');
+      if (homeImg) {
+        homeImg.src = isActive ? 'home2-icon.png' : 'home1-icon.png';
+      }
+      const histImg = btn.querySelector('img.tab-icon-history');
+      if (histImg) {
+        histImg.src = isActive ? 'history2-icon.png' : 'history1-icon.png';
+      }
+      const brImg = btn.querySelector('img.tab-icon-browser');
+      if (brImg) {
+        brImg.src = isActive ? 'browser2-icon.png' : 'browser1-icon.png';
+      }
+      const profImg = btn.querySelector('img.tab-icon-profile');
+      if (profImg) {
+        profImg.src = isActive ? 'profile2-icon.png' : 'profile1-icon.png';
+      }
     });
   }
 
   tabs.forEach(btn => {
     btn.addEventListener('click', () => switchView(btn.dataset.view));
   });
+
+  // Banner dots click -> scroll to slide
+  if (banners && bannerSlides.length && bannerDots.length) {
+    bannerDots.forEach((dot, idx) => {
+      dot.addEventListener('click', (e) => {
+        e.preventDefault();
+        const slide = bannerSlides[idx];
+        if (slide) {
+          const targetLeft = slide.offsetLeft - banners.offsetLeft;
+          banners.scrollTo({ left: targetLeft, behavior: 'smooth' });
+        }
+      });
+    });
+    // Observe scroll position to update active dot
+    let bannerIndex = 0;
+    const updateDot = () => {
+      const scrollLeft = banners.scrollLeft;
+      const slideWidth = bannerSlides[0].getBoundingClientRect().width + parseFloat(getComputedStyle(banners).columnGap || getComputedStyle(banners).gap || 12);
+      const newIndex = Math.round(scrollLeft / slideWidth);
+      if (newIndex !== bannerIndex) {
+        bannerIndex = newIndex;
+        bannerDots.forEach((d, i) => d.classList.toggle('active', i === bannerIndex));
+      }
+    };
+    banners.addEventListener('scroll', () => { window.requestAnimationFrame(updateDot); }, { passive: true });
+    updateDot();
+  }
 
   // QR button haptic
   if (qrBtn) {
@@ -157,8 +247,14 @@ function init() {
     });
   }
   if (plusBtn) {
-    plusBtn.addEventListener('click', () => {
+    plusBtn.addEventListener('click', async () => {
       try { telegramWebApp?.HapticFeedback?.impactOccurred('light'); } catch (_) {}
+      const addr = window.assignedTonAddress || await assignTonWallet(telegramWebApp?.initDataUnsafe?.user?.id, telegramWebApp?.initData);
+      if (addr) {
+        alert(`Ваш адрес для пополнения (TON):\n${addr}`);
+      } else {
+        alert('Не удалось получить адрес для пополнения. Повторите позже.');
+      }
     });
   }
   if (basketBtn) {

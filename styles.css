@@ -84,6 +84,8 @@ body {
   box-shadow: 0 -2px 16px rgba(0,0,0,0.08);
   padding-top: 12px;
   padding-bottom: calc(96px + env(safe-area-inset-bottom)); /* запас под таббар */
+  /* Если экран длинный — растягиваем модуль до низа, иначе — по контенту */
+  min-height: calc(100vh - var(--hero-base));
   /* разрешаем прокрутку всей страницы, а не только внутри модуля */
   overflow-x: hidden;
   /* full-bleed: от левого до правого края экрана */
@@ -93,11 +95,90 @@ body {
   margin-right: calc(50% - 50vw);
 }
 
+/* Banners carousel */
+.sheet-banners {
+  margin: 25px 0 12px;
+  display: grid;
+  grid-auto-flow: column;
+  grid-auto-columns: calc(100% - 36px - 24px); /* account for side insets while keeping peek */
+  overflow-x: auto;
+  overflow-y: hidden; /* prevent vertical scroll jiggle */
+  overscroll-behavior-y: contain; /* don't bounce page vertically */
+  touch-action: pan-x; /* restrict gestures to horizontal */
+  scroll-snap-type: x mandatory;
+  gap: 12px;
+  -webkit-overflow-scrolling: touch;
+  width: 100vw;               /* full-bleed horizontally */
+  margin-left: calc(50% - 50vw);
+  margin-right: calc(50% - 50vw);
+  padding: 0 12px;            /* side offsets from screen edges */
+  box-sizing: border-box;     /* keep width within viewport with padding */
+  scroll-padding-left: 12px;  /* keep side inset when snapping */
+  scroll-padding-right: 12px;
+}
+.sheet-banners::-webkit-scrollbar { display: none; }
 .sheet-banner {
-  height: 120px;
-  margin: 8px 12px 12px;
+  height: 95px;
   background: linear-gradient(135deg, #1a6cff, #3b82f6, #60a5fa);
-  border-radius: 16px;
+  border-radius: 20px;
+  position: relative;
+  scroll-snap-align: start;
+}
+/* Softer purple gradient for the second banner */
+.sheet-banners .sheet-banner:nth-child(2) {
+  background: linear-gradient(135deg, #4714eda4 0%, #6e42d5ba 60%, #927ada 100%);
+}
+/* coins removed from second banner */
+
+.sheet-banner .banner-text { position: absolute; left: 14px; top: 12px; color: #ffffff; text-shadow: 0 1px 2px rgba(0,0,0,0.25); max-width: 72%; display: grid; gap: 2px; }
+.sheet-banner .banner-title { font-size: 16px; font-weight: 800; letter-spacing: 0.1px; margin: 0; line-height: 1.2; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.sheet-banner .banner-sub { font-size: 11px; opacity: 0.9; line-height: 1.2; }
+.sheet-banner .banner-cta {
+  appearance: none;
+  border: none;
+  margin-top: 8px;
+  padding: 6px 10px;
+  border-radius: 999px;
+  background: rgba(255,255,255,0.28);
+  color: #ffffff;
+  font-weight: 700;
+  font-size: 11px;
+  cursor: pointer;
+  display: inline-block;
+  justify-self: start;
+  width: auto;
+}
+.sheet-banner .banner-cta:active { transform: translateY(1px); }
+.sheet-dots { display: grid; grid-auto-flow: column; justify-content: center; gap: 8px; margin: 6px 0 12px; }
+.sheet-dot { appearance: none; width: 8px; height: 8px; border-radius: 999px; border: none; background: rgba(107,114,128,0.35); padding: 0; cursor: pointer; }
+.sheet-dot.active { background: #2aabee; }
+.sheet > .view { margin-top: 15px; }
+/* Decorative star in banner */
+.sheet-banner .banner-star {
+  position: absolute;
+  right: 0px;
+  bottom: -20px;
+  width: 126px;
+  height: 126px;
+  object-fit: contain;
+  opacity: 1;
+  filter: drop-shadow(0 4px 12px rgba(0,0,0,0.18));
+}
+/* place star on the left for the 2nd banner */
+.sheet-banners .sheet-banner:nth-child(2) .banner-star {
+  right: 0;
+  left: auto;
+}
+.sheet-banner .banner-star-left {
+  position: absolute;
+  left: 0px;
+  bottom: 0px;
+  width: 64px;
+  height: 64px;
+  object-fit: contain;
+  transform: rotate(16deg);
+  opacity: 1;
+  filter: drop-shadow(0 4px 12px rgba(0,0,0,0.14));
 }
 
 .view { min-height: 140px; }
@@ -123,21 +204,26 @@ body {
 
 /* Light card under CTAs */
 .asset-card {
-  margin: 0 12px 16px;
+  margin: 10px 12px 16px;
   background: #f3f5f9; /* слегка темнее белого */
-  border-radius: 16px;
-  padding: 12px;
+  border-radius: 10px;
+  padding: 5px;
+  padding-bottom: 10px;
 }
-.asset-card .card-main { display: grid; grid-template-columns: auto 1fr auto; align-items: center; gap: 12px; }
-.card-icon-circle { position: relative; width: 48px; height: 48px; border-radius: 999px; background: #1abc9c; color: #fff; display: grid; place-items: center; font-weight: 800; overflow: hidden; }
-.card-icon-circle .card-logo { position: absolute; width: 72px; height: 72px; top: -12px; left: -12px; border-radius: 999px; display: block; object-fit: cover; -webkit-mask-image: radial-gradient(circle, #000 98%, transparent 100%); mask-image: radial-gradient(circle, #000 98%, transparent 100%); }
-.card-chain-dot { position: absolute; right: -2px; bottom: -2px; width: 16px; height: 16px; border-radius: 999px; background: #ec1c24; color: #fff; font-size: 10px; font-weight: 800; display: grid; place-items: center; }
-.card-title { font-weight: 700; color: #0b1220; }
-.chain-pill { display: inline-block; margin-left: 8px; padding: 2px 6px; border-radius: 8px; font-size: 11px; background: #e5e7eb; color: #0b1220; }
-.card-address { color: #0b1220; opacity: 0.8; font-size: 14px; }
-.card-actions { display: grid; grid-auto-flow: column; gap: 10px; }
-.icon-btn { appearance: none; border: none; background: #eef1f5; border-radius: 12px; width: 44px; height: 44px; display: grid; place-items: center; cursor: pointer; }
-.card-fee { margin-top: 8px; color: #6b7280; font-size: 14px; }
+.asset-card .card-main { display: grid; grid-template-columns: auto 1fr auto; align-items: center; gap: 9px; }
+.card-icon-circle { position: relative; width: 42px; height: 42px; border-radius: 999px; background: #1abc9c; color: #fff; display: grid; place-items: center; font-weight: 800; overflow: hidden; }
+.card-icon-circle .card-logo { position: absolute; width: 60px; height: 60px; top: -9px; left: -9px; border-radius: 999px; display: block; object-fit: cover; -webkit-mask-image: radial-gradient(circle, #000 98%, transparent 100%); mask-image: radial-gradient(circle, #000 98%, transparent 100%); }
+.asset-view .card-icon { margin-top: -5px; margin-left: 5px; }
+.asset-view .card-info { margin-top: -5px; margin-left: 5px; }
+.card-chain-dot { position: absolute; right: 12px; bottom: 16px; width: 16px; height: 16px; border-radius: 999px; background: #ec1c24; color: #fff; font-size: 10px; font-weight: 800; display: grid; place-items: center; z-index: 2; }
+.card-title { font-weight: 700; color: #0b1220; margin-bottom: 3px; }
+.chain-dot { display: inline-block; width: 8px; height: 8px; border-radius: 999px; background: #ec1c24; margin-right: 6px; vertical-align: middle; }
+.chain-dot-img { display: inline-block; width: 18px; height: 18px; border-radius: 999px; vertical-align: -1px; margin-right: 6px; object-fit: cover; -webkit-mask-image: radial-gradient(circle, #000 98%, transparent 100%); mask-image: radial-gradient(circle, #000 98%, transparent 100%); overflow: hidden; }
+.chain-pill { display: inline-block; margin-left: 8px; padding: 2px 6px; border-radius: 8px; font-size: 10px; background: #e5e7eb; color: #0b1220; }
+.card-address { color: #0b1220; opacity: 0.8; font-size: 12px; }
+.card-actions { display: grid; grid-auto-flow: column; gap: 10px; align-self: center; justify-self: end; margin-top: 20px; margin-right: 10px; }
+.icon-btn { appearance: none; border: none; background: #eef1f5; border-radius: 12px; width: 38px; height: 38px; display: grid; place-items: center; cursor: pointer; }
+.card-fee { margin-top: -2px; margin-left: 5px; color: #6b7280; font-size: 12px; }
 
 /* Token card */
 .token-card {
@@ -160,8 +246,6 @@ body {
 }
 .token-logo-wrap { width: 48px; height: 48px; flex: 0 0 48px; position: relative; overflow: hidden; border-radius: 999px; }
 .token-logo { width: 64px; height: 64px; position: absolute; top: -8px; left: -8px; object-fit: cover; }
-.token-logo.usdt { width: 72px; height: 72px; top: -12px; left: -12px; }
-.token-logo.usdt { width: 80px; height: 80px; top: -16px; left: -16px; }
 .token-icon.ton { background: #0ba5ff; }
 .token-icon.tron { background: #ec1c24; }
 .token-badge { background: #22c55e; color: #ffffff; font-size: 10px; font-weight: 700; padding: 4px 6px; border-radius: 10px; margin-left: 8px; vertical-align: middle; }
@@ -199,11 +283,14 @@ body {
   justify-items: center;
   gap: 6px;
 }
-.tabbar .tab.active {
-  color: var(--button);
-}
+.tabbar .tab.active {}
 .tabbar .tab .icon { line-height: 0; }
-.tabbar .tab .label { line-height: 1; }
+.tabbar .tab .tab-icon-home { width: 22px; height: 22px; display: block; transform: scale(1.6); transform-origin: center; }
+.tabbar .tab .tab-icon-history,
+.tabbar .tab .tab-icon-browser,
+.tabbar .tab .tab-icon-profile { width: 22px; height: 22px; display: block; transform: scale(1.6); transform-origin: center; }
+.tabbar .tab .label { line-height: 1; color: rgba(107,114,128,0.72); }
+.tabbar .tab.active .label { color: #0b1220; }
 
 .card {
   background: var(--card);

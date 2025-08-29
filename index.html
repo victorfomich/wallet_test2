@@ -42,20 +42,41 @@
         </div>
         <div class="cta-item">
           <button id="sellBtn" class="qr-btn" aria-label="Продажа">
-            <img src="sell-icon.png" alt="Sell" class="qr-img" width="28" height="28" />
+            <img src="basket-icon.png" alt="Sell" class="qr-img" width="28" height="28" />
           </button>
           <div class="cta-label">Продать</div>
         </div>
         <div class="cta-item">
           <button id="basketBtn" class="qr-btn" aria-label="Корзина">
-            <img src="basket-icon.png" alt="Basket" class="qr-img" width="28" height="28" />
+            <img src="P2P-icon.png" alt="Basket" class="qr-img" width="28" height="28" />
           </button>
-          <div class="cta-label">Оплатить</div>
+          <div class="cta-label">Торговля</div>
         </div>
       </div>
     </header>
     <main id="views" class="sheet">
-      <div class="sheet-banner" aria-hidden="true"></div>
+      <div class="sheet-banners" aria-hidden="true">
+        <div class="sheet-banner">
+          <img src="star.png" alt="" class="banner-star" width="96" height="96" />
+          <div class="banner-text">
+            <div class="banner-title">P2P внутри кошелька</div>
+            <div class="banner-sub">Всегда доступный обмен крипты</div>
+            <button class="banner-cta" type="button">Попробовать</button>
+          </div>
+        </div>
+        <div class="sheet-banner">
+          <img src="star4.png" alt="" class="banner-star" width="96" height="96" />
+          <div class="banner-text">
+            <div class="banner-title">Подтвердите личность</div>
+            <div class="banner-sub">для больших возможностей</div>
+            <button class="banner-cta" type="button">Подробнее</button>
+          </div>
+        </div>
+      </div>
+      <div class="sheet-dots">
+        <button class="sheet-dot active" aria-label="Баннер 1"></button>
+        <button class="sheet-dot" aria-label="Баннер 2"></button>
+      </div>
       <section id="view-home" class="view active" aria-label="Главная">
         <div class="token-card" id="card-usdt" role="button" tabindex="0" aria-label="Открыть USDT">
           <div class="token-left">
@@ -103,25 +124,25 @@
     <nav class="tabbar" role="tablist" aria-label="Навигация">
       <button class="tab active" data-view="home" role="tab" aria-selected="true">
         <span class="icon" aria-hidden="true">
-          <svg viewBox="0 0 24 24" width="22" height="22"><path d="M3 10.5 12 3l9 7.5V20a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1v-9.5Z" fill="currentColor"/></svg>
+          <img src="home2-icon.png" alt="Главная" class="tab-icon-home" width="22" height="22" />
         </span>
         <span class="label">Главная</span>
       </button>
       <button class="tab" data-view="history" role="tab" aria-selected="false">
         <span class="icon" aria-hidden="true">
-          <svg viewBox="0 0 24 24" width="22" height="22"><path d="M12 3a9 9 0 1 1-9 9H1l3-3 3 3H5a7 7 0 1 0 7-7v2H10V3h2Z" fill="currentColor"/></svg>
+          <img src="history1-icon.png" alt="История" class="tab-icon-history" width="22" height="22" />
         </span>
         <span class="label">История</span>
       </button>
       <button class="tab" data-view="browser" role="tab" aria-selected="false">
         <span class="icon" aria-hidden="true">
-          <svg viewBox="0 0 24 24" width="22" height="22"><path d="M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20Zm6.9 6H14c-.3-1.8-1-3.4-2-4.6 2.6.5 4.7 2.3 6 4.6ZM10 4.1C9 5.3 8.3 6.9 8 8.7H5.1A8 8 0 0 1 10 4.1ZM4.1 10H8c0 .7.1 1.4.2 2H3.5c.1-.7.3-1.4.6-2ZM5.1 14H8c.3 1.8 1 3.4 2 4.6A8 8 0 0 1 5.1 14ZM10 19.9c1-1.2 1.7-2.8 2-4.6h4.9a8 8 0 0 1-6.9 4.6ZM13.8 12c0-.7-.1-1.4-.2-2h6c.3.6.5 1.3.6 2h-6.4Zm-.4 2c-.3.8-.6 1.6-1 2.3-.2.4-.5.9-.8 1.3-.3-.4-.6-.9-.8-1.3-.4-.7-.7-1.5-1-2.3h4.6Zm-4.6-4c.3-.8.6-1.6 1-2.3.2-.4.5-.9.8-1.3.3.4.6.9.8 1.3.4.7.7 1.5 1 2.3H8.8Zm5.2 0c.1.6.2 1.3.2 2H21c-.1-.7-.3-1.4-.6-2h-6.4Z" fill="currentColor"/></svg>
+          <img src="browser1-icon.png" alt="Браузер" class="tab-icon-browser" width="22" height="22" />
         </span>
         <span class="label">Браузер</span>
       </button>
       <button class="tab" data-view="profile" role="tab" aria-selected="false">
         <span class="icon" aria-hidden="true">
-          <svg viewBox="0 0 24 24" width="22" height="22"><path d="M12 12a5 5 0 1 0-5-5 5 5 0 0 0 5 5Zm0 2c-4.4 0-8 2.2-8 5v1h16v-1c0-2.8-3.6-5-8-5Z" fill="currentColor"/></svg>
+          <img src="profile1-icon.png" alt="Профиль" class="tab-icon-profile" width="22" height="22" />
         </span>
         <span class="label">Профиль</span>
       </button>
