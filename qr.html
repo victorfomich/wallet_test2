@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>QR Code</title>
+  <link rel="stylesheet" href="./styles.css" />
+  <link rel="stylesheet" href="./usdt.css" />
+  <meta name="color-scheme" content="light" />
+  <script src="https://telegram.org/js/telegram-web-app.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/qrcode@1.5.3/build/qrcode.min.js"></script>
+  <style>
+    /* QR page specific styles */
+    .qr-container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 20px;
+      gap: 20px;
+    }
+    
+    .qr-code {
+      background: #fff;
+      border-radius: 20px;
+      padding: 30px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+      border: 1px solid #e5e7eb;
+    }
+    
+    .qr-code canvas {
+      border-radius: 15px;
+    }
+    
+    .address-display {
+      background: #f8fafc;
+      border: 1px solid #e5e7eb;
+      border-radius: 12px;
+      padding: 16px;
+      text-align: center;
+      word-break: break-all;
+      font-family: monospace;
+      font-size: 14px;
+      color: #374151;
+      max-width: 100%;
+      overflow-wrap: break-word;
+    }
+    
+    .network-badge {
+      display: inline-block;
+      background: #10b981;
+      color: white;
+      padding: 4px 12px;
+      border-radius: 20px;
+      font-size: 12px;
+      font-weight: 500;
+      margin-bottom: 16px;
+    }
+  </style>
+</head>
+<body>
+  <div class="asset-view small">
+    <header class="asset-header" style="padding:16px;">
+      <button id="assetBack" class="asset-back" aria-label="Назад" style="color: rgba(107,114,128,0.6);">
+        <svg viewBox="0 0 24 24" width="24" height="24" aria-hidden="true">
+          <path d="M15 6L9 12l6 6" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </button>
+      <div class="asset-title">Пополнение USDT</div>
+    </header>
+    
+    <div class="qr-container">
+      <div id="networkBadge" class="network-badge">TON</div>
+      
+      <div class="qr-code">
+        <div id="qrCode"></div>
+      </div>
+      
+      <div class="address-display">
+        <div id="addressText">Загрузка адреса...</div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Back behavior
+    (function(){
+      const btn = document.getElementById('assetBack');
+      btn.addEventListener('click', () => {
+        if (window.history.length > 1) window.history.back(); else window.location.href = 'usdt.html';
+      });
+      try { const wa = window.Telegram?.WebApp; wa?.BackButton?.show(); wa?.BackButton?.onClick(() => btn.click()); } catch(e) {}
+    })();
+
+    // QR Code generation
+    async function generateQR() {
+      try {
+        const urlParams = new URLSearchParams(window.location.search);
+        const network = urlParams.get('network') || 'TON';
+        const address = urlParams.get('address') || '';
+        
+        // Update network badge
+        const networkBadge = document.getElementById('networkBadge');
+        if (networkBadge) {
+          networkBadge.textContent = network;
+          networkBadge.style.background = network === 'TON' ? '#10b981' : '#3b82f6';
+        }
+        
+        // Update address text
+        const addressText = document.getElementById('addressText');
+        if (addressText) {
+          addressText.textContent = address || 'Адрес не найден';
+        }
+        
+        // Generate QR code
+        if (address) {
+          const qrContainer = document.getElementById('qrCode');
+          await QRCode.toCanvas(qrContainer, address, {
+            width: 200,
+            margin: 2,
+            color: {
+              dark: '#000000',
+              light: '#FFFFFF'
+            }
+          });
+        }
+      } catch (error) {
+        console.error('Error generating QR:', error);
+        document.getElementById('addressText').textContent = 'Ошибка генерации QR';
+      }
+    }
+
+    // Initialize
+    document.addEventListener('DOMContentLoaded', generateQR);
+  </script>
+</body>
+</html>

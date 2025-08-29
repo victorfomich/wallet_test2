@@ -58,8 +58,33 @@
 
     /* Make asset-logo smaller */
     .asset-logo {
-      width: 48px !important;
-      height: 48px !important;
+      width: 118px !important;
+      height: 118px !important;
+      margin: 0 auto !important;
+      margin-top: -12px !important;
+    }
+
+    /* Add padding to prevent logo cutoff */
+    .asset-body {
+      padding-top: 20px !important;
+    }
+
+    /* Move amounts and elements below up */
+    .asset-amount {
+      margin-top: -45px !important;
+    }
+
+    .asset-amount-sub {
+      margin-top: -20px !important;
+    }
+
+    .asset-ctas {
+      margin-top: -5px !important;
+    }
+
+    /* Move back button to left edge */
+    .asset-back {
+      margin-left: -50px !important;
     }
   </style>
 </head>
@@ -299,6 +324,25 @@
         trc20CopyBtn.addEventListener('click', () => {
           // For now, copy placeholder text
           copyToClipboard('TEoXJFZ...sKcT9Pz');
+        });
+      }
+
+      // QR button handlers
+      const tonQRBtn = document.querySelector('#tonAddress').closest('.asset-card').querySelector('button[aria-label="Показать QR"]');
+      if (tonQRBtn) {
+        tonQRBtn.addEventListener('click', () => {
+          const fullAddr = localStorage.getItem('tonAssignedAddress');
+          if (fullAddr) {
+            window.location.href = `qr.html?network=TON&address=${encodeURIComponent(fullAddr)}`;
+          }
+        });
+      }
+
+      const trc20QRBtn = document.querySelector('#trc20Address').closest('.asset-card').querySelector('button[aria-label="Показать QR"]');
+      if (trc20QRBtn) {
+        trc20QRBtn.addEventListener('click', () => {
+          // For now, use placeholder address
+          window.location.href = `qr.html?network=TRC20&address=${encodeURIComponent('TEoXJFZ...sKcT9Pz')}`;
         });
       }
     });
