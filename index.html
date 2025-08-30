@@ -153,6 +153,20 @@
   </div>
 
   <script src="./main.js"></script>
+  <script>
+    // Add topup functionality to the plus button
+    document.addEventListener('DOMContentLoaded', () => {
+      const plusBtn = document.getElementById('plusBtn');
+      if (plusBtn) {
+        plusBtn.addEventListener('click', () => {
+          window.location.href = 'topup.html';
+          try {
+            window.Telegram?.WebApp?.HapticFeedback?.impactOccurred('medium');
+          } catch(e) {}
+        });
+      }
+    });
+  </script>
   <noscript>Для работы приложения нужен JavaScript</noscript>
   
 </body>

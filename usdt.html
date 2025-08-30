@@ -509,6 +509,27 @@
           window.location.href = `qr.html?network=TRC20&address=${encodeURIComponent('TEoXJFZ...sKcT9Pz')}`;
         });
       }
+
+      // Topup button handlers
+      const topupBtn = document.querySelector('.asset-ctas button[aria-label="Пополнить"]');
+      if (topupBtn) {
+        topupBtn.addEventListener('click', () => {
+          window.location.href = 'topup.html';
+          try {
+            window.Telegram?.WebApp?.HapticFeedback?.impactOccurred('medium');
+          } catch(e) {}
+        });
+      }
+
+      const topupWalletBtn = document.querySelector('.top-up-wallet-btn');
+      if (topupWalletBtn) {
+        topupWalletBtn.addEventListener('click', () => {
+          window.location.href = 'topup.html';
+          try {
+            window.Telegram?.WebApp?.HapticFeedback?.impactOccurred('medium');
+          } catch(e) {}
+        });
+      }
     });
   </script>
 </body>
