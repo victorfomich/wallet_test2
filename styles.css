@@ -11,7 +11,12 @@
 }
 
 * { box-sizing: border-box; }
-html, body { height: 100%; }
+html, body { 
+  height: 100%; 
+  overflow-x: hidden; /* Предотвращаем горизонтальный скролл */
+  overscroll-behavior: none; /* Отключаем bounce эффект на всех устройствах */
+  -webkit-overflow-scrolling: touch; /* Плавный скролл на iOS */
+}
 body {
   margin: 0;
   font-family: -apple-system, system-ui, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji", "Segoe UI Emoji";
@@ -19,7 +24,8 @@ body {
   color: var(--text);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  overscroll-behavior-y: none; /* разрешаем скролл, но без перетягивания за верх */
+  overscroll-behavior: none; /* Отключаем bounce эффект */
+  touch-action: pan-y; /* Разрешаем только вертикальные жесты */
 }
 
 #app {
@@ -27,12 +33,14 @@ body {
   margin: 0 auto;
   padding: 16px 16px 72px; /* место под нижнюю панель */
   position: relative;
-  height: 100vh; /* Используем viewport height */
-  height: calc(var(--vh, 1vh) * 100); /* Fallback для мобильных */
-  overflow-y: auto; /* Разрешаем вертикальный скролл только внутри app */
-  overflow-x: hidden; /* Запрещаем горизонтальный скролл */
-  overscroll-behavior: contain; /* Контейнер не влияет на родительский скролл */
-  -webkit-overflow-scrolling: touch; /* Плавный скролл на iOS */
+  /* Убираем height: 100vh, чтобы контент мог растягиваться */
+  /* height: 100vh; */
+  /* height: calc(var(--vh, 1vh) * 100); */
+  /* Убираем overflow: hidden, чтобы страница могла скроллиться */
+  /* overflow-y: auto; */
+  /* overflow-x: hidden; */
+  /* overscroll-behavior: contain; */
+  /* -webkit-overflow-scrolling: touch; */
 }
 
 .hero {
@@ -112,36 +120,35 @@ body {
   display: grid;
   grid-auto-flow: column;
   grid-auto-columns: calc(100% - 36px - 24px); /* account for side insets while keeping peek */
-  /* Убираем overflow-x: auto, так как sheet должен быть цельным */
-  /* overflow-x: auto; */
+  overflow-x: auto; /* Восстанавливаем горизонтальный скролл */
   overflow-y: hidden; /* prevent vertical scroll jiggle */
-  /* Убираем overscroll-behavior, так как скролл должен быть на уровне страницы */
-  /* overscroll-behavior-y: contain; */
-  /* Убираем touch-action, так как жесты должны обрабатываться на уровне страницы */
-  /* touch-action: pan-x; */
-  /* Убираем scroll-snap-type, так как нет скролла */
-  /* scroll-snap-type: x mandatory; */
+  overscroll-behavior-x: contain; /* Предотвращаем bounce эффект по горизонтали */
+  touch-action: pan-x; /* Разрешаем горизонтальные жесты */
+  scroll-snap-type: x mandatory; /* Восстанавливаем snap эффект */
   gap: 12px;
-  /* Убираем -webkit-overflow-scrolling, так как нет скролла */
-  /* -webkit-overflow-scrolling: touch; */
+  -webkit-overflow-scrolling: touch; /* Плавный скролл на iOS */
   width: 100vw;               /* full-bleed horizontally */
   margin-left: calc(50% - 50vw);
   margin-right: calc(50% - 50vw);
   padding: 0 12px;            /* side offsets from screen edges */
   box-sizing: border-box;     /* keep width within viewport with padding */
-  /* Убираем scroll-padding, так как нет скролла */
-  /* scroll-padding-left: 12px; */
-  /* scroll-padding-right: 12px; */
+  scroll-padding-left: 12px;  /* keep side inset when snapping */
+  scroll-padding-right: 12px;
+  /* Скрываем скроллбар */
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* IE and Edge */
 }
-/* Убираем стили для скроллбара, так как нет скролла */
-/* .sheet-banners::-webkit-scrollbar { display: none; } */
+
+/* Скрываем скроллбар для WebKit браузеров */
+.sheet-banners::-webkit-scrollbar { 
+  display: none; 
+}
 .sheet-banner {
   height: 95px;
   background: linear-gradient(135deg, #1a6cff, #3b82f6, #60a5fa);
   border-radius: 20px;
   position: relative;
-  /* Убираем scroll-snap-align, так как нет скролла */
-  /* scroll-snap-align: start; */
+  scroll-snap-align: start; /* Восстанавливаем snap эффект */
 }
 /* Softer purple gradient for the second banner */
 .sheet-banners .sheet-banner:nth-child(2) {
@@ -368,13 +375,13 @@ body {
     touch-action: manipulation; /* Отключаем двойной тап для зума */
   }
   
-  /* Предотвращаем выход контента за границы */
+  /* Убираем ограничения для #app, чтобы страница могла скроллиться */
   #app {
-    min-height: 100vh;
-    min-height: calc(var(--vh, 1vh) * 100);
-    max-height: 100vh;
-    max-height: calc(var(--vh, 1vh) * 100);
-    overflow: hidden; /* Контролируем скролл только внутри */
+    /* min-height: 100vh; */
+    /* min-height: calc(var(--vh, 1vh) * 100); */
+    /* max-height: 100vh; */
+    /* max-height: calc(var(--vh, 1vh) * 100); */
+    /* overflow: hidden; */
   }
   
   /* Убираем контроль скролла в sheet, так как он должен быть цельным */
@@ -386,13 +393,13 @@ body {
     /* overscroll-behavior: contain; */
   }
   
-  /* Убираем контроль скролла для баннеров, так как sheet должен быть цельным */
+  /* Восстанавливаем контроль скролла для баннеров */
   .sheet-banners {
     max-width: 100%;
-    /* overflow-x: auto; */
-    /* overflow-y: hidden; */
-    /* -webkit-overflow-scrolling: touch; */
-    /* overscroll-behavior: contain; */
+    overflow-x: auto;
+    overflow-y: hidden;
+    -webkit-overflow-scrolling: touch;
+    overscroll-behavior-x: contain;
   }
   
   /* Улучшаем контроль таббара */

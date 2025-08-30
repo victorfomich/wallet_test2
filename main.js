@@ -378,8 +378,7 @@ function preventOverscroll() {
     });
   }
 
-  // Убираем контроль для баннеров, так как sheet должен быть цельным
-  // Баннеры теперь являются частью цельного модуля без собственного скролла
+  // Баннеры теперь имеют собственный горизонтальный скролл с плавной анимацией
 }
 
 // Инициализация контроля скролла
@@ -418,11 +417,11 @@ function fixViewportHeight() {
   const vh = window.innerHeight * 0.01;
   document.documentElement.style.setProperty('--vh', `${vh}px`);
   
-  // Обновляем высоту app контейнера
-  const app = document.getElementById('app');
+  // Убираем фиксацию высоты app контейнера, чтобы страница могла скроллиться
+  /* const app = document.getElementById('app');
   if (app) {
     app.style.height = `${window.innerHeight}px`;
-  }
+  } */
 }
 
 window.addEventListener('resize', fixViewportHeight);
