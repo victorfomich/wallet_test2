@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover, minimal-ui" />
+  <title>Профиль</title>
+  <link rel="stylesheet" href="./styles.css" />
+  <link rel="stylesheet" href="./profile.css" />
+  <script src="https://telegram.org/js/telegram-web-app.js"></script>
+  <meta name="color-scheme" content="light" />
+  <meta name="theme-color" content="#2aabee" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+  <meta name="format-detection" content="telephone=no" />
+  <meta name="msapplication-tap-highlight" content="no" />
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>💳</text></svg>"> 
+</head>
+<body>
+  <div id="app">
+    <nav class="tabbar" role="tablist" aria-label="Навигация">
+      <button class="tab" onclick="window.location.href='index.html'" role="tab" aria-selected="false">
+        <span class="icon" aria-hidden="true">
+          <img src="home1-icon.png" alt="Главная" class="tab-icon-home" width="22" height="22" />
+        </span>
+        <span class="label">Главная</span>
+      </button>
+      <button class="tab" onclick="window.location.href='history.html'" role="tab" aria-selected="false">
+        <span class="icon" aria-hidden="true">
+          <img src="history1-icon.png" alt="История" class="tab-icon-history" width="22" height="22" />
+        </span>
+        <span class="label">История</span>
+      </button>
+      <button class="tab" onclick="window.location.href='browser.html'" role="tab" aria-selected="false">
+        <span class="icon" aria-hidden="true">
+          <img src="browser1-icon.png" alt="Браузер" class="tab-icon-browser" width="22" height="22" />
+        </span>
+        <span class="label">Браузер</span>
+      </button>
+      <button class="tab active" role="tab" aria-selected="true">
+        <span class="icon" aria-hidden="true">
+          <img src="profile2-icon.png" alt="Профиль" class="tab-icon-profile" width="22" height="22" />
+        </span>
+        <span class="label">Профиль</span>
+      </button>
+    </nav>
+    
+    <div class="profile-container">
+    <!-- Profile User Section -->
+    <section class="user-section">
+      <div class="user-card">
+        <div class="user-avatar">
+          <img id="profileAvatar" alt="" hidden />
+          <div id="profileAvatarFallback" class="avatar-fallback">V</div>
+        </div>
+        <div class="user-info">
+          <h1 id="profileNickname" class="user-name">@vicfomich</h1>
+          <p class="user-status">Новичок</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Verification Section -->
+    <section class="verification-section">
+      <div class="verification-card kyc-verified" role="button" tabindex="0">
+        <div class="verification-icon">
+          <img src="camera.png" alt="Camera" width="20" height="20" />
+        </div>
+        <div class="verification-content">
+          <h3>KYC верификация</h3>
+          <p class="verification-action">Пройти 
+            <svg class="arrow-icon" viewBox="0 0 24 24" width="16" height="16">
+              <path d="M9 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </p>
+        </div>
+      </div>
+      
+      <div class="verification-card email-unverified" role="button" tabindex="0">
+        <div class="verification-icon">
+          <span>@</span>
+        </div>
+        <div class="verification-content">
+          <h3>Email</h3>
+          <p class="verification-action">Добавить 
+            <svg class="arrow-icon" viewBox="0 0 24 24" width="16" height="16">
+              <path d="M9 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Main Features -->
+    <section class="main-features">
+      <div class="card-group">
+        <div class="profile-card" role="button" tabindex="0">
+          <div class="profile-card-left">
+            <div class="profile-card-icon referral">
+              <svg viewBox="0 0 24 24" width="18" height="18">
+                <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2M9 7a4 4 0 1 0 0 8 4 4 0 0 0 0-8zM22 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </div>
+            <div class="profile-card-info">
+              <div class="profile-card-title">Реферальная программа</div>
+            </div>
+          </div>
+          <div class="profile-card-right">
+            <svg class="arrow-icon" viewBox="0 0 24 24" width="16" height="16">
+              <path d="M9 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </div>
+        </div>
+
+        <div class="profile-card" role="button" tabindex="0">
+          <div class="profile-card-left">
+            <div class="profile-card-icon promo">
+              <svg viewBox="0 0 24 24" width="18" height="18">
+                <path d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 0 1 0 2.828l-7 7a2 2 0 0 1-2.828 0l-7-7A1.994 1.994 0 0 1 3 12V7a4 4 0 0 1 4-4z" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </div>
+            <div class="profile-card-info">
+                          <div class="profile-card-title">Акции и промокоды</div>
+          </div>
+        </div>
+        <div class="profile-card-right">
+          <svg class="arrow-icon" viewBox="0 0 24 24" width="16" height="16">
+            <path d="M9 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Settings Section -->
+    <section class="settings-section">
+      <div class="section-header">
+        <h2>ПАРАМЕТРЫ</h2>
+      </div>
+
+      <div class="card-group">
+        <div class="profile-card" role="button" tabindex="0">
+          <div class="profile-card-left">
+            <div class="profile-card-icon security">
+              <svg viewBox="0 0 24 24" width="18" height="18">
+                <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" stroke="currentColor" stroke-width="2" fill="none"/>
+              </svg>
+            </div>
+            <div class="profile-card-info">
+                          <div class="profile-card-title">Безопасность</div>
+          </div>
+        </div>
+        <div class="profile-card-right">
+          <svg class="arrow-icon" viewBox="0 0 24 24" width="16" height="16">
+            <path d="M9 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </div>
+        </div>
+
+        <div class="profile-card" role="button" tabindex="0">
+          <div class="profile-card-left">
+            <div class="profile-card-icon language">
+              <svg viewBox="0 0 24 24" width="18" height="18">
+                <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="2" fill="none"/>
+                <path d="M2 12h20M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z" stroke="currentColor" stroke-width="2" fill="none"/>
+              </svg>
+            </div>
+            <div class="profile-card-info">
+              <div class="profile-card-title">Язык</div>
+            </div>
+          </div>
+                  <div class="profile-card-right">
+          <span class="profile-card-value">Русский</span>
+          <svg class="arrow-icon" viewBox="0 0 24 24" width="16" height="16">
+            <path d="M9 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </div>
+        </div>
+
+        <div class="profile-card" role="button" tabindex="0">
+          <div class="profile-card-left">
+            <div class="profile-card-icon devices">
+              <svg viewBox="0 0 24 24" width="18" height="18">
+                <rect x="2" y="3" width="20" height="14" rx="2" ry="2" stroke="currentColor" stroke-width="2" fill="none"/>
+                <line x1="8" y1="21" x2="16" y2="21" stroke="currentColor" stroke-width="2"/>
+                <line x1="12" y1="17" x2="12" y2="21" stroke="currentColor" stroke-width="2"/>
+              </svg>
+            </div>
+            <div class="profile-card-info">
+              <div class="profile-card-title">Устройства</div>
+            </div>
+          </div>
+          <div class="profile-card-right">
+            <span class="device-count">3</span>
+            <svg class="arrow-icon" viewBox="0 0 24 24" width="16" height="16">
+              <path d="M9 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- About Section -->
+    <section class="about-section">
+      <div class="section-header">
+        <h2>О НАС</h2>
+      </div>
+
+
+      <div class="profile-card single-card" role="button" tabindex="0">
+        <div class="profile-card-left">
+          <div class="profile-card-icon support">
+            <svg viewBox="0 0 24 24" width="18" height="18">
+              <path d="M21 15.46l-5.27-.61-2.49 2.49a15.045 15.045 0 0 1-6.59-6.59l2.49-2.49L8.54 3H3.03C2.45 13.18 10.82 21.55 21 20.97v-5.51z" stroke="currentColor" stroke-width="2" fill="none"/>
+            </svg>
+          </div>
+          <div class="profile-card-info">
+            <div class="profile-card-title">Обратиться в поддержку</div>
+          </div>
+        </div>
+        <div class="profile-card-right">
+          <svg class="arrow-icon" viewBox="0 0 24 24" width="16" height="16">
+            <path d="M9 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </div>
+      </div>
+    </section>
+
+    <!-- Logout Section -->
+    <section class="logout-section">
+      <button class="logout-btn" id="logoutBtn">
+        Выйти из аккаунта
+      </button>
+    </section>
+
+    <!-- Version -->
+    <div class="version-info">
+      <p>v0.10.18 beta</p>
+    </div>
+      </div>
+  </div>
+
+  <script>
+    // Load user data
+    document.addEventListener('DOMContentLoaded', () => {
+      try {
+        const wa = window.Telegram?.WebApp;
+        const user = wa?.initDataUnsafe?.user;
+        
+        if (user) {
+          // Update username - используем ту же логику, что и в index.html
+          const nickname = document.getElementById('profileNickname');
+          if (nickname) {
+            const name = [user.first_name, user.last_name].filter(Boolean).join(' ');
+            const displayName = user.username ? `@${user.username}` : (name || 'Пользователь');
+            nickname.textContent = displayName;
+          }
+          
+          // Update avatar - используем ту же логику, что и в index.html
+          const avatarImg = document.getElementById('profileAvatar');
+          const avatarFallback = document.getElementById('profileAvatarFallback');
+          
+          if (avatarImg && avatarFallback) {
+            // Сначала показываем заглушку с инициалами
+            const name = [user.first_name, user.last_name].filter(Boolean).join(' ');
+            const nickname = user.username ? user.username : name || 'Пользователь';
+            const initials = (name || nickname).trim()[0]?.toUpperCase() || '?';
+            avatarFallback.textContent = initials;
+            avatarFallback.style.display = 'grid';
+            
+            // Если есть photo_url, пытаемся загрузить аватар
+            if (user.photo_url) {
+              avatarImg.hidden = true;
+              avatarImg.onload = () => {
+                avatarImg.hidden = false;
+                avatarFallback.style.display = 'none';
+              };
+              avatarImg.onerror = () => {
+                avatarImg.hidden = true;
+                avatarFallback.style.display = 'grid';
+              };
+              avatarImg.src = user.photo_url;
+            } else {
+              // Если нет photo_url, показываем только заглушку
+              avatarImg.hidden = true;
+              avatarFallback.style.display = 'grid';
+            }
+          }
+        } else {
+          // Fallback если данные пользователя недоступны
+          const nickname = document.getElementById('profileNickname');
+          const avatarFallback = document.getElementById('profileAvatarFallback');
+          
+          if (nickname) nickname.textContent = 'Пользователь';
+          if (avatarFallback) {
+            avatarFallback.textContent = 'U';
+            avatarFallback.style.display = 'grid';
+          }
+        }
+      } catch(e) {
+        console.log('Failed to load user data:', e);
+        
+        // Fallback в случае ошибки
+        const nickname = document.getElementById('profileNickname');
+        const avatarFallback = document.getElementById('profileAvatarFallback');
+        
+        if (nickname) nickname.textContent = 'Пользователь';
+        if (avatarFallback) {
+          avatarFallback.textContent = 'U';
+          avatarFallback.style.display = 'grid';
+        }
+      }
+    });
+
+    // Card click handlers
+    document.querySelectorAll('.profile-card[role="button"], .verification-card[role="button"]').forEach(card => {
+      card.addEventListener('click', () => {
+        // Add haptic feedback
+        try {
+          window.Telegram?.WebApp?.HapticFeedback?.impactOccurred('light');
+        } catch(e) {}
+        
+        // Handle navigation based on card type
+        const title = card.querySelector('.profile-card-title, h3')?.textContent;
+        console.log(`Clicked: ${title}`);
+        // Add navigation logic here
+      });
+    });
+
+    // Logout button
+    document.getElementById('logoutBtn').addEventListener('click', () => {
+      try {
+        window.Telegram?.WebApp?.HapticFeedback?.impactOccurred('medium');
+      } catch(e) {}
+      
+      if (confirm('Вы действительно хотите выйти из аккаунта?')) {
+        // Clear local storage
+        localStorage.clear();
+        
+        // Redirect to main page or close app
+        try {
+          window.Telegram?.WebApp?.close();
+        } catch(e) {
+          window.location.href = 'index.html';
+        }
+      }
+    });
+  </script>
+</body>
+</html>

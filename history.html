@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover, minimal-ui" />
+  <title>История</title>
+  <link rel="stylesheet" href="./styles.css" />
+  <link rel="stylesheet" href="./history.css" />
+  <script src="https://telegram.org/js/telegram-web-app.js"></script>
+  <meta name="color-scheme" content="light" />
+  <meta name="theme-color" content="#2aabee" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+  <meta name="format-detection" content="telephone=no" />
+  <meta name="msapplication-tap-highlight" content="no" />
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>💳</text></svg>"> 
+</head>
+<body>
+  <div id="app">
+    <nav class="tabbar" role="tablist" aria-label="Навигация">
+      <button class="tab" onclick="window.location.href='index.html'" role="tab" aria-selected="false">
+        <span class="icon" aria-hidden="true">
+          <img src="home1-icon.png" alt="Главная" class="tab-icon-home" width="22" height="22" />
+        </span>
+        <span class="label">Главная</span>
+      </button>
+      <button class="tab active" role="tab" aria-selected="true">
+        <span class="icon" aria-hidden="true">
+          <img src="history2-icon.png" alt="История" class="tab-icon-history" width="22" height="22" />
+        </span>
+        <span class="label">История</span>
+      </button>
+      <button class="tab" onclick="window.location.href='browser.html'" role="tab" aria-selected="false">
+        <span class="icon" aria-hidden="true">
+          <img src="browser1-icon.png" alt="Браузер" class="tab-icon-browser" width="22" height="22" />
+        </span>
+        <span class="label">Браузер</span>
+      </button>
+      <button class="tab" onclick="window.location.href='profile.html'" role="tab" aria-selected="false">
+        <span class="icon" aria-hidden="true">
+          <img src="profile1-icon.png" alt="Профиль" class="tab-icon-profile" width="22" height="22" />
+        </span>
+        <span class="label">Профиль</span>
+      </button>
+    </nav>
+    
+    <main class="main-content">
+    <!-- Transaction History Section -->
+    <div class="transaction-history-section">
+      <h2 class="history-title">История транзакций</h2>
+      <div class="history-empty-state">
+        <p>Здесь будут отображаться все ваши</p>
+        <p>финансовые операции</p>
+      </div>
+      <button class="top-up-wallet-btn" id="topUpBtn">
+        <span class="plus-icon">+</span>
+        <span class="btn-text">Пополнить кошелёк</span>
+      </button>
+    </div>
+    </main>
+  </div>
+
+  <script>
+
+    // Top up button functionality
+    document.getElementById('topUpBtn').addEventListener('click', () => {
+      window.location.href = 'topup.html';
+      try {
+        window.Telegram?.WebApp?.HapticFeedback?.impactOccurred('medium');
+      } catch(e) {}
+    });
+  </script>
+</body>
+</html>

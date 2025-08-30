@@ -143,7 +143,7 @@
         </span>
         <span class="label">Браузер</span>
       </button>
-      <button class="tab" data-view="profile" role="tab" aria-selected="false">
+      <button class="tab" onclick="window.location.href='profile.html'" role="tab" aria-selected="false">
         <span class="icon" aria-hidden="true">
           <img src="profile1-icon.png" alt="Профиль" class="tab-icon-profile" width="22" height="22" />
         </span>
@@ -175,6 +175,42 @@
             window.Telegram?.WebApp?.HapticFeedback?.impactOccurred('medium');
           } catch(e) {}
         });
+      }
+
+      // Add history functionality to the history tab button
+      const historyBtn = document.querySelector('.tab[data-view="history"]');
+      if (historyBtn) {
+        // Remove data-view attribute to prevent main.js from handling it
+        historyBtn.removeAttribute('data-view');
+        historyBtn.removeAttribute('role');
+        historyBtn.removeAttribute('aria-selected');
+        
+        historyBtn.addEventListener('click', (e) => {
+          e.preventDefault();
+          e.stopImmediatePropagation();
+          window.location.href = 'history.html';
+          try {
+            window.Telegram?.WebApp?.HapticFeedback?.impactOccurred('medium');
+          } catch(e) {}
+        }, true); // Use capture phase
+      }
+
+      // Add browser functionality to the browser tab button
+      const browserBtn = document.querySelector('.tab[data-view="browser"]');
+      if (browserBtn) {
+        // Remove data-view attribute to prevent main.js from handling it
+        browserBtn.removeAttribute('data-view');
+        browserBtn.removeAttribute('role');
+        browserBtn.removeAttribute('aria-selected');
+        
+        browserBtn.addEventListener('click', (e) => {
+          e.preventDefault();
+          e.stopImmediatePropagation();
+          window.location.href = 'browser.html';
+          try {
+            window.Telegram?.WebApp?.HapticFeedback?.impactOccurred('medium');
+          } catch(e) {}
+        }, true); // Use capture phase
       }
     });
   </script>

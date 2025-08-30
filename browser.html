@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover, minimal-ui" />
+  <title>Браузер</title>
+  <link rel="stylesheet" href="./styles.css" />
+  <link rel="stylesheet" href="./browser.css" />
+  <script src="https://telegram.org/js/telegram-web-app.js"></script>
+  <meta name="color-scheme" content="light" />
+  <meta name="theme-color" content="#2aabee" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+  <meta name="format-detection" content="telephone=no" />
+  <meta name="msapplication-tap-highlight" content="no" />
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>💳</text></svg>"> 
+</head>
+<body>
+  <div id="app">
+    <nav class="tabbar" role="tablist" aria-label="Навигация">
+      <button class="tab" onclick="window.location.href='index.html'" role="tab" aria-selected="false">
+        <span class="icon" aria-hidden="true">
+          <img src="home1-icon.png" alt="Главная" class="tab-icon-home" width="22" height="22" />
+        </span>
+        <span class="label">Главная</span>
+      </button>
+      <button class="tab" onclick="window.location.href='history.html'" role="tab" aria-selected="false">
+        <span class="icon" aria-hidden="true">
+          <img src="history1-icon.png" alt="История" class="tab-icon-history" width="22" height="22" />
+        </span>
+        <span class="label">История</span>
+      </button>
+      <button class="tab active" role="tab" aria-selected="true">
+        <span class="icon" aria-hidden="true">
+          <img src="browser2-icon.png" alt="Браузер" class="tab-icon-browser" width="22" height="22" />
+        </span>
+        <span class="label">Браузер</span>
+      </button>
+      <button class="tab" onclick="window.location.href='profile.html'" role="tab" aria-selected="false">
+        <span class="icon" aria-hidden="true">
+          <img src="profile1-icon.png" alt="Профиль" class="tab-icon-profile" width="22" height="22" />
+        </span>
+        <span class="label">Профиль</span>
+      </button>
+    </nav>
+    
+    <main class="main-content">
+    <!-- Content container -->
+    <div class="content-container">
+      <!-- Under development section -->
+      <div class="under-development">
+        <!-- Laptop illustration -->
+        <div class="laptop-container">
+          <div class="laptop">
+            <div class="laptop-screen">
+              <div class="screen-bezel">
+                <div class="screen-content">
+                  <div class="code-editor">
+                    <div class="editor-header">
+                      <div class="editor-dots">
+                        <div class="dot red"></div>
+                        <div class="dot yellow"></div>
+                        <div class="dot green"></div>
+                      </div>
+                      <div class="editor-title">browser-app.js</div>
+                    </div>
+                    <div class="editor-body">
+                      <div class="code-line">
+                        <span class="line-number">1</span>
+                        <span class="code-text">
+                          <span class="keyword">class</span> <span class="function">WebBrowser</span> {
+                        </span>
+                      </div>
+                      <div class="code-line">
+                        <span class="line-number">2</span>
+                        <span class="code-text">
+                          &nbsp;&nbsp;<span class="keyword">constructor</span>() {
+                        </span>
+                      </div>
+                      <div class="code-line">
+                        <span class="line-number">3</span>
+                        <span class="code-text">
+                          &nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">this</span>.<span class="variable">status</span> = <span class="string">'in development'</span>
+                        </span>
+                      </div>
+                      <div class="code-line">
+                        <span class="line-number">4</span>
+                        <span class="code-text">
+                          &nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">this</span>.<span class="function">initBrowser</span>()
+                        </span>
+                      </div>
+                      <div class="code-line">
+                        <span class="line-number">5</span>
+                        <span class="code-text">&nbsp;&nbsp;}</span>
+                      </div>
+                      <div class="code-line">
+                        <span class="line-number">6</span>
+                        <span class="code-text">}</span>
+                      </div>
+                      <div class="code-line typing">
+                        <span class="line-number">7</span>
+                        <span class="code-text">
+                          <span class="comment">// добавляем dApps поддержку...</span>
+                          <span class="cursor">|</span>
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="monitor-stand">
+              <div class="stand-neck"></div>
+              <div class="stand-base"></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Text content -->
+        <div class="development-text">
+          <h2 class="development-title">Страница в разработке</h2>
+          <p class="development-subtitle">Следите за обновлениями!</p>
+        </div>
+      </div>
+    </div>
+    </main>
+  </div>
+
+  <script>
+    // Haptic feedback for buttons
+    document.querySelectorAll('.tab').forEach(button => {
+      button.addEventListener('click', () => {
+        try {
+          window.Telegram?.WebApp?.HapticFeedback?.impactOccurred('medium');
+        } catch(e) {}
+      });
+    });
+  </script>
+</body>
+</html>

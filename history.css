@@ -1,0 +1,180 @@
+/* History page specific styles */
+
+/* Main container */
+.main-content {
+  padding-bottom: 80px; /* Space for bottom navigation */
+  min-height: calc(100vh - 80px);
+  background: #f7f8fb;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Header */
+.history-header {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px 20px;
+  background: transparent;
+  border-bottom: none;
+  position: relative;
+  z-index: 10;
+}
+
+.back-btn {
+  appearance: none;
+  border: none;
+  background: transparent;
+  color: rgba(107, 114, 128, 0.6);
+  cursor: pointer;
+  padding: 8px;
+  margin-left: -8px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.back-btn:active {
+  background: rgba(107, 114, 128, 0.1);
+}
+
+.header-title {
+  font-size: 20px;
+  font-weight: 600;
+  color: #0b1220;
+}
+
+/* Transaction History Section Styles (from usdt.html) */
+.transaction-history-section {
+  margin-top: 40px;
+  padding: 0 20px;
+  text-align: center;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 20px;
+}
+
+.history-title {
+  font-size: 24px;
+  font-weight: 700;
+  color: #0b1220;
+  margin: 0 0 20px 0;
+}
+
+.history-empty-state {
+  margin-bottom: 40px;
+}
+
+.history-empty-state p {
+  font-size: 16px;
+  color: #6b7280;
+  margin: 0;
+  line-height: 1.4;
+}
+
+.top-up-wallet-btn {
+  background: #007AFF;
+  color: white;
+  border: none;
+  border-radius: 16px;
+  padding: 16px 24px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  width: 100%;
+  max-width: 300px;
+  margin: 0 auto;
+  transition: background-color 0.2s ease;
+}
+
+.top-up-wallet-btn:hover {
+  background: #0056CC;
+}
+
+.top-up-wallet-btn:active {
+  background: #004499;
+  transform: scale(0.98);
+}
+
+.plus-icon {
+  font-size: 20px;
+  font-weight: bold;
+}
+
+.btn-text {
+  font-size: 16px;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .history-container {
+    min-height: 100vh;
+    min-height: calc(var(--vh, 1vh) * 100);
+  }
+  
+  .history-header {
+    padding: 12px 16px;
+  }
+  
+  .header-title {
+    font-size: 18px;
+  }
+  
+  .transaction-history-section {
+    padding: 0 16px;
+    margin-top: 20px;
+  }
+  
+  .history-title {
+    font-size: 22px;
+  }
+  
+  .history-empty-state p {
+    font-size: 15px;
+  }
+}
+
+/* Touch feedback improvements */
+.top-up-wallet-btn,
+.back-btn {
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
+}
+
+/* Accessibility improvements */
+.back-btn:focus,
+.top-up-wallet-btn:focus {
+  outline: 2px solid #007AFF;
+  outline-offset: 2px;
+}
+
+/* Loading state for button */
+.top-up-wallet-btn.loading {
+  pointer-events: none;
+  opacity: 0.7;
+}
+
+.top-up-wallet-btn.loading::after {
+  content: '';
+  width: 16px;
+  height: 16px;
+  border: 2px solid transparent;
+  border-top: 2px solid currentColor;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  margin-left: 8px;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
