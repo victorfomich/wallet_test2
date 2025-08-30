@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover, minimal-ui" />
+  <title>Email адрес</title>
+  <link rel="stylesheet" href="./styles.css" />
+  <link rel="stylesheet" href="./email.css" />
+  <script src="https://telegram.org/js/telegram-web-app.js"></script>
+  <meta name="color-scheme" content="light" />
+  <meta name="theme-color" content="#2aabee" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+  <meta name="format-detection" content="telephone=no" />
+  <meta name="msapplication-tap-highlight" content="no" />
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>💳</text></svg>"> 
+</head>
+<body>
+  <div id="app">
+    <!-- Header with back button -->
+    <header class="email-header">
+      <button id="backBtn" class="back-btn" aria-label="Назад">
+        <svg viewBox="0 0 24 24" width="24" height="24" aria-hidden="true">
+          <path d="M15 6L9 12l6 6" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </button>
+      <div class="header-title">Email адрес</div>
+    </header>
+
+    <!-- Email Content -->
+    <main class="email-content">
+      <!-- Instructional text -->
+      <div class="instruction-text">
+        Добавьте адрес электронной почты для повышения уровня безопасности вашего аккаунта Dream Wallet
+      </div>
+
+      <!-- Email input field -->
+      <div class="input-container">
+        <input 
+          type="email" 
+          id="emailInput" 
+          class="email-input" 
+          placeholder="Ваш email" 
+          autocomplete="email"
+          inputmode="email"
+        />
+      </div>
+
+      <!-- Send code button -->
+      <button class="send-code-btn" id="sendCodeBtn" disabled>
+        Отправить код
+      </button>
+    </main>
+  </div>
+
+  <script>
+    // Back button functionality
+    document.getElementById('backBtn').addEventListener('click', () => {
+      if (window.history.length > 1) {
+        window.history.back();
+      } else {
+        window.location.href = 'security.html';
+      }
+    });
+
+    // Telegram WebApp back button
+    try {
+      const wa = window.Telegram?.WebApp;
+      if (wa) {
+        wa.BackButton?.show();
+        wa.BackButton?.onClick(() => {
+          document.getElementById('backBtn').click();
+        });
+      }
+    } catch(e) {
+      console.log('Telegram WebApp not available');
+    }
+
+    // Email validation and form handling
+    document.addEventListener('DOMContentLoaded', () => {
+      const emailInput = document.getElementById('emailInput');
+      const sendCodeBtn = document.getElementById('sendCodeBtn');
+      
+      // Email validation function
+      function validateEmail(email) {
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        return emailRegex.test(email);
+      }
+      
+      // Update button state based on input
+      function updateButtonState() {
+        const email = emailInput.value.trim();
+        const isValid = validateEmail(email);
+        
+        sendCodeBtn.disabled = !isValid;
+        sendCodeBtn.classList.toggle('active', isValid);
+      }
+      
+      // Input event listeners
+      emailInput.addEventListener('input', updateButtonState);
+      emailInput.addEventListener('blur', updateButtonState);
+      emailInput.addEventListener('focus', updateButtonState);
+      
+      // Send code button click handler
+      sendCodeBtn.addEventListener('click', async () => {
+        if (sendCodeBtn.disabled) return;
+        
+        const email = emailInput.value.trim();
+        
+        // Add haptic feedback
+        try {
+          window.Telegram?.WebApp?.HapticFeedback?.impactOccurred('medium');
+        } catch(e) {}
+        
+        // Disable button and show loading state
+        sendCodeBtn.disabled = true;
+        sendCodeBtn.textContent = 'Отправка...';
+        
+        // Simulate API call (in real app, this would be a real API call)
+        // Button stays in "Отправка..." state indefinitely
+        await new Promise(resolve => setTimeout(resolve, 1000));
+        
+        // Keep button disabled and showing "Отправка..."
+        // No notifications, no re-enabling
+      });
+      
+      // Focus on email input when page loads
+      emailInput.focus();
+    });
+
+
+  </script>
+</body>
+</html>

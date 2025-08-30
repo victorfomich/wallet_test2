@@ -1,0 +1,164 @@
+/* Email page styles */
+
+body {
+  background: #ffffff;
+  margin: 0;
+  font-family: -apple-system, system-ui, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji", "Segoe UI Emoji";
+  color: #0b1220;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Header */
+.email-header {
+  display: grid;
+  grid-template-columns: 48px 1fr 48px;
+  align-items: center;
+  padding: 16px 0;
+  background: #ffffff;
+}
+
+.back-btn {
+  appearance: none;
+  border: none;
+  background: transparent;
+  color: rgba(107,114,128,0.6);
+  font-size: 22px;
+  cursor: pointer;
+  width: 48px;
+  height: 48px;
+  display: grid;
+  place-items: center;
+  border-radius: 12px;
+}
+
+.back-btn:active {
+  background: rgba(0, 0, 0, 0.05);
+}
+
+.header-title {
+  text-align: center;
+  font-weight: 700;
+  color: #0b1220;
+  font-size: 18px;
+}
+
+/* Content */
+.email-content {
+  padding: 32px 16px 80px;
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+}
+
+/* Instructional text */
+.instruction-text {
+  font-size: 16px;
+  line-height: 1.5;
+  color: #0b1220;
+  text-align: center;
+  margin: 0;
+  padding: 0 8px;
+}
+
+/* Input container */
+.input-container {
+  width: 100%;
+}
+
+.email-input {
+  width: 100%;
+  padding: 16px;
+  border: none;
+  border-radius: 12px;
+  background: #f2f2f7;
+  font-size: 16px;
+  color: #0b1220;
+  outline: none;
+  box-sizing: border-box;
+  transition: all 0.2s ease;
+}
+
+.email-input::placeholder {
+  color: #8e8e93;
+}
+
+.email-input:focus {
+  background: #e5e5ea;
+  box-shadow: none;
+}
+
+.email-input:invalid {
+  border: 1px solid #ff3a3000;
+}
+
+/* Send code button */
+.send-code-btn {
+  width: 100%;
+  padding: 16px;
+  border: none;
+  border-radius: 12px;
+  background: #f2f2f7;
+  color: #8e8e93;
+  font-size: 16px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  box-sizing: border-box;
+}
+
+.send-code-btn:disabled {
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+.send-code-btn.active {
+  background: #007bfffd;
+  color: #ffffff;
+}
+
+.send-code-btn:not(:disabled):active {
+  transform: translateY(1px);
+}
+
+.send-code-btn.active:not(:disabled):active {
+  background: #0055cc;
+}
+
+/* Responsive adjustments */
+@media (max-width: 375px) {
+  .email-content {
+    padding: 24px 12px 80px;
+    gap: 24px;
+  }
+  
+  .instruction-text {
+    font-size: 15px;
+    padding: 0 4px;
+  }
+  
+  .email-input,
+  .send-code-btn {
+    padding: 14px;
+    font-size: 15px;
+  }
+}
+
+/* Improve touch targets for mobile */
+.email-input,
+.send-code-btn {
+  min-height: 48px;
+}
+
+/* Improve accessibility */
+.email-input:focus,
+.send-code-btn:focus {
+  outline: none;
+  outline-offset: 0;
+}
+
+/* Loading state for button */
+.send-code-btn:disabled:not(.active) {
+  background: #f2f2f7;
+  color: #8e8e93;
+}
