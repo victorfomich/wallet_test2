@@ -168,6 +168,67 @@
       border-radius: 50%;
       object-fit: cover;
     }
+
+    /* Transaction History Section Styles */
+    .transaction-history-section {
+      margin-top: 40px;
+      padding: 0 20px;
+      text-align: center;
+    }
+
+    .history-title {
+      font-size: 24px;
+      font-weight: 700;
+      color: #0b1220;
+      margin: 0 0 20px 0;
+    }
+
+    .history-empty-state {
+      margin-bottom: 40px;
+    }
+
+    .history-empty-state p {
+      font-size: 16px;
+      color: #6b7280;
+      margin: 0;
+      line-height: 1.4;
+    }
+
+    .top-up-wallet-btn {
+      background: #007AFF;
+      color: white;
+      border: none;
+      border-radius: 16px;
+      padding: 16px 24px;
+      font-size: 16px;
+      font-weight: 600;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      width: 100%;
+      max-width: 300px;
+      margin: 0 auto;
+      transition: background-color 0.2s ease;
+    }
+
+    .top-up-wallet-btn:hover {
+      background: #0056CC;
+    }
+
+    .top-up-wallet-btn:active {
+      background: #004499;
+    }
+
+    .plus-icon {
+      font-size: 20px;
+      font-weight: bold;
+    }
+
+    .btn-text {
+      font-size: 16px;
+    }
   </style>
 </head>
 <body>
@@ -262,6 +323,19 @@
         </div>
       </div>
       <div class="card-fee">Комиссия: 0 USDT</div>
+    </div>
+
+    <!-- Transaction History Section -->
+    <div class="transaction-history-section">
+      <h2 class="history-title">История транзакций</h2>
+      <div class="history-empty-state">
+        <p>Здесь будут отображаться все ваши</p>
+        <p>финансовые операции</p>
+      </div>
+      <button class="top-up-wallet-btn">
+        <span class="plus-icon">+</span>
+        <span class="btn-text">Пополнить кошелёк</span>
+      </button>
     </div>
 
   </div>

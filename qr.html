@@ -383,7 +383,7 @@
         const networkBadge = document.getElementById('networkBadge');
         if (networkBadge) {
           networkBadge.textContent = network;
-          networkBadge.style.background = network === 'TON' ? '#10b981' : '#3b82f6';
+          networkBadge.style.background = network === 'TON' ? '#3b9cf6' : '#ff1c3a';
         }
         
         // Update network text
@@ -471,10 +471,10 @@
             try {
               console.log('Adding USDT logo to QR...');
               qrCode.update({
-                image: "usdt-icon-version2.png",
+                image: "USDT_Logo.png",
                 imageOptions: {
                   margin: 5,
-                  imageSize: 1
+                  imageSize: 0.6
                 }
               });
               console.log('Logo added successfully');

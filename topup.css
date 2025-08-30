@@ -1,0 +1,739 @@
+/* Topup page specific styles */
+
+/* Main container */
+.topup-container {
+  min-height: 100vh;
+  background: #f7f8fb;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Header */
+.topup-header {
+  display: flex;
+  align-items: center;
+  padding: 16px 20px;
+  background: #ffffff;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+  position: relative;
+  z-index: 10;
+}
+
+.back-btn {
+  appearance: none;
+  border: none;
+  background: transparent;
+  color: rgba(107, 114, 128, 0.6);
+  cursor: pointer;
+  padding: 8px;
+  margin-left: -8px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.back-btn:active {
+  background: rgba(107, 114, 128, 0.1);
+}
+
+.header-title {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 20px;
+  font-weight: 600;
+  color: #0b1220;
+}
+
+/* Content container */
+.content-container {
+  flex: 1;
+  padding: 24px 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+}
+
+/* Section styles */
+.section-title {
+  font-size: 18px;
+  font-weight: 700;
+  color: #0b1220;
+  margin: 0 0 16px 0;
+}
+
+/* Crypto section */
+.crypto-section {
+  margin-bottom: 8px;
+}
+
+.crypto-option {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: #ffffff;
+  border-radius: 16px;
+  padding: 16px 20px;
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.crypto-option:hover {
+  background: #f8f9fa;
+}
+
+.crypto-option:active {
+  transform: scale(0.98);
+}
+
+.crypto-left {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.crypto-icon {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background: #10b981;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.crypto-logo {
+  width: 46px;
+  height: 46px;
+  object-fit: contain;
+}
+
+.crypto-info {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.crypto-name {
+  font-size: 16px;
+  font-weight: 600;
+  color: #0b1220;
+}
+
+.crypto-balance {
+  font-size: 14px;
+  color: #9aa3ae;
+}
+
+.crypto-right {
+  display: flex;
+  align-items: center;
+}
+
+.arrow-icon {
+  color: #9aa3ae;
+}
+
+/* Network section */
+.network-section {
+  margin-bottom: 8px;
+}
+
+.network-option {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: #ffffff;
+  border-radius: 16px;
+  padding: 16px 20px;
+  margin-bottom: 12px;
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  position: relative;
+}
+
+.network-option:last-child {
+  margin-bottom: 0;
+}
+
+.network-option:hover {
+  background: #f8f9fa;
+}
+
+.network-option:active {
+  transform: scale(0.98);
+}
+
+.network-option.selected {
+  border-color: #007AFF;
+  background: rgba(0, 122, 255, 0.05);
+}
+
+.network-left {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.network-icon {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.network-logo {
+  width: 32px;
+  height: 32px;
+  object-fit: contain;
+  border-radius: 50%;
+}
+
+.network-info {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.network-name {
+  font-size: 16px;
+  font-weight: 600;
+  color: #0b1220;
+}
+
+.network-fee {
+  font-size: 14px;
+  color: #9aa3ae;
+}
+
+.network-right {
+  display: flex;
+  align-items: center;
+}
+
+.selection-indicator {
+  width: 20px;
+  height: 20px;
+  border: 2px solid #d1d5db;
+  border-radius: 50%;
+  position: relative;
+  transition: all 0.2s ease;
+}
+
+.network-option.selected .selection-indicator {
+  border-color: #007AFF;
+  background: #007AFF;
+}
+
+.network-option.selected .selection-indicator::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 8px;
+  height: 8px;
+  background: #ffffff;
+  border-radius: 50%;
+}
+
+/* Soon section */
+.soon-section {
+  margin-bottom: 8px;
+}
+
+.soon-option {
+  display: flex;
+  align-items: center;
+  background: #f3f4f6;
+  border-radius: 16px;
+  padding: 16px 20px;
+  border: 1px solid rgba(0, 0, 0, 0.05);
+  opacity: 0.6;
+}
+
+.soon-left {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.soon-icon {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: #e5e7eb;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.soon-logo {
+  width: 40px;
+  height: 40px;
+  object-fit: contain;
+  filter: grayscale(1);
+}
+
+.soon-info {
+  display: flex;
+  flex-direction: column;
+}
+
+.soon-name {
+  font-size: 16px;
+  font-weight: 600;
+  color: #6b7280;
+}
+
+/* Continue button section */
+.continue-section {
+  margin-top: auto;
+  padding-top: 24px;
+}
+
+.continue-btn {
+  width: 100%;
+  background: #007AFF;
+  color: white;
+  border: none;
+  border-radius: 16px;
+  padding: 16px 24px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+.continue-btn:hover {
+  background: #0056CC;
+}
+
+.continue-btn:active {
+  background: #004499;
+  transform: scale(0.98);
+}
+
+.continue-btn:disabled {
+  background: #d1d5db;
+  color: #9ca3af;
+  cursor: not-allowed;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .topup-container {
+    min-height: 100vh;
+    min-height: calc(var(--vh, 1vh) * 100);
+  }
+  
+  .content-container {
+    padding: 20px 16px;
+    gap: 28px;
+  }
+  
+  .topup-header {
+    padding: 12px 16px;
+  }
+  
+  .crypto-option,
+  .network-option {
+    padding: 14px 16px;
+  }
+  
+  .section-title {
+    font-size: 17px;
+  }
+}
+
+/* Dark theme support (if needed in future) */
+@media (prefers-color-scheme: dark) {
+  .topup-container {
+    background: #000000;
+  }
+  
+  .topup-header {
+    background: #1c1c1e;
+    border-bottom-color: rgba(255, 255, 255, 0.1);
+  }
+  
+  .header-title {
+    color: #ffffff;
+  }
+  
+  .back-btn {
+    color: rgba(255, 255, 255, 0.6);
+  }
+  
+  .section-title {
+    color: #ffffff;
+  }
+  
+  .crypto-option,
+  .network-option {
+    background: #1c1c1e;
+    border-color: rgba(255, 255, 255, 0.1);
+  }
+  
+  .crypto-option:hover,
+  .network-option:hover {
+    background: #2c2c2e;
+  }
+  
+  .crypto-name,
+  .network-name {
+    color: #ffffff;
+  }
+  
+  .crypto-balance,
+  .network-fee {
+    color: #8e8e93;
+  }
+  
+  .arrow-icon {
+    color: #8e8e93;
+  }
+  
+  .soon-option {
+    background: #1c1c1e;
+    border-color: rgba(255, 255, 255, 0.05);
+  }
+  
+  .soon-name {
+    color: #8e8e93;
+  }
+}
+
+/* Touch feedback improvements */
+.crypto-option,
+.network-option,
+.continue-btn {
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
+}
+
+/* Animation for selection indicator */
+.selection-indicator {
+  animation: none;
+}
+
+.network-option.selected .selection-indicator {
+  animation: selectPulse 0.3s ease-out;
+}
+
+@keyframes selectPulse {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.1);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+/* Accessibility improvements */
+.crypto-option:focus,
+.network-option:focus,
+.continue-btn:focus {
+  outline: 2px solid #007AFF;
+  outline-offset: 2px;
+}
+
+/* Loading state for continue button */
+.continue-btn.loading {
+  pointer-events: none;
+  opacity: 0.7;
+}
+
+.continue-btn.loading::after {
+  content: '';
+  width: 16px;
+  height: 16px;
+  border: 2px solid transparent;
+  border-top: 2px solid currentColor;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  margin-left: 8px;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* Crypto Modal Styles */
+.crypto-modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 1000;
+  visibility: hidden;
+  opacity: 0;
+  transition: all 0.3s ease;
+}
+
+.crypto-modal.show {
+  visibility: visible;
+  opacity: 1;
+}
+
+.crypto-modal-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0);
+  backdrop-filter: blur(0px);
+  transition: all 0.3s ease;
+}
+
+.crypto-modal.show .crypto-modal-overlay {
+  background: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(4px);
+}
+
+.crypto-modal-content {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: auto;
+  min-height: auto;
+  max-height: 60vh;
+  background: #ffffff;
+  border-radius: 20px 20px 0 0;
+  transform: translateY(100%);
+  transition: transform 0.3s ease;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.crypto-modal.show .crypto-modal-content {
+  transform: translateY(0);
+}
+
+.crypto-modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 20px 24px 16px;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+  flex-shrink: 0;
+}
+
+.crypto-modal-title {
+  font-size: 18px;
+  font-weight: 700;
+  color: #0b1220;
+  margin: 0;
+}
+
+.crypto-modal-close {
+  appearance: none;
+  border: none;
+  background: transparent;
+  color: #9aa3ae;
+  cursor: pointer;
+  padding: 4px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+}
+
+.crypto-modal-close:hover {
+  background: rgba(154, 163, 174, 0.1);
+  color: #6b7280;
+}
+
+.crypto-modal-close:active {
+  transform: scale(0.95);
+}
+
+.crypto-modal-body {
+  flex: 0 1 auto;
+  padding: 16px 24px 24px;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.crypto-modal-option {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: #f8f9fa;
+  border-radius: 12px;
+  padding: 12px 16px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  border: 2px solid transparent;
+}
+
+.crypto-modal-option:hover {
+  background: #f1f3f4;
+}
+
+.crypto-modal-option:active {
+  transform: scale(0.98);
+}
+
+.crypto-modal-option.selected {
+  background: rgba(0, 122, 255, 0.08);
+  border-color: #007AFF;
+}
+
+.crypto-modal-left {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.crypto-modal-icon {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: #10b981;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.crypto-modal-logo {
+  width: 38px;
+  height: 38px;
+  object-fit: contain;
+}
+
+.crypto-modal-info {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.crypto-modal-name {
+  font-size: 16px;
+  font-weight: 600;
+  color: #0b1220;
+}
+
+.crypto-modal-balance {
+  font-size: 14px;
+  color: #9aa3ae;
+}
+
+.crypto-modal-right {
+  display: flex;
+  align-items: center;
+}
+
+.crypto-modal-check {
+  width: 24px;
+  height: 24px;
+  background: #007AFF;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  opacity: 0;
+  transform: scale(0.8);
+  transition: all 0.2s ease;
+}
+
+.crypto-modal-option.selected .crypto-modal-check {
+  opacity: 1;
+  transform: scale(1);
+}
+
+/* Responsive adjustments for modal */
+@media (max-width: 768px) {
+  .crypto-modal-content {
+    height: auto;
+    min-height: auto;
+    max-height: 50vh;
+  }
+  
+  .crypto-modal-header {
+    padding: 16px 20px 12px;
+  }
+  
+  .crypto-modal-title {
+    font-size: 17px;
+  }
+  
+  .crypto-modal-body {
+    padding: 12px 20px 20px;
+    gap: 10px;
+  }
+  
+  .crypto-modal-option {
+    padding: 10px 14px;
+  }
+}
+
+/* Dark theme support for modal */
+@media (prefers-color-scheme: dark) {
+  .crypto-modal-content {
+    background: #1c1c1e;
+  }
+  
+  .crypto-modal-header {
+    border-bottom-color: rgba(255, 255, 255, 0.1);
+  }
+  
+  .crypto-modal-title {
+    color: #ffffff;
+  }
+  
+  .crypto-modal-close {
+    color: #8e8e93;
+  }
+  
+  .crypto-modal-close:hover {
+    background: rgba(142, 142, 147, 0.1);
+    color: #ffffff;
+  }
+  
+  .crypto-modal-option {
+    background: #2c2c2e;
+  }
+  
+  .crypto-modal-option:hover {
+    background: #3a3a3c;
+  }
+  
+  .crypto-modal-option.selected {
+    background: rgba(0, 122, 255, 0.15);
+  }
+  
+  .crypto-modal-name {
+    color: #ffffff;
+  }
+  
+  .crypto-modal-balance {
+    color: #8e8e93;
+  }
+}
