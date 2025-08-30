@@ -378,16 +378,8 @@ function preventOverscroll() {
     });
   }
 
-  // Контроль для баннеров
-  const banners = document.querySelector('.sheet-banners');
-  if (banners) {
-    banners.addEventListener('scroll', (e) => {
-      const target = e.target;
-      if (target.scrollTop !== 0) {
-        target.scrollTop = 0;
-      }
-    });
-  }
+  // Убираем контроль для баннеров, так как sheet должен быть цельным
+  // Баннеры теперь являются частью цельного модуля без собственного скролла
 }
 
 // Инициализация контроля скролла
