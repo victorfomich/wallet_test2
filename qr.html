@@ -107,9 +107,11 @@
 
     .info-arrow {
       color: #f59e0b;
-      font-weight: bold;
-      font-size: 16px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
       margin-left: auto;
+      margin-top: 10px;
     }
 
     .action-buttons {
@@ -177,6 +179,153 @@
       align-items: center;
       gap: 20px;
     }
+    
+    /* Move back button to left edge */
+    .asset-back {
+      margin-left: -50px !important;
+    }
+
+    /* Commission Modal Styles */
+    .commission-modal {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      z-index: 1000;
+      visibility: hidden;
+      opacity: 0;
+      transition: all 0.3s ease;
+    }
+
+    .commission-modal.show {
+      visibility: visible;
+      opacity: 1;
+    }
+
+    .commission-modal-overlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(0, 0, 0, 0.5);
+    }
+
+    .commission-modal-content {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 90%;
+      background: #fff;
+      border-radius: 20px 20px 0 0;
+      transform: translateY(100%);
+      transition: transform 0.3s ease;
+      overflow: hidden;
+      padding: 16px;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .commission-modal.show .commission-modal-content {
+      transform: translateY(0);
+    }
+
+    .commission-modal-header {
+      text-align: center;
+      margin-bottom: 20px;
+      flex-shrink: 0;
+    }
+
+    .commission-formula {
+      background: #007AFF;
+      color: white;
+      padding: 6px 14px;
+      border-radius: 20px;
+      display: inline-block;
+      font-weight: 600;
+      margin-bottom: 12px;
+      font-size: 14px;
+    }
+
+    .commission-modal-header h2 {
+      font-size: 20px;
+      font-weight: 700;
+      color: #0b1220;
+      margin: 0;
+    }
+
+    .commission-modal-body {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    .commission-section {
+      flex: 1;
+    }
+
+    .commission-icon {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 20px;
+      margin-bottom: 10px;
+    }
+
+    .convenience-icon {
+      background: #E3F2FD;
+    }
+
+    .security-icon {
+      background: #E8F5E8;
+    }
+
+    .commission-section h3 {
+      font-size: 18px;
+      font-weight: 700;
+      color: #0b1220;
+      margin: 0 0 6px 0;
+    }
+
+    .commission-section h4 {
+      font-size: 15px;
+      font-weight: 600;
+      color: #0b1220;
+      margin: 0 0 8px 0;
+    }
+
+    .commission-section p {
+      font-size: 13px;
+      line-height: 1.4;
+      color: #374151;
+      margin: 0 0 8px 0;
+    }
+
+    .commission-note {
+      color: #9CA3AF !important;
+      font-size: 12px !important;
+      line-height: 1.3 !important;
+    }
+
+    /* Make info-block clickable */
+    .info-block {
+      cursor: pointer;
+      transition: background-color 0.2s ease;
+    }
+
+    .info-block:hover {
+      background: rgba(245, 158, 11, 0.05);
+    }
+
+    .info-block:active {
+      background: rgba(245, 158, 11, 0.1);
+    }
   </style>
 </head>
 <body>
@@ -202,17 +351,8 @@
         <div class="address-text" id="addressText">Загрузка адреса...</div>
       </div>
       
-      <div class="info-blocks">
-        <div class="info-block">
-          <div class="info-icon">!</div>
-          <div class="info-text">Для зачисления средств на ваш счет необходимо выполнить перевод(ы) на общую сумму больше 5 USDT.</div>
-        </div>
-        
-        <div class="info-block">
-          <div class="info-icon">!</div>
-          <div class="info-text">Фиксированная комиссия 2.75 USDT</div>
-          <div class="info-arrow">></div>
-        </div>
+      <div class="info-blocks" id="infoBlocks">
+        <!-- Динамически заполняется через JavaScript -->
       </div>
       
       <div class="action-buttons">
@@ -251,12 +391,52 @@
         if (networkText) {
           networkText.textContent = `Ваш адрес USDT в сети ${network}`;
         }
+
+        // Update info blocks based on network
+        const infoBlocks = document.getElementById('infoBlocks');
+        if (infoBlocks) {
+          if (network === 'TRC20') {
+            // TRC20 blocks with modal functionality
+            infoBlocks.innerHTML = `
+              <div class="info-block">
+                <div class="info-icon">!</div>
+                <div class="info-text">Для зачисления средств на ваш счет необходимо выполнить перевод(ы) на общую сумму больше 5 USDT.</div>
+              </div>
+              
+              <div class="info-block" id="commissionInfoBlock">
+                <div class="info-icon">!</div>
+                <div class="info-text">Фиксированная комиссия 2.75 USDT</div>
+                <div class="info-arrow">
+                  <svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true">
+                    <path d="M9 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+                </div>
+              </div>
+            `;
+          } else {
+            // TON blocks (simple, no modal)
+            infoBlocks.innerHTML = `
+              <div class="info-block">
+                <div class="info-icon">!</div>
+                <div class="info-text">Для зачисления средств на ваш счет необходимо выполнить перевод(ы) на общую сумму больше 2 USDT.</div>
+              </div>
+              
+              <div class="info-block">
+                <div class="info-icon">!</div>
+                <div class="info-text">Фиксированная комиссия 0.0 USDT</div>
+              </div>
+            `;
+          }
+        }
         
         // Update address text
         const addressText = document.getElementById('addressText');
         if (addressText) {
           addressText.textContent = address || 'Тестовый адрес';
         }
+
+        // Setup commission modal after blocks are created
+        setTimeout(setupCommissionModal, 100);
         
         // Generate QR code with styling
         const qrContainer = document.getElementById('qrCode');
@@ -374,6 +554,76 @@
         });
       }
     });
+
+    // Commission Modal functionality (only for TRC20)
+    function setupCommissionModal() {
+      const urlParams = new URLSearchParams(window.location.search);
+      const network = urlParams.get('network') || 'TON';
+      
+      // Only setup modal for TRC20
+      if (network !== 'TRC20') {
+        return;
+      }
+
+      const commissionModal = document.getElementById('commissionModal');
+      const modalOverlay = document.querySelector('.commission-modal-overlay');
+      const commissionInfoBlock = document.getElementById('commissionInfoBlock');
+
+      // Open modal when commission info-block is clicked
+      if (commissionInfoBlock && commissionModal) {
+        console.log('Commission modal setup for TRC20');
+        commissionInfoBlock.addEventListener('click', function() {
+          console.log('Commission info block clicked');
+          commissionModal.classList.add('show');
+          document.body.style.overflow = 'hidden'; // Prevent background scrolling
+        });
+      }
+
+      // Close modal when overlay is clicked
+      if (modalOverlay) {
+        modalOverlay.addEventListener('click', function() {
+          commissionModal.classList.remove('show');
+          document.body.style.overflow = ''; // Restore scrolling
+        });
+      }
+
+      // Close modal with Escape key
+      document.addEventListener('keydown', function(event) {
+        if (event.key === 'Escape' && commissionModal.classList.contains('show')) {
+          commissionModal.classList.remove('show');
+          document.body.style.overflow = '';
+        }
+      });
+    }
   </script>
+
+  <!-- Commission Info Modal -->
+  <div id="commissionModal" class="commission-modal">
+    <div class="commission-modal-overlay"></div>
+    <div class="commission-modal-content">
+      <div class="commission-modal-header">
+        <div class="commission-formula">2.5 + 0.25 =</div>
+        <h2>Удобство + Безопасность</h2>
+      </div>
+      
+      <div class="commission-modal-body">
+        <div class="commission-section">
+          <div class="commission-icon convenience-icon">⚡</div>
+          <h3>Удобство</h3>
+          <h4>Почему мы берём комиссию 2.5$?</h4>
+          <p>Сеть Tron взимает комиссию за перевод USDT (14 TRX ≈ 2.5$). Вам не нужно пополнять баланс TRX — мы сами оплачиваем эту комиссию, делая использование кошелька простым и удобным.</p>
+        </div>
+        
+        <div class="commission-section">
+          <div class="commission-icon security-icon">🛡️</div>
+          <h3>Безопасность</h3>
+          <h4>Зачем дополнительно 0.25$?</h4>
+          <p>Эти средства покрывают себестоимость AML-проверки, которая гарантирует безопасность.</p>
+          <p class="commission-note">Dream Wallet получает 0% прибыли за этот перевод (в последующих релизах запланировано снижение комиссии для наших пользователей за счёт оптимизации работы с Tron).</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
 </body>
 </html>

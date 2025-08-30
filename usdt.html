@@ -58,10 +58,12 @@
 
     /* Make asset-logo smaller */
     .asset-logo {
-      width: 118px !important;
-      height: 118px !important;
+      width: 72px !important;
+      height: 72px !important;
       margin: 0 auto !important;
       margin-top: -12px !important;
+      object-fit: contain !important;
+      display: block !important;
     }
 
     /* Add padding to prevent logo cutoff */
@@ -86,6 +88,84 @@
     .asset-back {
       margin-left: -50px !important;
     }
+
+    /* Styles for TRON icon overlay */
+    .card-icon-circle {
+      position: relative;
+    }
+    
+    .tron-overlay {
+      position: absolute;
+      top: 15px;
+      right: 2px;
+      width: 13px;
+      height: 13px;
+      background: transparent;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 9999;
+    }
+    
+    .tron-overlay img {
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      object-fit: cover;
+    }
+    
+    .tron-title-icon {
+      width: 16px;
+      height: 16px;
+      border-radius: 50%;
+      object-fit: cover;
+      margin-right: 1px;
+      vertical-align: middle;
+    }
+    
+    
+    .tron-overlay-card {
+      position: absolute;
+      top: 25px;
+      right: -2px;
+      width: 16px;
+      height: 16px;
+      background: transparent;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 9999;
+    }
+    
+    .tron-overlay-card img {
+      width: 14px;
+      height: 14px;
+      border-radius: 50%;
+      object-fit: cover;
+    }
+    
+    .ton-overlay-card {
+      position: absolute;
+      top: 25px;
+      right: -2px;
+      width: 16px;
+      height: 16px;
+      background: transparent;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 9999;
+    }
+    
+    .ton-overlay-card img {
+      width: 14px;
+      height: 14px;
+      border-radius: 50%;
+      object-fit: cover;
+    }
   </style>
 </head>
 <body>
@@ -99,7 +179,7 @@
       <div class="asset-title">USDT</div>
     </header>
     <div class="asset-body">
-      <div class="asset-icon"><img src="usdt-icon.png" alt="USDT" class="asset-logo" /></div>
+      <div class="asset-icon"><img src="USDT_Logo.png" alt="USDT" class="asset-logo" /></div>
       <div class="asset-amount">0.0 USDT</div>
       <div class="asset-amount-sub">0.0 ₽</div>
     </div>
@@ -133,7 +213,11 @@
     <div class="asset-card">
       <div class="card-main">
         <div class="card-icon">
-          <div class="card-icon-circle"><img src="usdt-icon.png" alt="USDT" class="card-logo" />
+          <div class="card-icon-circle">
+            <img src="USDT_Logo.png" alt="USDT" class="card-logo" />
+            <div class="tron-overlay-card">
+              <img src="trx-logo.png" alt="TRON" />
+            </div>
           </div>
         </div>
         <div class="card-info">
@@ -155,7 +239,11 @@
     <div class="asset-card">
       <div class="card-main">
         <div class="card-icon">
-          <div class="card-icon-circle"><img src="usdt-icon.png" alt="USDT" class="card-logo" />
+          <div class="card-icon-circle">
+            <img src="USDT_Logo.png" alt="USDT" class="card-logo" />
+            <div class="ton-overlay-card">
+              <img src="toncoin-ton-logo.png" alt="TON" />
+            </div>
           </div>
         </div>
         <div class="card-info">
