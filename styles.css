@@ -15,17 +15,17 @@ html, body {
   height: 100%; 
   overflow-x: hidden; /* Предотвращаем горизонтальный скролл */
   overflow-y: auto; /* Разрешаем вертикальный скролл */
-  overscroll-behavior: auto; /* Включаем bounce эффект на мобильных */
+  overscroll-behavior-y: contain; /* Не даём проскроллить за пределы контента по вертикали */
   -webkit-overflow-scrolling: touch; /* Плавный скролл на iOS */
 }
 body {
   margin: 0;
   font-family: -apple-system, system-ui, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji", "Segoe UI Emoji";
-  background: var(--bg);
+  background: #f7f8fb; /* совпадает с .sheet и низом hero */
   color: var(--text);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  overscroll-behavior: auto; /* Включаем bounce эффект */
+  overscroll-behavior-y: contain; /* Не даём проскроллить за пределы контента по вертикали */
   touch-action: pan-y; /* Разрешаем только вертикальные жесты */
   /* Убираем position: fixed, чтобы страница могла скроллиться */
   position: static;
@@ -53,7 +53,7 @@ body {
   inset: 0; /* покрываем весь вьюпорт */
   height: 100vh;
   width: 100vw;
-  background: linear-gradient(180deg, #0a5dff 0%, #1a6cff 65%, #3b82f6 85%, #ffffff 100%);
+  background: linear-gradient(180deg, #175eeb 0%, #6b95e9 50%, #F7F8FB 70%, #F7F8FB 85%, #F7F8FB 100%);
   z-index: 1; /* ниже контента */
   pointer-events: none; /* не перекрываем клики */
 }
@@ -101,9 +101,7 @@ body {
   overflow: visible; /* Убираем overflow: hidden, чтобы контент был виден */
   box-shadow: 0 -2px 16px rgba(0,0,0,0.08);
   padding-top: 12px;
-  padding-bottom: calc(96px + env(safe-area-inset-bottom)); /* запас под таббар */
-  /* Убираем принудительное растягивание на всю высоту экрана */
-  /* min-height: calc(100vh - var(--hero-base)); */
+  padding-bottom: calc(64px + env(safe-area-inset-bottom)); /* нижний отступ под таббар, без лишнего скролла */
   /* разрешаем прокрутку всей страницы, а не только внутри модуля */
   overflow-x: hidden;
   /* full-bleed: от левого до правого края экрана */
@@ -111,8 +109,8 @@ body {
   max-width: none;
   margin-left: calc(50% - 50vw);
   margin-right: calc(50% - 50vw);
-  /* Разрешаем скроллинг для sheet */
-  overscroll-behavior: auto;
+  /* Не даём листать за пределы контента внутри листа */
+  overscroll-behavior: contain;
   touch-action: pan-y;
   /* Убираем ограничение высоты, чтобы модуль был цельным */
   /* max-height: calc(100vh - var(--hero-base)); */
@@ -269,6 +267,11 @@ body {
   box-shadow: none; /* убираем тени */
   border: 1px solid var(--border);
 }
+
+/* Добавляем небольшой отступ после последней карточки в домашнем списке */
+#view-home .token-card:last-of-type {
+  margin-bottom: 24px;
+}
 .token-left { display: flex; align-items: center; justify-content: flex-start; gap: 10px; }
 .token-icon {
   width: 48px; height: 48px; border-radius: 999px;
@@ -296,7 +299,7 @@ body {
   grid-template-columns: repeat(4, 1fr);
   gap: 8px;
   padding: 10px 12px calc(env(safe-area-inset-bottom) + 10px);
-  background: var(--bg);
+  background: #f7f8fb; /* под цвет .sheet и низа hero */
   border-top: 1px solid var(--border);
   max-width: 640px;
   margin: 0 auto;
@@ -314,7 +317,7 @@ body {
   justify-items: center;
   gap: 6px;
 }
-.tabbar .tab.active {}
+/* .tabbar .tab.active {}  — удалено пустое правило */
 .tabbar .tab .icon { line-height: 0; }
 .tabbar .tab .tab-icon-home { width: 22px; height: 22px; display: block; transform: scale(1.6); transform-origin: center; }
 .tabbar .tab .tab-icon-history,
@@ -391,14 +394,7 @@ body {
     overflow: auto;
   }
   
-  /* Убираем контроль скролла в sheet, так как он должен быть цельным */
-  .sheet {
-    /* max-height: calc(100vh - var(--hero-base)); */
-    /* max-height: calc(calc(var(--vh, 1vh) * 100) - var(--hero-base)); */
-    /* overflow-y: auto; */
-    /* overflow-x: hidden; */
-    /* overscroll-behavior: contain; */
-  }
+  /* Убираем контроль скролла в sheet, так как он должен быть цельным (пустой блок удалён) */
   
   /* Восстанавливаем контроль скролла для баннеров */
   .sheet-banners {
@@ -461,13 +457,11 @@ input, textarea, .token-title, .token-amount {
 /* Финальные правила для максимального улучшения скроллинга */
 html, body {
   -webkit-overflow-scrolling: touch !important;
-  overflow-scrolling: touch !important;
   overscroll-behavior: auto !important;
 }
 
 #app, .sheet, .view, main, section {
   -webkit-overflow-scrolling: touch !important;
-  overflow-scrolling: touch !important;
   overscroll-behavior: auto !important;
 }
 
@@ -475,7 +469,6 @@ html, body {
 @media (max-width: 1024px) {
   * {
     -webkit-overflow-scrolling: touch;
-    overflow-scrolling: touch;
   }
 }
 
