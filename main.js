@@ -343,8 +343,6 @@ function setViewportUnit() {
 window.addEventListener('resize', setViewportUnit);
 setViewportUnit();
 
-document.addEventListener('DOMContentLoaded', init);
-
 // Prevent overscroll above header (nickname region)
 let lastTouchY = 0;
 document.addEventListener('touchstart', (e) => {
@@ -359,3 +357,84 @@ document.addEventListener('touchmove', (e) => {
   }
   lastTouchY = currentY;
 }, { passive: false });
+
+// Дополнительный контроль скролла и предотвращение выхода за границы
+function preventOverscroll() {
+  // Предотвращаем горизонтальный скролл
+  document.addEventListener('touchmove', (e) => {
+    if (Math.abs(e.touches[0].clientX - lastTouchY) > Math.abs(e.touches[0].clientY - lastTouchY)) {
+      e.preventDefault();
+    }
+  }, { passive: false });
+
+  // Предотвращаем выход за границы контента
+  const app = document.getElementById('app');
+  if (app) {
+    app.addEventListener('scroll', (e) => {
+      const target = e.target;
+      if (target.scrollLeft !== 0) {
+        target.scrollLeft = 0;
+      }
+    });
+  }
+
+  // Контроль для баннеров
+  const banners = document.querySelector('.sheet-banners');
+  if (banners) {
+    banners.addEventListener('scroll', (e) => {
+      const target = e.target;
+      if (target.scrollTop !== 0) {
+        target.scrollTop = 0;
+      }
+    });
+  }
+}
+
+// Инициализация контроля скролла
+document.addEventListener('DOMContentLoaded', () => {
+  preventOverscroll();
+  
+  // Дополнительные настройки для мобильных устройств
+  if ('ontouchstart' in window) {
+    // Отключаем двойной тап для зума
+    let lastTouchEnd = 0;
+    document.addEventListener('touchend', (e) => {
+      const now = (new Date()).getTime();
+      if (now - lastTouchEnd <= 300) {
+        e.preventDefault();
+      }
+      lastTouchEnd = now;
+    }, false);
+    
+    // Предотвращаем нежелательные жесты
+    document.addEventListener('gesturestart', (e) => {
+      e.preventDefault();
+    });
+    
+    document.addEventListener('gesturechange', (e) => {
+      e.preventDefault();
+    });
+    
+    document.addEventListener('gestureend', (e) => {
+      e.preventDefault();
+    });
+  }
+});
+
+// Фиксация высоты viewport для мобильных устройств
+function fixViewportHeight() {
+  const vh = window.innerHeight * 0.01;
+  document.documentElement.style.setProperty('--vh', `${vh}px`);
+  
+  // Обновляем высоту app контейнера
+  const app = document.getElementById('app');
+  if (app) {
+    app.style.height = `${window.innerHeight}px`;
+  }
+}
+
+window.addEventListener('resize', fixViewportHeight);
+window.addEventListener('orientationchange', fixViewportHeight);
+fixViewportHeight();
+
+document.addEventListener('DOMContentLoaded', init);

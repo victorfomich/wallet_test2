@@ -27,6 +27,12 @@ body {
   margin: 0 auto;
   padding: 16px 16px 72px; /* место под нижнюю панель */
   position: relative;
+  height: 100vh; /* Используем viewport height */
+  height: calc(var(--vh, 1vh) * 100); /* Fallback для мобильных */
+  overflow-y: auto; /* Разрешаем вертикальный скролл только внутри app */
+  overflow-x: hidden; /* Запрещаем горизонтальный скролл */
+  overscroll-behavior: contain; /* Контейнер не влияет на родительский скролл */
+  -webkit-overflow-scrolling: touch; /* Плавный скролл на iOS */
 }
 
 .hero {
@@ -59,7 +65,6 @@ body {
   width: 56px; /* ещё чуть меньше кнопка */
   height: 56px;
   padding: 0;
-  box-shadow: 0 6px 20px rgba(0,0,0,0.12);
   display: inline-grid;
   place-items: center;
 }
@@ -84,8 +89,8 @@ body {
   box-shadow: 0 -2px 16px rgba(0,0,0,0.08);
   padding-top: 12px;
   padding-bottom: calc(96px + env(safe-area-inset-bottom)); /* запас под таббар */
-  /* Если экран длинный — растягиваем модуль до низа, иначе — по контенту */
-  min-height: calc(100vh - var(--hero-base));
+  /* Убираем принудительное растягивание на всю высоту экрана */
+  /* min-height: calc(100vh - var(--hero-base)); */
   /* разрешаем прокрутку всей страницы, а не только внутри модуля */
   overflow-x: hidden;
   /* full-bleed: от левого до правого края экрана */
@@ -93,6 +98,11 @@ body {
   max-width: none;
   margin-left: calc(50% - 50vw);
   margin-right: calc(50% - 50vw);
+  /* Добавляем контроль overscroll */
+  overscroll-behavior: contain;
+  touch-action: pan-y; /* Разрешаем только вертикальные жесты */
+  max-height: calc(100vh - var(--hero-base)); /* Ограничиваем максимальную высоту */
+  max-height: calc(calc(var(--vh, 1vh) * 100) - var(--hero-base)); /* Fallback для мобильных */
 }
 
 /* Banners carousel */
@@ -335,5 +345,87 @@ body {
 .link:hover { text-decoration: underline; }
 
 /* force light theme: no dark overrides */
+
+/* Дополнительные правила для мобильных устройств */
+@media (max-width: 768px) {
+  /* Предотвращаем масштабирование на мобильных */
+  html {
+    -webkit-text-size-adjust: 100%;
+    -ms-text-size-adjust: 100%;
+  }
+  
+  /* Улучшаем контроль жестов */
+  body {
+    touch-action: manipulation; /* Отключаем двойной тап для зума */
+  }
+  
+  /* Предотвращаем выход контента за границы */
+  #app {
+    min-height: 100vh;
+    max-height: 100vh;
+  }
+  
+  /* Улучшаем контроль скролла в sheet */
+  .sheet {
+    max-height: calc(100vh - var(--hero-base));
+    overflow-y: auto;
+    overflow-x: hidden;
+  }
+  
+  /* Предотвращаем выход баннеров за границы */
+  .sheet-banners {
+    max-width: 100%;
+    overflow-x: auto;
+    overflow-y: hidden;
+    -webkit-overflow-scrolling: touch;
+  }
+  
+  /* Улучшаем контроль таббара */
+  .tabbar {
+    left: 50%;
+    transform: translateX(-50%);
+    max-width: 100vw;
+    width: 100%;
+  }
+}
+
+/* Предотвращаем выход элементов за границы viewport */
+.token-card {
+  max-width: calc(100vw - 24px);
+  box-sizing: border-box;
+  margin-left: 12px;
+  margin-right: 12px;
+}
+
+/* Контроль для всех контейнеров */
+.view {
+  max-width: 100vw;
+  overflow-x: hidden;
+  box-sizing: border-box;
+}
+
+/* Улучшаем контроль для всех интерактивных элементов */
+button, input, select, textarea {
+  touch-action: manipulation;
+}
+
+/* Предотвращаем нежелательные жесты */
+* {
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+/* Разрешаем выделение текста в нужных местах */
+input, textarea, .token-title, .token-amount {
+  -webkit-user-select: text;
+  -khtml-user-select: text;
+  -moz-user-select: text;
+  -ms-user-select: text;
+  user-select: text;
+}
 
 
