@@ -343,51 +343,85 @@ function setViewportUnit() {
 window.addEventListener('resize', setViewportUnit);
 setViewportUnit();
 
-// Prevent overscroll above header (nickname region)
-let lastTouchY = 0;
-document.addEventListener('touchstart', (e) => {
-  if (e.touches && e.touches.length > 0) lastTouchY = e.touches[0].clientY;
-}, { passive: true });
+// Удалены глобальные перехваты touchmove, которые блокировали вертикальный скролл на мобильных
 
-document.addEventListener('touchmove', (e) => {
-  const currentY = e.touches && e.touches.length > 0 ? e.touches[0].clientY : lastTouchY;
-  const dy = currentY - lastTouchY;
-  if (dy > 0 && window.scrollY <= 0) {
-    e.preventDefault();
-  }
-  lastTouchY = currentY;
-}, { passive: false });
+// Добавляем touch события для вертикального скролла страницы на мобильных устройствах
+function addPageTouchEvents() {
+  if (!('ontouchstart' in window)) return;
 
-// Дополнительный контроль скролла и предотвращение выхода за границы
-function preventOverscroll() {
-  // Предотвращаем горизонтальный скролл
+  let startY = 0;
+  let startScrollY = 0;
+  let isScrolling = false;
+
+  // Начало касания
+  document.addEventListener('touchstart', (e) => {
+    startY = e.touches[0].clientY;
+    startScrollY = window.scrollY;
+    isScrolling = false;
+  }, { passive: true });
+
+  // Движение пальца
   document.addEventListener('touchmove', (e) => {
-    if (Math.abs(e.touches[0].clientX - lastTouchY) > Math.abs(e.touches[0].clientY - lastTouchY)) {
-      e.preventDefault();
+    if (!startY) return;
+
+    const currentY = e.touches[0].clientY;
+    const diffY = startY - currentY;
+
+    // Определяем, что это вертикальный жест для скролла страницы
+    if (Math.abs(diffY) > 10) {
+      isScrolling = true;
+      // Разрешаем естественный скролл страницы
+      // Не вызываем preventDefault(), чтобы браузер мог скроллить
     }
-  }, { passive: false });
+  }, { passive: true });
 
-  // Предотвращаем выход за границы контента
-  const app = document.getElementById('app');
-  if (app) {
-    app.addEventListener('scroll', (e) => {
-      const target = e.target;
-      if (target.scrollLeft !== 0) {
-        target.scrollLeft = 0;
-      }
-    });
-  }
-
-  // Баннеры теперь имеют собственный горизонтальный скролл с плавной анимацией
+  // Конец касания
+  document.addEventListener('touchend', (e) => {
+    if (isScrolling) {
+      // Добавляем haptic feedback на мобильных устройствах
+      try {
+        if (window.Telegram?.WebApp?.HapticFeedback) {
+          window.Telegram.WebApp.HapticFeedback.impactOccurred('light');
+        }
+      } catch (_) {}
+    }
+    
+    // Сброс переменных
+    startY = 0;
+    startScrollY = 0;
+    isScrolling = false;
+  }, { passive: true });
 }
 
 // Инициализация контроля скролла
 document.addEventListener('DOMContentLoaded', () => {
-  preventOverscroll();
+  // Удален вызов preventOverscroll();
+  // Простой режим: не вмешиваемся в тач-скролл, доверяем браузеру
+  addPageTouchEvents();
+  
+  // Принудительно включаем скроллинг на мобильных устройствах
+  if ('ontouchstart' in window) {
+    // Убираем все ограничения скроллинга
+    document.body.style.overflowY = 'auto';
+    document.body.style.webkitOverflowScrolling = 'touch';
+    
+    // Убираем ограничения для основных контейнеров
+    const app = document.getElementById('app');
+    if (app) {
+      app.style.overflowY = 'auto';
+      app.style.webkitOverflowScrolling = 'touch';
+    }
+    
+    const sheet = document.querySelector('.sheet');
+    if (sheet) {
+      sheet.style.overflowY = 'visible';
+      sheet.style.webkitOverflowScrolling = 'touch';
+    }
+  }
   
   // Дополнительные настройки для мобильных устройств
   if ('ontouchstart' in window) {
-    // Отключаем двойной тап для зума
+    // Отключаем двойной тап для зума, но разрешаем скроллинг
     let lastTouchEnd = 0;
     document.addEventListener('touchend', (e) => {
       const now = (new Date()).getTime();
@@ -397,17 +431,26 @@ document.addEventListener('DOMContentLoaded', () => {
       lastTouchEnd = now;
     }, false);
     
-    // Предотвращаем нежелательные жесты
+    // Предотвращаем только масштабирование, разрешаем скроллинг
     document.addEventListener('gesturestart', (e) => {
-      e.preventDefault();
+      // Блокируем только масштабирование, не скроллинг
+      if (e.scale !== 1) {
+        e.preventDefault();
+      }
     });
     
     document.addEventListener('gesturechange', (e) => {
-      e.preventDefault();
+      // Блокируем только масштабирование, не скроллинг
+      if (e.scale !== 1) {
+        e.preventDefault();
+      }
     });
     
     document.addEventListener('gestureend', (e) => {
-      e.preventDefault();
+      // Блокируем только масштабирование, не скроллинг
+      if (e.scale !== 1) {
+        e.preventDefault();
+      }
     });
   }
 });

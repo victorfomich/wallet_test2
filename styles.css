@@ -14,7 +14,8 @@
 html, body { 
   height: 100%; 
   overflow-x: hidden; /* Предотвращаем горизонтальный скролл */
-  overscroll-behavior: none; /* Отключаем bounce эффект на всех устройствах */
+  overflow-y: auto; /* Разрешаем вертикальный скролл */
+  overscroll-behavior: auto; /* Включаем bounce эффект на мобильных */
   -webkit-overflow-scrolling: touch; /* Плавный скролл на iOS */
 }
 body {
@@ -24,8 +25,12 @@ body {
   color: var(--text);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  overscroll-behavior: none; /* Отключаем bounce эффект */
+  overscroll-behavior: auto; /* Включаем bounce эффект */
   touch-action: pan-y; /* Разрешаем только вертикальные жесты */
+  /* Убираем position: fixed, чтобы страница могла скроллиться */
+  position: static;
+  /* Добавляем поддержку touch скролла */
+  -webkit-overflow-scrolling: touch;
 }
 
 #app {
@@ -36,11 +41,11 @@ body {
   /* Убираем height: 100vh, чтобы контент мог растягиваться */
   /* height: 100vh; */
   /* height: calc(var(--vh, 1vh) * 100); */
-  /* Убираем overflow: hidden, чтобы страница могла скроллиться */
-  /* overflow-y: auto; */
-  /* overflow-x: hidden; */
-  /* overscroll-behavior: contain; */
-  /* -webkit-overflow-scrolling: touch; */
+  /* Разрешаем скроллинг страницы */
+  overflow-y: auto;
+  overflow-x: hidden;
+  overscroll-behavior: auto;
+  -webkit-overflow-scrolling: touch;
 }
 
 .hero {
@@ -106,9 +111,9 @@ body {
   max-width: none;
   margin-left: calc(50% - 50vw);
   margin-right: calc(50% - 50vw);
-  /* Убираем контроль overscroll для sheet, так как скролл должен быть на уровне страницы */
-  /* overscroll-behavior: contain; */
-  /* touch-action: pan-y; */
+  /* Разрешаем скроллинг для sheet */
+  overscroll-behavior: auto;
+  touch-action: pan-y;
   /* Убираем ограничение высоты, чтобы модуль был цельным */
   /* max-height: calc(100vh - var(--hero-base)); */
   /* max-height: calc(calc(var(--vh, 1vh) * 100) - var(--hero-base)); */
@@ -370,9 +375,11 @@ body {
     -ms-text-size-adjust: 100%;
   }
   
-  /* Улучшаем контроль жестов */
+  /* Улучшаем контроль жестов и скроллинг */
   body {
-    touch-action: manipulation; /* Отключаем двойной тап для зума */
+    touch-action: pan-y; /* Разрешаем вертикальные жесты для скроллинга */
+    -webkit-overflow-scrolling: touch;
+    overscroll-behavior: auto;
   }
   
   /* Убираем ограничения для #app, чтобы страница могла скроллиться */
@@ -381,7 +388,7 @@ body {
     /* min-height: calc(var(--vh, 1vh) * 100); */
     /* max-height: 100vh; */
     /* max-height: calc(var(--vh, 1vh) * 100); */
-    /* overflow: hidden; */
+    overflow: auto;
   }
   
   /* Убираем контроль скролла в sheet, так как он должен быть цельным */
@@ -449,6 +456,27 @@ input, textarea, .token-title, .token-amount {
   -moz-user-select: text;
   -ms-user-select: text;
   user-select: text;
+}
+
+/* Финальные правила для максимального улучшения скроллинга */
+html, body {
+  -webkit-overflow-scrolling: touch !important;
+  overflow-scrolling: touch !important;
+  overscroll-behavior: auto !important;
+}
+
+#app, .sheet, .view, main, section {
+  -webkit-overflow-scrolling: touch !important;
+  overflow-scrolling: touch !important;
+  overscroll-behavior: auto !important;
+}
+
+/* Специальные правила для всех мобильных браузеров */
+@media (max-width: 1024px) {
+  * {
+    -webkit-overflow-scrolling: touch;
+    overflow-scrolling: touch;
+  }
 }
 
 
