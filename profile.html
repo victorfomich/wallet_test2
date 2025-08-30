@@ -323,7 +323,42 @@
         // Handle navigation based on card type
         const title = card.querySelector('.profile-card-title, h3')?.textContent;
         console.log(`Clicked: ${title}`);
-        // Add navigation logic here
+        
+        // Navigation logic based on card title
+        switch(title) {
+          case 'Язык':
+            window.location.href = 'language.html';
+            break;
+          case 'KYC верификация':
+            // Handle KYC verification
+            console.log('KYC verification clicked');
+            break;
+          case 'Email':
+            // Handle email verification
+            console.log('Email verification clicked');
+            break;
+          case 'Реферальная программа':
+            // Handle referral program
+            console.log('Referral program clicked');
+            break;
+          case 'Акции и промокоды':
+            // Handle promotions
+            console.log('Promotions clicked');
+            break;
+          case 'Безопасность':
+            // Handle security settings
+            console.log('Security clicked');
+            break;
+          case 'Устройства':
+            window.location.href = 'devices.html';
+            break;
+          case 'Обратиться в поддержку':
+            // Handle support
+            console.log('Support clicked');
+            break;
+          default:
+            console.log(`No specific handler for: ${title}`);
+        }
       });
     });
 

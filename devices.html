@@ -1,0 +1,520 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover, minimal-ui" />
+  <title>Устройства</title>
+  <link rel="stylesheet" href="./styles.css" />
+  <link rel="stylesheet" href="./devices.css" />
+  <script src="https://telegram.org/js/telegram-web-app.js"></script>
+  <meta name="color-scheme" content="light" />
+  <meta name="theme-color" content="#2aabee" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+  <meta name="format-detection" content="telephone=no" />
+  <meta name="msapplication-tap-highlight" content="no" />
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>💳</text></svg>"> 
+</head>
+<body>
+  <div id="app">
+    <!-- Header with back button -->
+    <header class="devices-header">
+      <button id="backBtn" class="back-btn" aria-label="Назад">
+        <svg viewBox="0 0 24 24" width="24" height="24" aria-hidden="true">
+          <path d="M15 6L9 12l6 6" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </button>
+      <div class="header-title">Устройства</div>
+    </header>
+
+    <!-- Current Device Section -->
+    <main class="devices-content">
+      <div class="section-header">
+        <h2>ТЕКУЩЕЕ</h2>
+      </div>
+      
+      <div class="device-card current-device">
+        <div class="device-icon">
+          <svg viewBox="0 0 24 24" width="24" height="24">
+            <rect x="2" y="3" width="20" height="14" rx="2" ry="2" stroke="currentColor" stroke-width="2" fill="none"/>
+            <line x1="8" y1="21" x2="16" y2="21" stroke="currentColor" stroke-width="2"/>
+            <line x1="12" y1="17" x2="12" y2="21" stroke="currentColor" stroke-width="2"/>
+          </svg>
+        </div>
+        <div class="device-info">
+          <div class="device-name" id="currentDeviceName">Определяется...</div>
+          <div class="device-location" id="currentDeviceLocation">Определяется...</div>
+        </div>
+        <div class="device-status">
+          <span class="status-badge online">Online</span>
+        </div>
+      </div>
+
+      <!-- Logout from all other devices button -->
+      <button class="logout-all-btn" id="logoutAllBtn">
+        Выйти со всех других устройств
+      </button>
+
+      <!-- Other Active Devices Section -->
+      <div class="section-header">
+        <h2>ДРУГИЕ АКТИВНЫЕ</h2>
+      </div>
+      
+      <div class="other-devices" id="otherDevices">
+        <!-- Devices will be loaded here dynamically -->
+        <div class="loading-devices">Загрузка устройств...</div>
+      </div>
+
+      <!-- Informational text -->
+      <div class="info-text">
+        В случае отсутствия активности в течение 5 дней система автоматически завершит вашу сессию в целях безопасности.
+      </div>
+    </main>
+  </div>
+
+  <script>
+    // Back button functionality
+    document.getElementById('backBtn').addEventListener('click', () => {
+      if (window.history.length > 1) {
+        window.history.back();
+      } else {
+        window.location.href = 'profile.html';
+      }
+    });
+
+    // Telegram WebApp back button
+    try {
+      const wa = window.Telegram?.WebApp;
+      if (wa) {
+        wa.BackButton?.show();
+        wa.BackButton?.onClick(() => {
+          document.getElementById('backBtn').click();
+        });
+      }
+    } catch(e) {
+      console.log('Telegram WebApp not available');
+    }
+
+    // Device detection and management
+    document.addEventListener('DOMContentLoaded', () => {
+      detectCurrentDevice();
+      loadOtherDevices();
+      
+      // Logout from all other devices button
+      document.getElementById('logoutAllBtn').addEventListener('click', () => {
+        logoutFromAllOtherDevices();
+      });
+    });
+
+    function detectCurrentDevice() {
+      const userAgent = navigator.userAgent;
+      const platform = navigator.platform;
+      const language = navigator.language;
+      
+      let deviceName = 'Неизвестное устройство';
+      let deviceLocation = 'Местоположение неизвестно';
+      
+      // Detect device type and OS
+      if (/iPhone|iPad|iPod/.test(userAgent)) {
+        deviceName = 'iPhone — iOS ' + getIOSVersion(userAgent);
+      } else if (/Android/.test(userAgent)) {
+        deviceName = 'Android — ' + getAndroidVersion(userAgent);
+      } else if (/Windows/.test(userAgent)) {
+        deviceName = 'Windows — ' + getWindowsVersion(userAgent);
+      } else if (/Mac/.test(userAgent)) {
+        deviceName = 'Macintosh — macOS ' + getMacVersion(userAgent);
+      } else if (/Linux/.test(userAgent)) {
+        deviceName = 'Linux — ' + getLinuxVersion(userAgent);
+      }
+      
+      // Try to get location (this would require user permission)
+      if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(
+          (position) => {
+            // In a real app, you'd reverse geocode this to get city/country
+            deviceLocation = `Координаты: ${position.coords.latitude.toFixed(2)}, ${position.coords.longitude.toFixed(2)}`;
+            document.getElementById('currentDeviceLocation').textContent = deviceLocation;
+          },
+          () => {
+            // Fallback location
+            deviceLocation = 'Местоположение недоступно';
+            document.getElementById('currentDeviceLocation').textContent = deviceLocation;
+          }
+        );
+      }
+      
+      // Try to get more accurate location from Telegram WebApp
+      try {
+        const wa = window.Telegram?.WebApp;
+        if (wa && wa.initDataUnsafe?.user) {
+          const user = wa.initDataUnsafe.user;
+          // In the future, Telegram might provide user's location
+          if (user.language_code === 'en') {
+            deviceLocation = 'Location unavailable';
+          }
+        }
+      } catch(e) {
+        console.log('Failed to get Telegram user data');
+      }
+      
+      document.getElementById('currentDeviceName').textContent = deviceName;
+      document.getElementById('currentDeviceLocation').textContent = deviceLocation;
+    }
+
+    function showNotification(message, type = 'info') {
+      // Create notification element
+      const notification = document.createElement('div');
+      notification.className = `notification ${type}`;
+      notification.textContent = message;
+      
+      // Add styles
+      notification.style.cssText = `
+        position: fixed;
+        top: 20px;
+        left: 50%;
+        transform: translateX(-50%);
+        background: ${type === 'success' ? '#34c759' : type === 'error' ? '#ff3b30' : '#007aff'};
+        color: white;
+        padding: 12px 20px;
+        border-radius: 8px;
+        font-size: 14px;
+        font-weight: 500;
+        z-index: 1000;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        opacity: 0;
+        transition: opacity 0.3s ease;
+      `;
+      
+      document.body.appendChild(notification);
+      
+      // Show notification
+      setTimeout(() => {
+        notification.style.opacity = '1';
+      }, 100);
+      
+      // Hide and remove notification
+      setTimeout(() => {
+        notification.style.opacity = '0';
+        setTimeout(() => {
+          document.body.removeChild(notification);
+        }, 300);
+      }, 3000);
+    }
+
+    function getIOSVersion(userAgent) {
+      const match = userAgent.match(/OS (\d+)_(\d+)_?(\d+)?/);
+      if (match) {
+        return `${match[1]}.${match[2]}.${match[3] || 0}`;
+      }
+      return 'Unknown';
+    }
+
+    function getAndroidVersion(userAgent) {
+      const match = userAgent.match(/Android (\d+\.\d+)/);
+      return match ? match[1] : 'Unknown';
+    }
+
+    function getWindowsVersion(userAgent) {
+      const match = userAgent.match(/Windows NT (\d+\.\d+)/);
+      if (match) {
+        const version = parseFloat(match[1]);
+        if (version === 10.0) return '10';
+        if (version === 6.3) return '8.1';
+        if (version === 6.2) return '8';
+        if (version === 6.1) return '7';
+        return match[1];
+      }
+      return 'Unknown';
+    }
+
+    function getMacVersion(userAgent) {
+      const match = userAgent.match(/Mac OS X (\d+)_(\d+)_?(\d+)?/);
+      if (match) {
+        return `${match[1]}.${match[2]}.${match[3] || 0}`;
+      }
+      return 'Unknown';
+    }
+
+    function getLinuxVersion(userAgent) {
+      const match = userAgent.match(/Linux[^;]*/);
+      return match ? match[0].replace('Linux', '').trim() || 'Unknown' : 'Unknown';
+    }
+
+    async function loadOtherDevices() {
+      try {
+        // Try to get real session data from Telegram WebApp
+        const wa = window.Telegram?.WebApp;
+        if (wa) {
+          // Get user info and session data
+          const user = wa.initDataUnsafe?.user;
+          const sessionData = await getTelegramSessionData();
+          
+          if (sessionData && sessionData.sessions) {
+            displayOtherDevices(sessionData.sessions);
+          } else {
+            // Fallback to mock data if no real data available
+            const mockDevices = generateMockDevices(user);
+            displayOtherDevices(mockDevices);
+          }
+        } else {
+          // Fallback for non-Telegram environment
+          const mockDevices = generateMockDevices();
+          displayOtherDevices(mockDevices);
+        }
+      } catch (error) {
+        console.log('Failed to load devices:', error);
+        // Show mock data as fallback
+        const mockDevices = generateMockDevices();
+        displayOtherDevices(mockDevices);
+      }
+    }
+
+    async function getTelegramSessionData() {
+      try {
+        const wa = window.Telegram?.WebApp;
+        if (!wa) return null;
+
+        // Try to get session info from Telegram
+        // Note: This is a placeholder for when Telegram provides this API
+        const sessionInfo = {
+          sessions: [
+            {
+              id: 'session_1',
+              name: 'iPhone — iOS 18.4',
+              location: 'Russia, Moscow',
+              lastSession: '28.08.2025',
+              type: 'mobile',
+              isActive: true,
+              sessionId: 'tg_session_1'
+            },
+            {
+              id: 'session_2', 
+              name: 'iPhone — iOS 18.4',
+              location: 'Russia, Moscow',
+              lastSession: '5 часов назад',
+              type: 'mobile',
+              isActive: true,
+              sessionId: 'tg_session_2'
+            }
+          ]
+        };
+
+        return sessionInfo;
+      } catch (error) {
+        console.log('Failed to get Telegram session data:', error);
+        return null;
+      }
+    }
+
+    function generateMockDevices(user = null) {
+      const baseDevices = [
+        {
+          id: 'mock_1',
+          name: 'iPhone — iOS 18.4',
+          location: 'Kazakhstan, Kokshetau',
+          lastSession: '28.08.2025',
+          type: 'mobile',
+          isActive: true,
+          sessionId: 'mock_session_1'
+        },
+        {
+          id: 'mock_2',
+          name: 'iPhone — iOS 18.4', 
+          location: 'Kazakhstan, Kokshetau',
+          lastSession: '5 часов назад',
+          type: 'mobile',
+          isActive: true,
+          sessionId: 'mock_session_2'
+        }
+      ];
+
+      // If we have user data, customize the mock devices
+      if (user) {
+        baseDevices.forEach(device => {
+          if (user.language_code === 'en') {
+            device.location = 'United States, New York';
+            device.lastSession = device.lastSession === '28.08.2025' ? '08.28.2025' : '5 hours ago';
+          }
+        });
+      }
+
+      return baseDevices;
+    }
+
+    function displayOtherDevices(devices) {
+      const container = document.getElementById('otherDevices');
+      container.innerHTML = '';
+      
+      if (devices.length === 0) {
+        container.innerHTML = '<div class="no-devices">Нет других активных устройств</div>';
+        return;
+      }
+      
+      devices.forEach(device => {
+        const deviceElement = createDeviceElement(device);
+        container.appendChild(deviceElement);
+      });
+    }
+
+    function createDeviceElement(device) {
+      const deviceDiv = document.createElement('div');
+      deviceDiv.className = 'device-card other-device';
+      deviceDiv.dataset.deviceId = device.id;
+      deviceDiv.dataset.sessionId = device.sessionId;
+      
+      // Determine device icon based on type
+      let deviceIcon = `
+        <svg viewBox="0 0 24 24" width="24" height="24">
+          <rect x="2" y="3" width="20" height="14" rx="2" ry="2" stroke="currentColor" stroke-width="2" fill="none"/>
+          <line x1="8" y1="21" x2="16" y2="21" stroke="currentColor" stroke-width="2"/>
+          <line x1="12" y1="17" x2="12" y2="21" stroke="currentColor" stroke-width="2"/>
+        </svg>
+      `;
+      
+      if (device.type === 'mobile') {
+        deviceIcon = `
+          <svg viewBox="0 0 24 24" width="24" height="24">
+            <rect x="5" y="2" width="14" height="20" rx="2" ry="2" stroke="currentColor" stroke-width="2" fill="none"/>
+            <line x1="9" y1="18" x2="15" y2="18" stroke="currentColor" stroke-width="2"/>
+          </svg>
+        `;
+      }
+      
+      deviceDiv.innerHTML = `
+        <div class="device-icon">
+          ${deviceIcon}
+        </div>
+        <div class="device-info">
+          <div class="device-name">${device.name}</div>
+          <div class="device-location">Последняя сессия: ${device.lastSession}</div>
+          <div class="device-location">${device.location}</div>
+        </div>
+        <div class="device-actions">
+          <button class="logout-device-btn" onclick="logoutFromDevice(this)" title="Выйти с устройства">
+            <svg viewBox="0 0 24 24" width="16" height="16">
+              <path d="M9 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </button>
+        </div>
+      `;
+      
+      return deviceDiv;
+    }
+
+    async function logoutFromDevice(button) {
+      // Add haptic feedback
+      try {
+        window.Telegram?.WebApp?.HapticFeedback?.impactOccurred('light');
+      } catch(e) {}
+      
+      if (confirm('Вы действительно хотите выйти с этого устройства?')) {
+        const deviceCard = button.closest('.device-card');
+        const deviceId = deviceCard.dataset.deviceId;
+        const sessionId = deviceCard.dataset.sessionId;
+        
+        deviceCard.style.opacity = '0.5';
+        deviceCard.style.pointerEvents = 'none';
+        
+        try {
+          // Try to terminate session via Telegram WebApp
+          const wa = window.Telegram?.WebApp;
+          if (wa) {
+            // This would be the real API call when Telegram provides it
+            await terminateTelegramSession(sessionId);
+          }
+          
+          // Remove device from UI
+          setTimeout(() => {
+            deviceCard.remove();
+            
+            // Check if no devices left
+            const remainingDevices = document.querySelectorAll('.other-device');
+            if (remainingDevices.length === 0) {
+              document.getElementById('otherDevices').innerHTML = '<div class="no-devices">Нет других активных устройств</div>';
+            }
+          }, 500);
+          
+          // Show success message
+          showNotification('Устройство успешно отключено', 'success');
+          
+        } catch (error) {
+          console.log('Failed to logout from device:', error);
+          deviceCard.style.opacity = '1';
+          deviceCard.style.pointerEvents = 'auto';
+          showNotification('Ошибка при отключении устройства', 'error');
+        }
+      }
+    }
+
+    async function terminateTelegramSession(sessionId) {
+      // This is a placeholder for the real Telegram API
+      // When Telegram provides session management, this would make the actual API call
+      
+      // Simulate API call delay
+      await new Promise(resolve => setTimeout(resolve, 1000));
+      
+      // For now, just log the action
+      console.log(`Terminating session: ${sessionId}`);
+      
+      // In the future, this would be something like:
+      // return await telegramWebApp.terminateSession(sessionId);
+    }
+
+    async function logoutFromAllOtherDevices() {
+      // Add haptic feedback
+      try {
+        window.Telegram?.WebApp?.HapticFeedback?.impactOccurred('medium');
+      } catch(e) {}
+      
+      if (confirm('Вы действительно хотите выйти со всех других устройств?')) {
+        const otherDevices = document.querySelectorAll('.other-device');
+        
+        otherDevices.forEach(device => {
+          device.style.opacity = '0.5';
+          device.style.pointerEvents = 'none';
+        });
+        
+        try {
+          // Try to terminate all sessions via Telegram WebApp
+          const wa = window.Telegram?.WebApp;
+          if (wa) {
+            await terminateAllTelegramSessions();
+          }
+          
+          // Remove all devices from UI
+          setTimeout(() => {
+            otherDevices.forEach(device => device.remove());
+            document.getElementById('otherDevices').innerHTML = '<div class="no-devices">Нет других активных устройств</div>';
+          }, 500);
+          
+          // Show success message
+          showNotification('Все устройства успешно отключены', 'success');
+          
+        } catch (error) {
+          console.log('Failed to logout from all devices:', error);
+          otherDevices.forEach(device => {
+            device.style.opacity = '1';
+            device.style.pointerEvents = 'auto';
+          });
+          showNotification('Ошибка при отключении устройств', 'error');
+        }
+      }
+    }
+
+    async function terminateAllTelegramSessions() {
+      // This is a placeholder for the real Telegram API
+      // When Telegram provides session management, this would make the actual API call
+      
+      // Simulate API call delay
+      await new Promise(resolve => setTimeout(resolve, 1500));
+      
+      // For now, just log the action
+      console.log('Terminating all other sessions');
+      
+      // In the future, this would be something like:
+      // return await telegramWebApp.terminateAllOtherSessions();
+    }
+  </script>
+</body>
+</html>

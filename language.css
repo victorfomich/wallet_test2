@@ -1,0 +1,141 @@
+/* Language selection page styles */
+
+body {
+  background: #f7f8fb;
+  margin: 0;
+  font-family: -apple-system, system-ui, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji", "Segoe UI Emoji";
+  color: #0b1220;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Header */
+.language-header {
+  display: grid;
+  grid-template-columns: 48px 1fr 48px;
+  align-items: center;
+  padding: 16px 0;
+  background: #f7f8fb;
+}
+
+.back-btn {
+  appearance: none;
+  border: none;
+  background: transparent;
+  color: rgba(107,114,128,0.6);
+  font-size: 22px;
+  cursor: pointer;
+  width: 48px;
+  height: 48px;
+  display: grid;
+  place-items: center;
+  border-radius: 12px;
+}
+
+.back-btn:active {
+  background: rgba(0, 0, 0, 0.05);
+}
+
+.header-title {
+  text-align: center;
+  font-weight: 700;
+  color: #0b1220;
+  font-size: 18px;
+}
+
+/* Language Content */
+.language-content {
+  padding: 24px 0;
+}
+
+.language-card {
+  background: #ffffff;
+  border-radius: 12px;
+  margin: 0 16px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+  overflow: hidden;
+}
+
+.language-option {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.language-option:last-child {
+  border-bottom: none;
+}
+
+.language-option:active {
+  background: #f8f9fa;
+}
+
+.language-name {
+  font-size: 16px;
+  font-weight: 500;
+  color: #0b1220;
+}
+
+.language-check {
+  width: 24px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.check-icon {
+  color: #007aff;
+  opacity: 0;
+  transition: opacity 0.2s ease;
+}
+
+/* Active state */
+.language-option.active .check-icon {
+  opacity: 1;
+}
+
+.language-option.active .language-name {
+  color: #007aff;
+  font-weight: 600;
+}
+
+/* Inactive state */
+.language-option.inactive .check-icon {
+  opacity: 0;
+}
+
+.language-option.inactive .language-name {
+  color: #0b1220;
+  font-weight: 500;
+}
+
+/* Responsive adjustments */
+@media (max-width: 375px) {
+  .language-card {
+    margin: 0 12px;
+  }
+  
+  .language-option {
+    padding: 14px 12px;
+  }
+  
+  .language-name {
+    font-size: 15px;
+  }
+}
+
+/* Improve touch targets for mobile */
+.language-option {
+  min-height: 48px;
+}
+
+/* Improve accessibility */
+.language-option:focus {
+  outline: 2px solid #007aff;
+  outline-offset: 2px;
+}

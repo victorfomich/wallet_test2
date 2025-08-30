@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover, minimal-ui" />
+  <title>Выбор языка</title>
+  <link rel="stylesheet" href="./styles.css" />
+  <link rel="stylesheet" href="./language.css" />
+  <script src="https://telegram.org/js/telegram-web-app.js"></script>
+  <meta name="color-scheme" content="light" />
+  <meta name="theme-color" content="#2aabee" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+  <meta name="format-detection" content="telephone=no" />
+  <meta name="msapplication-tap-highlight" content="no" />
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>💳</text></svg>"> 
+</head>
+<body>
+  <div id="app">
+    <!-- Header with back button -->
+    <header class="language-header">
+      <button id="backBtn" class="back-btn" aria-label="Назад">
+        <svg viewBox="0 0 24 24" width="24" height="24" aria-hidden="true">
+          <path d="M15 6L9 12l6 6" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </button>
+      <div class="header-title">Выбор языка</div>
+    </header>
+
+    <!-- Language Selection Card -->
+    <main class="language-content">
+      <div class="language-card">
+        <div class="language-option active" data-lang="ru">
+          <span class="language-name">Русский</span>
+          <div class="language-check">
+            <svg class="check-icon" viewBox="0 0 24 24" width="20" height="20">
+              <path d="M20 6L9 17l-5-5" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <script>
+    // Back button functionality
+    document.getElementById('backBtn').addEventListener('click', () => {
+      if (window.history.length > 1) {
+        window.history.back();
+      } else {
+        window.location.href = 'profile.html';
+      }
+    });
+
+    // Telegram WebApp back button
+    try {
+      const wa = window.Telegram?.WebApp;
+      if (wa) {
+        wa.BackButton?.show();
+        wa.BackButton?.onClick(() => {
+          document.getElementById('backBtn').click();
+        });
+      }
+    } catch(e) {
+      console.log('Telegram WebApp not available');
+    }
+
+    // Language selection functionality
+    document.addEventListener('DOMContentLoaded', () => {
+      const languageOption = document.querySelector('.language-option');
+      
+      // Set current language (default to Russian)
+      const currentLang = localStorage.getItem('selectedLanguage') || 'ru';
+      if (currentLang === 'ru') {
+        languageOption.classList.add('active');
+        languageOption.classList.remove('inactive');
+      }
+      
+      // Add click handler
+      if (languageOption) {
+        languageOption.addEventListener('click', () => {
+          // Add haptic feedback
+          try {
+            window.Telegram?.WebApp?.HapticFeedback?.impactOccurred('light');
+          } catch(e) {}
+          
+          // Set language to Russian
+          localStorage.setItem('selectedLanguage', 'ru');
+          languageOption.classList.add('active');
+          languageOption.classList.remove('inactive');
+          
+          console.log('Language set to: Russian');
+        });
+      }
+    });
+  </script>
+</body>
+</html>

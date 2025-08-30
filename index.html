@@ -143,7 +143,7 @@
         </span>
         <span class="label">Браузер</span>
       </button>
-      <button class="tab" onclick="window.location.href='profile.html'" role="tab" aria-selected="false">
+      <button class="tab" role="tab" aria-selected="false">
         <span class="icon" aria-hidden="true">
           <img src="profile1-icon.png" alt="Профиль" class="tab-icon-profile" width="22" height="22" />
         </span>
@@ -207,6 +207,23 @@
           e.preventDefault();
           e.stopImmediatePropagation();
           window.location.href = 'browser.html';
+          try {
+            window.Telegram?.WebApp?.HapticFeedback?.impactOccurred('medium');
+          } catch(e) {}
+        }, true); // Use capture phase
+      }
+
+      // Add profile functionality to the profile tab button
+      const profileBtn = document.querySelector('.tab:last-child'); // Последняя кнопка - это профиль
+      if (profileBtn) {
+        // Remove attributes to prevent main.js from handling it
+        profileBtn.removeAttribute('role');
+        profileBtn.removeAttribute('aria-selected');
+        
+        profileBtn.addEventListener('click', (e) => {
+          e.preventDefault();
+          e.stopImmediatePropagation();
+          window.location.href = 'profile.html';
           try {
             window.Telegram?.WebApp?.HapticFeedback?.impactOccurred('medium');
           } catch(e) {}
