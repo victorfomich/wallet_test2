@@ -530,6 +530,17 @@
           } catch(e) {}
         });
       }
+
+      // Transfer button handler
+      const transferBtn = document.querySelector('.asset-ctas button[aria-label="Отправить"]');
+      if (transferBtn) {
+        transferBtn.addEventListener('click', () => {
+          window.location.href = 'transfer.html';
+          try {
+            window.Telegram?.WebApp?.HapticFeedback?.impactOccurred('medium');
+          } catch(e) {}
+        });
+      }
     });
   </script>
 </body>

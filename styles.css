@@ -265,7 +265,7 @@ body {
   padding: 14px 16px;
   margin: 0 12px 12px;
   box-shadow: none; /* убираем тени */
-  border: 1px solid var(--border);
+  border: none;
 }
 
 /* Добавляем небольшой отступ после последней карточки в домашнем списке */

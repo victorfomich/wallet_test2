@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover, minimal-ui" />
+  <title>Перевод</title>
+  <link rel="stylesheet" href="./styles.css" />
+  <link rel="stylesheet" href="./transfer.css" />
+  <script src="https://telegram.org/js/telegram-web-app.js"></script>
+  <meta name="color-scheme" content="light" />
+  <meta name="theme-color" content="#2aabee" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+  <meta name="format-detection" content="telephone=no" />
+  <meta name="msapplication-tap-highlight" content="no" />
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>💳</text></svg>"> 
+</head>
+<body>
+  <div class="transfer-container">
+    <!-- Header with back button -->
+    <header class="transfer-header">
+      <button id="backBtn" class="back-btn" aria-label="Назад">
+        <svg viewBox="0 0 24 24" width="24" height="24" aria-hidden="true">
+          <path d="M15 6L9 12l6 6" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </button>
+      <div class="header-title">Перевод</div>
+    </header>
+
+    <!-- Content container -->
+    <div class="content-container">
+      <!-- Select cryptocurrency section -->
+      <section class="crypto-section">
+        <h2 class="section-title">Выберите криптовалюту</h2>
+        
+        <div class="crypto-option" id="usdtOption" data-crypto="USDT">
+          <div class="crypto-left">
+            <div class="crypto-icon">
+              <img src="USDT_Logo.png" alt="USDT" class="crypto-logo" />
+            </div>
+            <div class="crypto-info">
+              <div class="crypto-name">USDT</div>
+              <div class="crypto-balance">0.0 USDT</div>
+            </div>
+          </div>
+          <div class="crypto-right">
+            <svg viewBox="0 0 24 24" width="20" height="20" class="arrow-icon">
+              <path d="M9 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </div>
+        </div>
+      </section>
+
+      <!-- Select network section -->
+      <section class="network-section">
+        <h2 class="section-title">Выберите сеть</h2>
+        
+        <div class="network-option selected" id="trc20Option" data-network="TRC20" data-fee="2.75" data-crypto="USDT">
+          <div class="network-left">
+            <div class="network-icon">
+              <img src="trx-logo.png" alt="TRON" class="network-logo" />
+            </div>
+            <div class="network-info">
+              <div class="network-name">TRC20</div>
+              <div class="network-fee">Комиссия 2.75 USDT</div>
+            </div>
+          </div>
+          <div class="network-right">
+            <div class="selection-indicator"></div>
+          </div>
+        </div>
+
+        <div class="network-option" id="tonOption" data-network="TON" data-fee="0.5" data-crypto="USDT,TON">
+          <div class="network-left">
+            <div class="network-icon">
+              <img src="toncoin-ton-logo.png" alt="TON" class="network-logo" />
+            </div>
+            <div class="network-info">
+              <div class="network-name">TON</div>
+              <div class="network-fee">Комиссия 0.5 USDT</div>
+            </div>
+          </div>
+          <div class="network-right">
+            <div class="selection-indicator"></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Soon section -->
+      <section class="soon-section">
+        <h2 class="section-title">Скоро</h2>
+        
+        <div class="soon-option">
+          <div class="soon-left">
+            <div class="soon-icon">
+              <img src="bep-20.png" alt="BEP-20" class="soon-logo" />
+            </div>
+            <div class="soon-info">
+              <div class="soon-name">BEP-20</div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Continue button -->
+      <div class="continue-section">
+        <button class="continue-btn" id="continueBtn">
+          Продолжить
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Crypto selection modal -->
+  <div class="crypto-modal" id="cryptoModal">
+    <div class="crypto-modal-overlay" id="cryptoModalOverlay"></div>
+    <div class="crypto-modal-content">
+      <div class="crypto-modal-header">
+        <h3 class="crypto-modal-title">Выберите криптовалюту</h3>
+        <button class="crypto-modal-close" id="cryptoModalClose">
+          <svg viewBox="0 0 24 24" width="24" height="24">
+            <path d="M18 6L6 18M6 6l12 12" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+          </svg>
+        </button>
+      </div>
+      <div class="crypto-modal-body">
+        <div class="crypto-modal-option selected" data-crypto="USDT">
+          <div class="crypto-modal-left">
+            <div class="crypto-modal-icon">
+              <img src="USDT_Logo.png" alt="USDT" class="crypto-modal-logo" />
+            </div>
+            <div class="crypto-modal-info">
+              <div class="crypto-modal-name">USDT</div>
+              <div class="crypto-modal-balance">0.0 USDT</div>
+            </div>
+          </div>
+          <div class="crypto-modal-right">
+            <div class="crypto-modal-check">
+              <svg viewBox="0 0 24 24" width="16" height="16">
+                <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z" fill="currentColor"/>
+              </svg>
+            </div>
+          </div>
+        </div>
+
+        <div class="crypto-modal-option" data-crypto="TON">
+          <div class="crypto-modal-left">
+            <div class="crypto-modal-icon">
+              <img src="toncoin-ton-logo.png" alt="TON" class="crypto-modal-logo" />
+            </div>
+            <div class="crypto-modal-info">
+              <div class="crypto-modal-name">TON</div>
+              <div class="crypto-modal-balance">0.0 TON</div>
+            </div>
+          </div>
+          <div class="crypto-modal-right">
+            <div class="crypto-modal-check">
+              <svg viewBox="0 0 24 24" width="16" height="16">
+                <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z" fill="currentColor"/>
+              </svg>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Back button functionality
+    document.getElementById('backBtn').addEventListener('click', () => {
+      if (window.history.length > 1) {
+        window.history.back();
+      } else {
+        window.location.href = 'index.html';
+      }
+    });
+
+    // Telegram WebApp back button
+    try {
+      const wa = window.Telegram?.WebApp;
+      if (wa) {
+        wa.BackButton?.show();
+        wa.BackButton?.onClick(() => {
+          document.getElementById('backBtn').click();
+        });
+      }
+    } catch(e) {
+      console.log('Telegram WebApp not available');
+    }
+
+    // Network selection functionality
+    const networkOptions = document.querySelectorAll('.network-option');
+    let selectedNetwork = 'TRC20'; // Default selection
+
+    networkOptions.forEach(option => {
+      option.addEventListener('click', () => {
+        // Remove selected class from all options
+        networkOptions.forEach(opt => opt.classList.remove('selected'));
+        
+        // Add selected class to clicked option
+        option.classList.add('selected');
+        
+        // Update selected network
+        selectedNetwork = option.dataset.network;
+        
+        // Haptic feedback
+        try {
+          window.Telegram?.WebApp?.HapticFeedback?.impactOccurred('light');
+        } catch(e) {}
+      });
+    });
+
+    // Continue button functionality
+    document.getElementById('continueBtn').addEventListener('click', () => {
+      const selectedNetworkOption = document.querySelector('.network-option.selected');
+      const selectedCrypto = document.querySelector('.crypto-name').textContent;
+      
+      if (selectedNetworkOption) {
+        const network = selectedNetworkOption.dataset.network;
+        const fee = selectedNetworkOption.dataset.fee;
+        
+        // Redirect to withdraw page with selected parameters
+        window.location.href = `withdraw.html?crypto=${encodeURIComponent(selectedCrypto)}&network=${encodeURIComponent(network)}&fee=${encodeURIComponent(fee)}`;
+      }
+      
+      // Haptic feedback
+      try {
+        window.Telegram?.WebApp?.HapticFeedback?.impactOccurred('medium');
+      } catch(e) {}
+    });
+
+    // USDT option click - open modal
+    document.getElementById('usdtOption').addEventListener('click', () => {
+      document.getElementById('cryptoModal').classList.add('show');
+      document.body.style.overflow = 'hidden';
+      try {
+        window.Telegram?.WebApp?.HapticFeedback?.impactOccurred('light');
+      } catch(e) {}
+    });
+
+    // Crypto modal functionality
+    const cryptoModal = document.getElementById('cryptoModal');
+    const cryptoModalOverlay = document.getElementById('cryptoModalOverlay');
+    const cryptoModalClose = document.getElementById('cryptoModalClose');
+    const cryptoModalOptions = document.querySelectorAll('.crypto-modal-option');
+
+    // Close modal functions
+    function closeCryptoModal() {
+      cryptoModal.classList.remove('show');
+      document.body.style.overflow = '';
+    }
+
+    // Close modal on overlay click
+    cryptoModalOverlay.addEventListener('click', closeCryptoModal);
+
+    // Close modal on close button click
+    cryptoModalClose.addEventListener('click', closeCryptoModal);
+
+    // Close modal on escape key
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && cryptoModal.classList.contains('show')) {
+        closeCryptoModal();
+      }
+    });
+
+    // Handle crypto option selection in modal
+    cryptoModalOptions.forEach(option => {
+      option.addEventListener('click', () => {
+        // Remove selected class from all options
+        cryptoModalOptions.forEach(opt => opt.classList.remove('selected'));
+        
+        // Add selected class to clicked option
+        option.classList.add('selected');
+        
+        // Update main crypto option display
+        const selectedCrypto = option.dataset.crypto;
+        const cryptoName = option.querySelector('.crypto-modal-name').textContent;
+        const cryptoBalance = option.querySelector('.crypto-modal-balance').textContent;
+        const cryptoLogo = option.querySelector('.crypto-modal-logo').src;
+        
+        // Update main page display
+        document.querySelector('.crypto-name').textContent = cryptoName;
+        document.querySelector('.crypto-balance').textContent = cryptoBalance;
+        document.querySelector('.crypto-logo').src = cryptoLogo;
+        
+        // Update network options based on selected crypto
+        updateNetworkOptions(selectedCrypto);
+        
+        // Close modal after selection
+        setTimeout(() => {
+          closeCryptoModal();
+        }, 200);
+        
+        // Haptic feedback
+        try {
+          window.Telegram?.WebApp?.HapticFeedback?.impactOccurred('medium');
+        } catch(e) {}
+      });
+    });
+
+    // Function to update network options based on selected cryptocurrency
+    function updateNetworkOptions(selectedCrypto) {
+      const networkOptions = document.querySelectorAll('.network-option');
+      let firstVisibleOption = null;
+      
+      networkOptions.forEach(option => {
+        const supportedCryptos = option.dataset.crypto;
+        
+        if (supportedCryptos && supportedCryptos.includes(selectedCrypto)) {
+          // Show network option
+          option.style.display = 'flex';
+          if (!firstVisibleOption) {
+            firstVisibleOption = option;
+          }
+        } else {
+          // Hide network option
+          option.style.display = 'none';
+          option.classList.remove('selected');
+        }
+      });
+      
+      // Select first visible option if no option is currently selected
+      const hasSelectedOption = document.querySelector('.network-option.selected:not([style*="display: none"])');
+      if (!hasSelectedOption && firstVisibleOption) {
+        firstVisibleOption.classList.add('selected');
+        selectedNetwork = firstVisibleOption.dataset.network;
+      }
+    }
+
+    // Initialize network options on page load
+    document.addEventListener('DOMContentLoaded', () => {
+      // Set initial crypto to USDT
+      updateNetworkOptions('USDT');
+    });
+  </script>
+</body>
+</html>

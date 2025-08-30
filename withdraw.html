@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover, minimal-ui" />
+  <title>Вывод</title>
+  <link rel="stylesheet" href="./styles.css" />
+  <link rel="stylesheet" href="./withdraw.css" />
+  <script src="https://telegram.org/js/telegram-web-app.js"></script>
+  <meta name="color-scheme" content="light" />
+  <meta name="theme-color" content="#2aabee" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+  <meta name="format-detection" content="telephone=no" />
+  <meta name="msapplication-tap-highlight" content="no" />
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>💳</text></svg>"> 
+</head>
+<body>
+  <div class="withdraw-container">
+    <!-- Header with back button -->
+    <header class="withdraw-header">
+      <button id="backBtn" class="back-btn" aria-label="Назад">
+        <svg viewBox="0 0 24 24" width="24" height="24" aria-hidden="true">
+          <path d="M15 6L9 12l6 6" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </button>
+      <div class="header-title">Вывод</div>
+    </header>
+
+    <!-- Content container -->
+    <div class="content-container">
+      <!-- Address section -->
+      <section class="address-section">
+        <h2 class="section-title">Адрес</h2>
+        
+        <div class="address-input-container">
+          <input type="text" class="address-input" id="addressInput" placeholder="" />
+          <button class="qr-scan-btn" id="qrScanBtn" aria-label="Сканировать QR">
+            <svg viewBox="0 0 24 24" width="20" height="20">
+              <path d="M3 7V5C3 3.89543 3.89543 3 5 3H7M17 3H19C20.1046 3 21 3.89543 21 5V7M21 17V19C21 20.1046 20.1046 21 19 21H17M7 21H5C3.89543 21 3 20.1046 3 19V17M9 9H15V15H9V9Z" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </button>
+        </div>
+      </section>
+
+      <!-- Amount section -->
+      <section class="amount-section">
+        <h2 class="section-title">Сумма</h2>
+        
+        <div class="amount-input-container">
+          <input type="number" class="amount-input" id="amountInput" placeholder="0.00" min="0" step="0.01" />
+          <span class="currency-label" id="currencyLabel">USDT</span>
+          <button class="max-btn" id="maxBtn">Все</button>
+        </div>
+      </section>
+
+      <!-- Commission info -->
+      <div class="commission-info" id="commissionInfo">
+        <div class="commission-icon">!</div>
+        <div class="commission-text">
+          <span class="commission-label">Фиксированная комиссия</span>
+          <span class="commission-amount" id="commissionAmount">2.75 USDT</span>
+        </div>
+        <div class="commission-arrow">
+          <svg viewBox="0 0 24 24" width="16" height="16">
+            <path d="M9 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </div>
+      </div>
+
+      <!-- Balance section -->
+      <section class="balance-section">
+        <h2 class="section-title">Баланс</h2>
+        
+        <div class="balance-display">
+          <div class="balance-icon">
+            <img src="USDT_Logo.png" alt="USDT" class="balance-logo" id="balanceLogo" />
+          </div>
+          <div class="balance-info">
+            <div class="balance-amount" id="balanceAmount">0.0 USDT</div>
+            <div class="balance-rub" id="balanceRub">≈ 0.0 ₽</div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Continue button -->
+      <div class="continue-section">
+        <button class="continue-btn" id="continueBtn">
+          Продолжить
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Get URL parameters
+    const urlParams = new URLSearchParams(window.location.search);
+    const selectedCrypto = urlParams.get('crypto') || 'USDT';
+    const selectedNetwork = urlParams.get('network') || 'TRC20';
+    const selectedFee = urlParams.get('fee') || '2.75';
+
+    // Back button functionality
+    document.getElementById('backBtn').addEventListener('click', () => {
+      if (window.history.length > 1) {
+        window.history.back();
+      } else {
+        window.location.href = 'transfer.html';
+      }
+    });
+
+    // Telegram WebApp back button
+    try {
+      const wa = window.Telegram?.WebApp;
+      if (wa) {
+        wa.BackButton?.show();
+        wa.BackButton?.onClick(() => {
+          document.getElementById('backBtn').click();
+        });
+      }
+    } catch(e) {
+      console.log('Telegram WebApp not available');
+    }
+
+    // Initialize page based on selected parameters
+    document.addEventListener('DOMContentLoaded', () => {
+      initializePage();
+    });
+
+    function initializePage() {
+      // Update address placeholder
+      const addressInput = document.getElementById('addressInput');
+      addressInput.placeholder = `Адрес в сети ${selectedNetwork}`;
+
+      // Update currency label
+      const currencyLabel = document.getElementById('currencyLabel');
+      currencyLabel.textContent = selectedCrypto;
+
+      // Update commission info
+      const commissionAmount = document.getElementById('commissionAmount');
+      commissionAmount.textContent = `${selectedFee} ${selectedCrypto}`;
+
+      // Update balance display
+      const balanceAmount = document.getElementById('balanceAmount');
+      const balanceRub = document.getElementById('balanceRub');
+      const balanceLogo = document.getElementById('balanceLogo');
+      
+      balanceAmount.textContent = `0.0 ${selectedCrypto}`;
+      balanceRub.textContent = '≈ 0.0 ₽';
+      
+      // Update logo based on crypto
+      if (selectedCrypto === 'TON') {
+        balanceLogo.src = 'toncoin-ton-logo.png';
+        balanceLogo.alt = 'TON';
+      } else {
+        balanceLogo.src = 'USDT_Logo.png';
+        balanceLogo.alt = 'USDT';
+      }
+    }
+
+    // QR scan button functionality
+    document.getElementById('qrScanBtn').addEventListener('click', () => {
+      // Placeholder for QR scanning functionality
+      try {
+        window.Telegram?.WebApp?.HapticFeedback?.impactOccurred('light');
+      } catch(e) {}
+    });
+
+    // Max button functionality
+    document.getElementById('maxBtn').addEventListener('click', () => {
+      const amountInput = document.getElementById('amountInput');
+      amountInput.value = '0.00'; // Placeholder since balance is 0
+      
+      try {
+        window.Telegram?.WebApp?.HapticFeedback?.impactOccurred('light');
+      } catch(e) {}
+    });
+
+    // Commission info click
+    document.getElementById('commissionInfo').addEventListener('click', () => {
+      // Placeholder for commission details modal
+      try {
+        window.Telegram?.WebApp?.HapticFeedback?.impactOccurred('light');
+      } catch(e) {}
+    });
+
+    // Continue button functionality
+    document.getElementById('continueBtn').addEventListener('click', () => {
+      const addressInput = document.getElementById('addressInput');
+      const amountInput = document.getElementById('amountInput');
+      
+      if (!addressInput.value.trim()) {
+        alert('Пожалуйста, введите адрес для вывода');
+        return;
+      }
+      
+      if (!amountInput.value || parseFloat(amountInput.value) <= 0) {
+        alert('Пожалуйста, введите корректную сумму');
+        return;
+      }
+      
+      // Placeholder for withdrawal processing
+      alert(`Вывод ${amountInput.value} ${selectedCrypto} на адрес ${addressInput.value} в сети ${selectedNetwork}`);
+      
+      try {
+        window.Telegram?.WebApp?.HapticFeedback?.impactOccurred('medium');
+      } catch(e) {}
+    });
+
+    // Input validation and formatting
+    const amountInput = document.getElementById('amountInput');
+    amountInput.addEventListener('input', (e) => {
+      let value = e.target.value;
+      
+      // Remove non-numeric characters except dot
+      value = value.replace(/[^0-9.]/g, '');
+      
+      // Ensure only one dot
+      const dotCount = (value.match(/\./g) || []).length;
+      if (dotCount > 1) {
+        value = value.slice(0, value.lastIndexOf('.'));
+      }
+      
+      // Limit to 2 decimal places
+      if (value.includes('.')) {
+        const parts = value.split('.');
+        if (parts[1] && parts[1].length > 2) {
+          value = parts[0] + '.' + parts[1].slice(0, 2);
+        }
+      }
+      
+      e.target.value = value;
+    });
+  </script>
+</body>
+</html>

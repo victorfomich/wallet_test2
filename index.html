@@ -165,6 +165,17 @@
           } catch(e) {}
         });
       }
+
+      // Add transfer functionality to the arrow button
+      const qrBtn = document.getElementById('qrBtn');
+      if (qrBtn) {
+        qrBtn.addEventListener('click', () => {
+          window.location.href = 'transfer.html';
+          try {
+            window.Telegram?.WebApp?.HapticFeedback?.impactOccurred('medium');
+          } catch(e) {}
+        });
+      }
     });
   </script>
   <noscript>Для работы приложения нужен JavaScript</noscript>

@@ -1,7 +1,7 @@
-/* Topup page specific styles */
+/* Transfer page specific styles */
 
 /* Main container */
-.topup-container {
+.transfer-container {
   min-height: 100vh;
   background: #f7f8fb;
   display: flex;
@@ -9,7 +9,7 @@
 }
 
 /* Header */
-.topup-header {
+.transfer-header {
   display: flex;
   align-items: center;
   padding: 16px 20px;
@@ -332,94 +332,6 @@
   cursor: not-allowed;
 }
 
-/* Responsive adjustments */
-@media (max-width: 768px) {
-  .topup-container {
-    min-height: 100vh;
-    min-height: calc(var(--vh, 1vh) * 100);
-  }
-  
-  .content-container {
-    padding: 20px 16px;
-    gap: 28px;
-  }
-  
-  .topup-header {
-    padding: 12px 16px;
-  }
-  
-  .crypto-option,
-  .network-option {
-    padding: 14px 16px;
-  }
-  
-  .section-title {
-    font-size: 17px;
-  }
-}
-
-
-
-/* Touch feedback improvements */
-.crypto-option,
-.network-option,
-.continue-btn {
-  -webkit-tap-highlight-color: transparent;
-  touch-action: manipulation;
-}
-
-/* Animation for selection indicator */
-.selection-indicator {
-  animation: none;
-}
-
-.network-option.selected .selection-indicator {
-  animation: selectPulse 0.3s ease-out;
-}
-
-@keyframes selectPulse {
-  0% {
-    transform: scale(1);
-  }
-  50% {
-    transform: scale(1.1);
-  }
-  100% {
-    transform: scale(1);
-  }
-}
-
-/* Accessibility improvements */
-.crypto-option:focus,
-.network-option:focus,
-.continue-btn:focus {
-  outline: 2px solid #007AFF;
-  outline-offset: 2px;
-}
-
-/* Loading state for continue button */
-.continue-btn.loading {
-  pointer-events: none;
-  opacity: 0.7;
-}
-
-.continue-btn.loading::after {
-  content: '';
-  width: 16px;
-  height: 16px;
-  border: 2px solid transparent;
-  border-top: 2px solid currentColor;
-  border-radius: 50%;
-  animation: spin 1s linear infinite;
-  margin-left: 8px;
-}
-
-@keyframes spin {
-  to {
-    transform: rotate(360deg);
-  }
-}
-
 /* Crypto Modal Styles */
 .crypto-modal {
   position: fixed;
@@ -612,8 +524,31 @@
   transform: scale(1);
 }
 
-/* Responsive adjustments for modal */
+/* Responsive adjustments */
 @media (max-width: 768px) {
+  .transfer-container {
+    min-height: 100vh;
+    min-height: calc(var(--vh, 1vh) * 100);
+  }
+  
+  .content-container {
+    padding: 20px 16px;
+    gap: 28px;
+  }
+  
+  .transfer-header {
+    padding: 12px 16px;
+  }
+  
+  .crypto-option,
+  .network-option {
+    padding: 14px 16px;
+  }
+  
+  .section-title {
+    font-size: 17px;
+  }
+
   .crypto-modal-content {
     height: auto;
     min-height: auto;
@@ -638,4 +573,62 @@
   }
 }
 
+/* Touch feedback improvements */
+.crypto-option,
+.network-option,
+.continue-btn {
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
+}
 
+/* Animation for selection indicator */
+.selection-indicator {
+  animation: none;
+}
+
+.network-option.selected .selection-indicator {
+  animation: selectPulse 0.3s ease-out;
+}
+
+@keyframes selectPulse {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.1);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+/* Accessibility improvements */
+.crypto-option:focus,
+.network-option:focus,
+.continue-btn:focus {
+  outline: 2px solid #007AFF;
+  outline-offset: 2px;
+}
+
+/* Loading state for continue button */
+.continue-btn.loading {
+  pointer-events: none;
+  opacity: 0.7;
+}
+
+.continue-btn.loading::after {
+  content: '';
+  width: 16px;
+  height: 16px;
+  border: 2px solid transparent;
+  border-top: 2px solid currentColor;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  margin-left: 8px;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
